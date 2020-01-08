@@ -38,13 +38,9 @@ class SongDetailsActivity : AppCompatActivity() {
     private lateinit var progressText: TextView
     private lateinit var daysPracticedText: TextView
 
-    private lateinit var chart: LineChartView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_song_details)
-
-        initChart()
 
         daysPracticedText = findViewById(R.id.days_practiced)
         progressText = findViewById(R.id.progress)
@@ -79,7 +75,6 @@ class SongDetailsActivity : AppCompatActivity() {
 
         viewModel.practiceEntries.observe(this, Observer { newEntries -> run{
             viewAdapter.setEntries(newEntries)
-            updateGraph(newEntries)
         } })
 
         practiceEntriesRecyclerView = findViewById<RecyclerView>(R.id.practice_entries_recycler).apply {
@@ -93,23 +88,6 @@ class SongDetailsActivity : AppCompatActivity() {
 
         val divider = DividerItemDecoration(practiceEntriesRecyclerView.context, viewManager.orientation)
         practiceEntriesRecyclerView.addItemDecoration(divider)
-    }
-
-    private fun initChart() {
-        return
-//        chart = findViewById(R.id.chart)
-    }
-
-    private fun updateGraph(entries: List<PracticeEntry>) {
-        return
-        var values = PracticeEntry.getPointValues(entries, song.initialTempo, song.goalTempo)
-        val line = Line(values)
-        line.color = Color.RED
-        val lines = ArrayList<Line>()
-        lines.add(line)
-        val data = LineChartData()
-        data.lines = lines
-        chart.lineChartData = data
     }
 
     private fun onPracticeEntryClicked(entry: PracticeEntry) {

@@ -49,8 +49,8 @@ class RhythmDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_rhythm_details)
 
         viewModel = ViewModelProviders.of(this).get(RhythmDetailsViewModel::class.java)
-        init()
         loadRhythm()
+        init()
     }
 
     override fun onBackPressed() {
