@@ -36,6 +36,7 @@ class RhythmAdapter(val clickListener: (Rhythm) -> Unit):
 
     class RhythmViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val rhythmName: TextView = itemView.findViewById(R.id.rhythmName)
+        private val rhythmMeter: TextView = itemView.findViewById(R.id.meter)
 
         private lateinit var _rhythm: Rhythm
 
@@ -44,6 +45,7 @@ class RhythmAdapter(val clickListener: (Rhythm) -> Unit):
             set(r) {
                 _rhythm = r
                 rhythmName.text = r.name
+                rhythmMeter.text = r.meter.toString()
             }
     }
 }
