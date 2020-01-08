@@ -22,7 +22,7 @@ class SoundPlayer(context: Context) {
     fun play(sound : Sound) {
         when (sound) {
             Sound.WOOD -> soundPool.play(wood_id, 1f, 1f, 1, 0, 1f)
-            Sound.TRIANGLE -> soundPool.play(triangle_id, 0.6f, 0.6f, 1, 0, 1f)
+            Sound.TRIANGLE -> soundPool.play(triangle_id, 0.5f, 0.5f, 1, 0, 1f)
         }
     }
 
