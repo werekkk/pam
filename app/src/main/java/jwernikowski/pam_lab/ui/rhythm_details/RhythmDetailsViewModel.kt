@@ -101,6 +101,18 @@ class RhythmDetailsViewModel : ViewModel() {
         }
     }
 
+    fun delete() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                rhythmDto.value?.let {
+                    val rhythm = Rhythm(it.name, it.meter, it.defaultBpm)
+                    rhythm.rhythmId = it.rhythmId!!
+                    rhythmRepository.delete(rhythm)
+                }
+            }
+        }
+    }
+
     private fun updateLines(rhythmId: Long, dtoLines: List<RhythmLineDto>) {
         rhythmLineRepository.deleteByRhythmId(rhythmId)
         val lines = dtoLines.map { line -> RhythmLine(rhythmId, line.sound, line.beats.clone()) }

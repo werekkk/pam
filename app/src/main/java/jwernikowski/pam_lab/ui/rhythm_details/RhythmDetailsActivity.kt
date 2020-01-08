@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.KeyEvent
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.TextView
@@ -40,6 +37,7 @@ class RhythmDetailsActivity : AppCompatActivity() {
     private lateinit var viewModel: RhythmDetailsViewModel
     private var isPlaying = false
     private var editTextTempoChange = false
+    private var id: Long? = null
     private var saveIconId = R.drawable.ic_add_white_24dp
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,15 +57,20 @@ class RhythmDetailsActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menu?.add(Menu.NONE, 0, Menu.NONE, "")
-        var item = menu?.getItem(0)
-        item?.setIcon(saveIconId)
-        item?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        item?.setOnMenuItemClickListener { item -> let{
-            onSaveClicked()
-            true
-        } }
+        var menuRes = R.menu.rhythm_details_new_menu
+        if (id != null)
+            menuRes = R.menu.rhythm_details_edit_menu
+        menuInflater.inflate(menuRes, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.save -> onSaveClicked()
+            R.id.add -> onSaveClicked()
+            R.id.delete -> onDeleteClicked()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun onSaveClicked() {
@@ -79,6 +82,11 @@ class RhythmDetailsActivity : AppCompatActivity() {
             viewModel.save()
             finish()
         }
+    }
+
+    private fun onDeleteClicked() {
+        viewModel.delete()
+        finish()
     }
 
     private fun checkFields(): Boolean {
@@ -94,7 +102,7 @@ class RhythmDetailsActivity : AppCompatActivity() {
     }
 
     private fun loadRhythm() {
-        var id: Long? = intent.extras?.getLong(RHYTHM_ID_TAG)
+        id = intent.extras?.getLong(RHYTHM_ID_TAG)
         var title = getString(R.string.new_rhythm)
         id?.let {
             viewModel.loadRhythm(it)
