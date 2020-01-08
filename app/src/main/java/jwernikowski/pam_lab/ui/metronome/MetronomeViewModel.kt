@@ -37,6 +37,7 @@ open class MetronomeViewModel : ViewModel() {
     var rhythm: Rhythm = Rhythm.DEFAULT_RHYTHM
     set(value) {
         field = value
+        _bpm.value = value.defaultBpm
         if (value == Rhythm.DEFAULT_RHYTHM)
             chosenRhythmLines.value = RhythmLineDto.DEFAULT_RHYTHM_LINES
         else {
@@ -54,7 +55,7 @@ open class MetronomeViewModel : ViewModel() {
 
 
     val bpm: MutableLiveData<Int>
-        get() = _bpm
+    get() = _bpm
 
     init {
         _bpm.value = 140
@@ -72,10 +73,6 @@ open class MetronomeViewModel : ViewModel() {
             else
                 _bpm.value = newBpm
         }
-    }
-
-    fun getRhythmLines() {
-
     }
 
 }
