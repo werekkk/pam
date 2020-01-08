@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_metronome"
+        android:icon="@drawable/ic_metronome"
+        android:title="@string/nav_title_metronome"/>
+
+    <item
+        android:id="@+id/navigation_rhythms"
+        android:icon="@drawable/ic_music_note_black_24dp"
+        android:title="@string/nav_title_rhythms"/>
+
+    <item
+        android:id="@+id/navigation_songs"
+        android:icon="@drawable/ic_import_contacts_black_24dp"
+        android:title="@string/nav_title_songs"/>
+
+</menu>

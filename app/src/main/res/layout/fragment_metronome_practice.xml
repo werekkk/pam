@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.song_practice.MetronomePracticeFragment">
+
+    <TextView
+        android:id="@+id/bpm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="aa"
+        android:textSize="@dimen/tempo_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/metronomeView" />
+
+    <jwernikowski.pam_lab.ui.metronome.MetronomeView
+        android:id="@+id/metronomeView"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/plus1btn"
+        android:layout_width="@dimen/change_tempo_button_size"
+        android:layout_height="@dimen/change_tempo_button_size"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/round_button"
+        android:text="+1"
+        android:textSize="@dimen/change_tempo_button_text_size"
+        app:layout_constraintEnd_toStartOf="@+id/plus4btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/minus1btn"
+        app:layout_constraintTop_toBottomOf="@+id/tempoSeekBar" />
+
+    <Button
+        android:id="@+id/plus4btn"
+        android:layout_width="@dimen/change_tempo_button_size"
+        android:layout_height="@dimen/change_tempo_button_size"
+        android:background="@drawable/round_button"
+        android:text="+4"
+        android:textSize="@dimen/change_tempo_button_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/plus1btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/plus1btn" />
+
+    <Button
+        android:id="@+id/minus1btn"
+        android:layout_width="@dimen/change_tempo_button_size"
+        android:layout_height="@dimen/change_tempo_button_size"
+        android:background="@drawable/round_button"
+        android:text="-1"
+        android:textSize="@dimen/change_tempo_button_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/plus1btn"
+        app:layout_constraintEnd_toStartOf="@+id/plus1btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/minus4btn"
+        app:layout_constraintTop_toTopOf="@+id/plus1btn" />
+
+    <Button
+        android:id="@+id/minus4btn"
+        android:layout_width="@dimen/change_tempo_button_size"
+        android:layout_height="@dimen/change_tempo_button_size"
+        android:background="@drawable/round_button"
+        android:text="-4"
+        android:textSize="@dimen/change_tempo_button_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/minus1btn"
+        app:layout_constraintEnd_toStartOf="@+id/minus1btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/minus1btn" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/rate1"
+                android:layout_width="@dimen/practice_rate_emoji_size"
+                android:layout_height="@dimen/practice_rate_emoji_size"
+                android:layout_gravity="center"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/rate_very_low"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/rate2"
+                android:layout_width="@dimen/practice_rate_emoji_size"
+                android:layout_height="@dimen/practice_rate_emoji_size"
+                android:layout_gravity="center"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/rate_low" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/rate3"
+                android:layout_width="@dimen/practice_rate_emoji_size"
+                android:layout_height="@dimen/practice_rate_emoji_size"
+                android:layout_gravity="center"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/rate_medium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/rate4"
+                android:layout_width="@dimen/practice_rate_emoji_size"
+                android:layout_height="@dimen/practice_rate_emoji_size"
+                android:layout_gravity="center"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/rate_high" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/rate5"
+                android:layout_width="@dimen/practice_rate_emoji_size"
+                android:layout_height="@dimen/practice_rate_emoji_size"
+                android:layout_gravity="center"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/rate_very_high" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/rate_performance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plus1btn" />
+
+    <SeekBar
+        android:id="@+id/tempoSeekBar"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bpm" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

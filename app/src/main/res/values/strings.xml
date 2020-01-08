@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">Pam_lab</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_metronome">Metronome</string>
+    <string name="title_rhythms">Custom Rhythms</string>
+    <string name="title_songs">Songs Diary</string>
+
+    <string name="nav_title_metronome">Metronome</string>
+    <string name="nav_title_rhythms">Rhythms</string>
+    <string name="nav_title_songs">Songs</string>
+
+    <string name="name">Name</string>
+    <string name="enter_song_name">Song name cannot be blank</string>
+    <string name="bpm">BPM</string>
+    <string name="meter">Meter</string>
+    <string name="tempo">Tempo</string>
+
+    <string name="add_song">Add song</string>
+
+    <string name="initial">Initial</string>
+    <string name="initial_tempo">Initial tempo</string>
+    <string name="enter_initial_tempo">Initial tempo cannot be blank</string>
+
+    <string name="enter_tempo">Tempo cannot be blank</string>
+    <string name="tempo_out_of_range_1">Tempo must be a number between</string>
+    <string name="tempo_out_of_range_2">and</string>
+
+    <string name="ok">OK</string>
+
+    <string name="goal">Goal</string>
+    <string name="goal_tempo">Goal tempo</string>
+    <string name="enter_goal_tempo">Goal tempo cannot be blank</string>
+    <string name="goal_higher_than_initial">Goal tempo cannot be lower than the initial tempo</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
+    <string name="delete_song">Delete song</string>
+    <string name="delete_song_sure">Are you sure you want to delete the song?</string>
+
+    <string name="edit_song_name">Edit song name</string>
+    <string name="edit">Edit</string>
+
+    <string name="statistics">Statistics</string>
+    <string name="days_practiced">Days practiced</string>
+    <string name="progress">Progress</string>
+    <string name="practice">Practice</string>
+    <string name="practice_log">Practice log</string>
+    <string name="practice_now">Practice now</string>
+
+    <string name="rate_performance">Rate your performance:</string>
+
+    <string name="undo">Undo</string>
+    <string name="entry_added">Practice entry added</string>
+
+    <string name="new_rhythm">New rhythm</string>
+    <string name="edit_rhythm">Edit rhythm</string>
+    <string name="rhythm_name_too_short">Rhythm name must be at least 3 characters long!</string>
+    <string name="rhythm_empty">Rhythm pattern cannot be empty!</string>
+    <string name="change_rhythm">Change rhythm</string>
+
+</resources>

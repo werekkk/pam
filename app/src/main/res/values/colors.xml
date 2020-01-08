@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#f57f17</color>
+    <color name="primaryLightColor">#ffb04c</color>
+    <color name="primaryDarkColor">#bc5100</color>
+    <color name="secondaryColor">#ffd600</color>
+    <color name="secondaryLightColor">#ffff52</color>
+    <color name="secondaryDarkColor">#c7a500</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
+
+    <color name="black">#000000</color>
+    <color name="metronome_gray">#444444</color>
+</resources>

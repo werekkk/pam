@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_metronome">
+
+    <fragment
+        android:id="@+id/navigation_metronome"
+        android:name="jwernikowski.pam_lab.ui.metronome.MetronomeFragment"
+        android:label="@string/title_metronome"
+        tools:layout="@layout/metronome_fragment" />
+    <fragment
+        android:id="@+id/navigation_rhythms"
+        android:name="jwernikowski.pam_lab.ui.rhythms.RhythmsFragment"
+        android:label="@string/title_rhythms"
+        tools:layout="@layout/rhythms_fragment"/>
+    <fragment
+        android:id="@+id/navigation_songs"
+        android:name="jwernikowski.pam_lab.ui.songs.SongsFragment"
+        android:label="@string/title_songs"
+        tools:layout="@layout/songs_fragment" />
+</navigation>
