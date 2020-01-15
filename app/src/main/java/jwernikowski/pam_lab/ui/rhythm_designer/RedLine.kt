@@ -63,7 +63,6 @@ class  RedLine(context: Context, private var startX: Float, private var finishX:
         move()
         checkIfOutOfBounds()
         checkOnTick(previousX, x)
-        invalidate()
     }
 
     private fun move() {

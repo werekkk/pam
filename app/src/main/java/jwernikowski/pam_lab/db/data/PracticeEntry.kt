@@ -29,13 +29,17 @@ data class PracticeEntry(
 
     companion object {
 
-        fun calculateProgress(orderedEntries: List<PracticeEntry>): Float {
-            return 0f
+        fun calculateProgress(orderedEntries: List<PracticeEntry>, initial: Int, goal: Int): Float {
+            val entriesByDay : List<List<PracticeEntry>> = getEntriesByDay(orderedEntries)
+            val progress : List<Float> = getProgressFromDays(entriesByDay, initial, goal)
+            if (progress.isEmpty())
+                return 0f
+            return progress.last()
         }
 
         fun calculateDaysPracticed(orderedEntries: List<PracticeEntry>): Int {
             var count = 0
-            if (orderedEntries.size > 0) {
+            if (orderedEntries.isNotEmpty()) {
                 count++
                 val fmt = DateTimeFormatter.ofPattern("yyyyMMdd")
                 var last = orderedEntries[0].date.format(fmt)
@@ -112,12 +116,12 @@ data class PracticeEntry(
         VERY_LOW, LOW, MEDIUM, HIGH, VERY_HIGH;
 
         fun estimateTempo(bpm: Int): Int {
-            when(this) {
-                VERY_LOW -> return (bpm * 0.2).toInt()
-                LOW -> return (bpm * 0.4).toInt()
-                MEDIUM -> return (bpm * 0.6).toInt()
-                HIGH -> return (bpm * 0.8).toInt()
-                VERY_HIGH -> return bpm
+            return when(this) {
+                VERY_LOW -> (bpm * 0.2).toInt()
+                LOW -> (bpm * 0.4).toInt()
+                MEDIUM -> (bpm * 0.6).toInt()
+                HIGH -> (bpm * 0.8).toInt()
+                VERY_HIGH -> bpm
             }
         }
     }

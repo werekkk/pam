@@ -13,6 +13,10 @@ data class Meter(var measure: Int, var length: Int) {
         }
     }
 
+    init {
+        truncate()
+    }
+
     val blockCount: Int
         get() = measure * length
 
@@ -21,6 +25,9 @@ data class Meter(var measure: Int, var length: Int) {
     }
 
     override fun equals(other: Any?): Boolean {
+        if (other == null) {
+            return false
+        }
         val x = other!! as Meter
         return x.length == this.length && x.measure == this.measure
     }

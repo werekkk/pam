@@ -58,7 +58,7 @@ object Converters {
     @JvmStatic
     @TypeConverter
     fun toMeterString(meter: Meter): String {
-        return meter.measure.toString() + "/" + meter.length.toString()
+        return meter.toString()
     }
 
     @JvmStatic
@@ -86,22 +86,6 @@ object Converters {
             2 -> return Sound.TRIANGLE
         }
         return null
-    }
-
-    @JvmStatic
-    @TypeConverter
-    // [[false, true], [true, false]] -> "01,10"
-    fun toTwoDimBoolArrayString(arrays: Array<Array<Boolean>>): String {
-        val strings = arrays.map { array -> toBoolArrayString(array) }
-        return strings.joinToString(separator = ",")
-    }
-
-    @JvmStatic
-    @TypeConverter
-    // "01,10" -> [[false, true], [true, false]]
-    fun toTwoDimBoolArray(arrayStr: String): Array<Array<Boolean>> {
-        val lines = arrayStr.split(',')
-        return (lines.map { str -> toBoolArray(str) }).toTypedArray()
     }
 
     @JvmStatic

@@ -5,22 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
-import android.widget.EditText
 import android.widget.SeekBar
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.snackbar.Snackbar
 import jwernikowski.pam_lab.MainActivity
 import jwernikowski.pam_lab.R
-import jwernikowski.pam_lab.models.RhythmDto
 import jwernikowski.pam_lab.models.RhythmLineDto
 import jwernikowski.pam_lab.sound.SoundPlayer
-import jwernikowski.pam_lab.utils.Converters
 import jwernikowski.pam_lab.utils.ErrorText
 import jwernikowski.pam_lab.utils.Tempo
 import kotlinx.android.synthetic.main.activity_rhythm_details.*
@@ -29,7 +22,7 @@ import javax.inject.Inject
 class RhythmDetailsActivity : AppCompatActivity() {
 
     companion object {
-        val RHYTHM_ID_TAG = "rhythm"
+        const val RHYTHM_ID_TAG = "rhythm"
     }
 
     @Inject
@@ -51,9 +44,9 @@ class RhythmDetailsActivity : AppCompatActivity() {
         init()
     }
 
-    override fun onBackPressed() {
+    override fun onDestroy() {
         resetBtn.callOnClick()
-        super.onBackPressed()
+        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -80,12 +73,14 @@ class RhythmDetailsActivity : AppCompatActivity() {
             viewModel.rhythmDto.value!!.meter = viewModel.meter.value!!
             viewModel.rhythmDto.value!!.defaultBpm = viewModel.tempo.value!!
             viewModel.save()
+            rhythmDesigner.pause()
             finish()
         }
     }
 
     private fun onDeleteClicked() {
         viewModel.delete()
+        rhythmDesigner.pause()
         finish()
     }
 
@@ -113,7 +108,6 @@ class RhythmDetailsActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        rhythmDesigner.player = player
 
         viewModel.rhythmDto.observe(this, Observer {
             nameEditText.setText(it.name)
@@ -126,7 +120,6 @@ class RhythmDetailsActivity : AppCompatActivity() {
                     if (enteredTempo != Tempo.truncate(enteredTempo))
                         tempoEditText.error = ErrorText.tempoOutOfRange(this@RhythmDetailsActivity)
                     editTextTempoChange = true
-                    Log.i("12345","sending new val to vm")
                     viewModel.tempo.value = Tempo.truncate(enteredTempo)
                     editTextTempoChange = false
                 } else if (s!!.isEmpty()) {
@@ -158,11 +151,6 @@ class RhythmDetailsActivity : AppCompatActivity() {
         rhythmDesigner.bpm = newTempo
     }
 
-    override fun onDestroy() {
-        resetBtn.callOnClick()
-        super.onDestroy()
-    }
-
     private fun initSeekBar() {
         tempoSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -189,7 +177,7 @@ class RhythmDetailsActivity : AppCompatActivity() {
         playPauseBtn.setOnClickListener { run{
             when(isPlaying) {
                 true -> {rhythmDesigner.pause(); playPauseBtn.setImageResource(R.drawable.play)}
-                false -> {rhythmDesigner.play(); playPauseBtn.setImageResource(R.drawable.pause)}
+                false -> {rhythmDesigner.play(player); playPauseBtn.setImageResource(R.drawable.pause)}
             }
             isPlaying = !isPlaying
         } }

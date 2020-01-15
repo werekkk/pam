@@ -20,6 +20,14 @@ class SongDetailsViewModel : ViewModel() {
             practiceEntryRepository.getBySongId(newSong.songId)
         }
 
+//    val progress: LiveData<Float> =
+//        Transformations.switchMap(practiceEntries) { newPracticeEntries -> let {
+//            song.value!!.let {
+//                MutableLiveData<Float>().apply { postValue(PracticeEntry.calculateProgress(newPracticeEntries, it.initialTempo, it.goalTempo)) }
+//            }
+//        }
+//        }
+
     init {
         MainActivity.component.inject(this)
     }

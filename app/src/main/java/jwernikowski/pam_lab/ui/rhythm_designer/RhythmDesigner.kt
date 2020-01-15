@@ -53,7 +53,7 @@ class RhythmDesigner(context: Context, attributeSet: AttributeSet) : LinearLayou
     }
 
     fun setMeter(meter: Meter) {
-        if (meter.equals(this.meter))
+        if (meter == this.meter)
             return
         this.meter = meter
         rhythmLines = RhythmLineDto.default(meter)
@@ -61,17 +61,20 @@ class RhythmDesigner(context: Context, attributeSet: AttributeSet) : LinearLayou
         createViews()
     }
 
-    fun play() {
+    fun play(soundPlayer: SoundPlayer) {
+        player = soundPlayer
         removeView(redLine)
         addView(redLine)
         redLine?.play()
     }
 
     fun pause() {
+        player = null
         redLine?.pause()
     }
 
     fun reset() {
+        player = null
         removeView(redLine)
         redLine?.reset()
     }

@@ -55,7 +55,9 @@ class SongDetailsActivity : AppCompatActivity() {
         viewModel.practiceEntries.observe(this, Observer { list -> run{
             viewAdapter.setEntries(list)
             daysPracticedText.text = PracticeEntry.calculateDaysPracticed(list).toString()
-            progressText.text = (PracticeEntry.calculateProgress(list) * 100).toInt().toString() + "%"
+            viewModel.song.value!!.let {
+                progressText.text = (PracticeEntry.calculateProgress(list, it.initialTempo, it.goalTempo) * 100).toInt().toString() + "%"
+            }
         } })
 
         song = intent.extras?.get(SONG_TAG) as Song

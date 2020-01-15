@@ -100,10 +100,8 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
             phi += PI * (delta.toDouble() / (60000/bpm).toDouble())
             checkTick(lastPhi, phi)
             rodAlignment = sinToAlignment(sin(phi))
-//            if (isTick(lastAlignment, rodAlignment))
-//                tick()
         }
-        invalidate()
+        postInvalidate()
         handler?.let {
             it.postDelayed(Runnable {run{
                 drawMetronome()
@@ -117,7 +115,6 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
         val currProgress = getProgressFromPhi(currPhi)
         val prevIndex = blockIndexFromProgress(prevProgress, rhythm.meter)
         val currIndex = blockIndexFromProgress(currProgress, rhythm.meter)
-//        Log.i("12345","prevPhi=$prevPhi, prevProgress=$prevProgress, prevIndex=$prevIndex, bar=$bar")
         if (currProgress < prevProgress) {
             bar++
             tick(bar * rhythm.meter.length + currIndex)
@@ -148,10 +145,6 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
         return s
     }
 
-    private fun isTick(lastAl: Double, currentAl: Double): Boolean {
-        return (lastAl - 0.5) * (currentAl - 0.5) <= 0
-    }
-
     fun turnOn() {
         lastTime = System.currentTimeMillis()
         touched = true
@@ -175,7 +168,6 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
         canvas?.let {
             this.canvas = it
         }
-//        drawRectangle(canvas)
         drawMetronomeBox(canvas)
         drawRod(canvas)
         if (isTouchHelpAnimationActive)
@@ -190,13 +182,6 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
 
     private fun timeToDisplay(): Boolean {
         return System.currentTimeMillis() - createdTime > TIME_UNTIL_ANIMATION
-    }
-
-    private fun drawRectangle(canvas: Canvas?) {
-        canvas?.drawLine(0f, 0f, width, 0f, paint)
-        canvas?.drawLine(0f, 0f, 0f, height, paint)
-        canvas?.drawLine(0f, width, width, height, paint)
-        canvas?.drawLine(width, 0f, width, height, paint)
     }
 
     private fun drawMetronomeBox(canvas: Canvas?) {
@@ -215,11 +200,11 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
         drawLine(canvas, f, rodEnd)
     }
 
-    fun drawLine(canvas: Canvas?, a: PointF, b: PointF) {
+    private fun drawLine(canvas: Canvas?, a: PointF, b: PointF) {
         canvas?.drawLine(a.x, a.y, b.x, b.y, paint)
     }
 
-    fun getRodLength(): Float {
+    private fun getRodLength(): Float {
         return box.getF().y - (height * heightPaddingRatio / 2)
     }
 
