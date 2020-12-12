@@ -26,7 +26,7 @@ class EntrySwipeToDeleteCallback(
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -76,6 +76,8 @@ class EntrySwipeToDeleteCallback(
             )
         } else { // no swipe
             background.setBounds(0, 0, 0, 0)
+            background.draw(c)
+            return
         }
         background.draw(c)
         icon.draw(c)

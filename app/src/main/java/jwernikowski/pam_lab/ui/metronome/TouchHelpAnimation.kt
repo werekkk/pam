@@ -18,16 +18,13 @@ class TouchHelpAnimation(context: Context, val viewHeight: Int, val viewWidth: I
 
     var onAnimationFinished: (() -> Unit)? = null
 
-    init {
-    }
-
     companion object {
-        val APPEAR_DURATION = 500
-        val MOVE_DURATION = 400
-        val ZOOM_IN_1_DURATION = 200
-        val ZOOM_OUT_DURATION = 250
-        val ZOOM_IN_2_DURATION = 150
-        val DISAPPEAR_DURATION = 200
+        const val APPEAR_DURATION = 500
+        const val MOVE_DURATION = 400
+        const val ZOOM_IN_1_DURATION = 200
+        const val ZOOM_OUT_DURATION = 250
+        const val ZOOM_IN_2_DURATION = 150
+        const val DISAPPEAR_DURATION = 200
 
         val APPEAR_END = APPEAR_DURATION
         val MOVE_END = APPEAR_END + MOVE_DURATION

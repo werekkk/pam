@@ -65,7 +65,8 @@ open class MetronomeFragment : Fragment() {
     }
 
     private fun initMetronomeView() {
-        metronomeView.setOnClickListener { view -> run{
+        metronomeView.setOnClickListener {
+            run{
             viewModel.isOn.let { isOn ->
                 isOn.value.let { value ->
                     if (value != null) {

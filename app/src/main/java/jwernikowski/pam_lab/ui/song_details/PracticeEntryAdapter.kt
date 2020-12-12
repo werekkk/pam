@@ -26,7 +26,7 @@ class PracticeEntryAdapter(val clickListener: (PracticeEntry) -> Unit, val conte
                     PracticeEntry.Rating.VERY_LOW -> return R.drawable.rate_very_low
                     PracticeEntry.Rating.LOW -> return R.drawable.rate_low
                     PracticeEntry.Rating.MEDIUM -> return R.drawable.rate_medium
-                    PracticeEntry.Rating.HIGH -> return R.drawable.rate_very_high
+                    PracticeEntry.Rating.HIGH -> return R.drawable.rate_high
                     PracticeEntry.Rating.VERY_HIGH -> return R.drawable.rate_very_high
                 }
                 return 0

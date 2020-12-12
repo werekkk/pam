@@ -54,27 +54,6 @@ data class PracticeEntry(
             return count
         }
 
-        fun getPointValues(orderedEntries: List<PracticeEntry>, initial: Int, goal: Int): List<PointValue> {
-            val entriesByDay : List<List<PracticeEntry>> = getEntriesByDay(orderedEntries)
-            val progress : List<Float> = getProgressFromDays(entriesByDay, initial, goal)
-
-            val points = ArrayList<PointValue>()
-            if (entriesByDay.isNotEmpty()) {
-                var firstDay = entriesByDay[0][0].date
-                firstDay = firstDay
-                    .minusHours(firstDay.hour.toLong())
-                    .minusMinutes(firstDay.minute.toLong())
-                    .minusSeconds(firstDay.second.toLong())
-                val days = entriesByDay.map {
-                        day -> ChronoUnit.DAYS.between(firstDay, day[0].date).toFloat()
-                }
-                for (i in progress.indices) {
-                    points.add(PointValue(days[i], progress[i]))
-                }
-            }
-            return points
-        }
-
         private fun getEntriesByDay(orderedEntries: List<PracticeEntry>): List<List<PracticeEntry>> {
             val days = ArrayList<List<PracticeEntry>>()
             if (orderedEntries.isNotEmpty()) {
@@ -94,7 +73,7 @@ data class PracticeEntry(
         }
 
         private fun getProgressFromDays(days: List<List<PracticeEntry>>, initial: Int, goal: Int): List<Float> {
-            return days.map { entries -> calculateProgress(initial, goal, getBestBpmFromDay(entries))}
+            return days.map { entries -> calculateProgress(initial, goal, getBestBpmFromDay(entries, initial, goal))}
         }
 
         private fun calculateProgress(initialBpm: Int, goalBpm: Int, tempo: Int): Float {
@@ -106,8 +85,8 @@ data class PracticeEntry(
             return progress
         }
 
-        private fun getBestBpmFromDay(entries: List<PracticeEntry>): Int {
-            return entries.foldRight(0, {entry, max -> max(max, entry.rating.estimateTempo(entry.tempo))})
+        private fun getBestBpmFromDay(entries: List<PracticeEntry>, initial: Int, goal: Int): Int {
+            return entries.foldRight(0, {entry, max -> max(max, entry.rating.estimateTempo(entry.tempo, initial, goal))})
         }
 
     }
@@ -115,12 +94,13 @@ data class PracticeEntry(
     enum class Rating {
         VERY_LOW, LOW, MEDIUM, HIGH, VERY_HIGH;
 
-        fun estimateTempo(bpm: Int): Int {
+        fun estimateTempo(bpm: Int, initial: Int, goal: Int): Int {
+            val diff = bpm - initial
             return when(this) {
-                VERY_LOW -> (bpm * 0.2).toInt()
-                LOW -> (bpm * 0.4).toInt()
-                MEDIUM -> (bpm * 0.6).toInt()
-                HIGH -> (bpm * 0.8).toInt()
+                VERY_LOW -> (initial + diff * 0.2).toInt()
+                LOW -> (initial + diff * 0.4).toInt()
+                MEDIUM -> (initial + diff * 0.6).toInt()
+                HIGH -> (initial + diff * 0.8).toInt()
                 VERY_HIGH -> bpm
             }
         }

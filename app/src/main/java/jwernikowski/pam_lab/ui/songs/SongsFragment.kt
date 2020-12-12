@@ -63,7 +63,7 @@ class SongsFragment : Fragment() {
     }
 
     private fun initFloatingActionButton(root: View) {
-        root.findViewById<View>(R.id.add_song_fab).setOnClickListener { view ->
+        root.findViewById<View>(R.id.add_song_fab).setOnClickListener {
             displayNewSongDialog()
         }
     }

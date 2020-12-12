@@ -7,6 +7,7 @@ import jwernikowski.pam_lab.MainActivity
 import jwernikowski.pam_lab.db.data.Song
 import jwernikowski.pam_lab.db.repository.SongRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -22,8 +23,8 @@ class SongsViewModel : ViewModel() {
 
     private var allSongs: LiveData<List<Song>> = songsRepository.getAll()
 
-    fun insert(song: Song) {
-        viewModelScope.launch {
+    fun insert(song: Song): Job {
+        return viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 songsRepository.add(song)
             }

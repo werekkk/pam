@@ -16,9 +16,9 @@ import kotlin.math.max
 class RhythmDesigner(context: Context, attributeSet: AttributeSet) : LinearLayout(context, attributeSet) {
 
     companion object {
-        val BLOCK_HEIGHT: Int = 120
-        val BLOCK_MIN_WIDTH: Int = 50
-        val MARGIN: Int = 25
+        const val BLOCK_HEIGHT: Int = 120
+        const val BLOCK_MIN_WIDTH: Int = 50
+        const val MARGIN: Int = 25
     }
 
     var player: SoundPlayer? = null
@@ -93,7 +93,7 @@ class RhythmDesigner(context: Context, attributeSet: AttributeSet) : LinearLayou
         initRedLine()
         addView(NumberLine(context, meter, blockWidth))
         blockLines = arrayListOf()
-        rhythmLines.forEach { line -> blockLines.add(BlockLine(context, meter, line, blockWidth)) }
+        rhythmLines.forEach { line -> blockLines.add(BlockLine(context, meter, line, blockWidth, line.sound.toString())) }
         blockLines.forEach { line -> run{
             line.layoutParams = RelativeLayout.LayoutParams(line.getChildMaxEnd(), BLOCK_HEIGHT)
             line.setMargins(MARGIN, MARGIN, MARGIN, 0)

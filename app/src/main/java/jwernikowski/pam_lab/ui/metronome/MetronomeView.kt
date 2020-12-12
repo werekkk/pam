@@ -15,6 +15,7 @@ import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.db.data.Meter
 import jwernikowski.pam_lab.db.data.rhythm.Rhythm
 import jwernikowski.pam_lab.sound.SoundPlayer
+import java.util.*
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -42,7 +43,7 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
     private var lastTime: Long = 0
 
     private var phi: Double = 0.0
-    private var fps: Long = 100
+    private var fps: Long = 60
     private var animationDelay = 1000 / fps
 
     var rhythm: Rhythm = Rhythm.DEFAULT_RHYTHM
@@ -66,6 +67,8 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
 
     private var createdTime = System.currentTimeMillis()
 
+    private val timer = Timer()
+
     companion object {
         val TIME_UNTIL_ANIMATION = 3000
     }
@@ -73,6 +76,11 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
     init {
         paint.color = context.getColor(R.color.metronome_gray)
         paint.strokeWidth = 5f
+        timer.schedule(object : TimerTask() {
+            override fun run() {
+                drawMetronome()
+            }
+        }, 0, animationDelay)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -102,12 +110,6 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
             rodAlignment = sinToAlignment(sin(phi))
         }
         postInvalidate()
-        handler?.let {
-            it.postDelayed(Runnable {run{
-                drawMetronome()
-            }
-            }, animationDelay)
-        }
     }
 
     private fun checkTick(prevPhi: Double, currPhi: Double) {

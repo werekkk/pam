@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 
-class Block(context: Context, private var targetArray: Array<Boolean>, private var targetIndex: Int) : View(context) {
+class Block(context: Context, private var targetArray: Array<Boolean>, private var targetIndex: Int, tag: String) : View(context) {
 
     private var isActive = false
         set(value) {
@@ -14,6 +14,7 @@ class Block(context: Context, private var targetArray: Array<Boolean>, private v
         }
 
     init {
+        this.tag = tag
         isActive = targetArray[targetIndex]
         updateColor()
         setOnClickListener {run {isActive = !isActive}}

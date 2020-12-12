@@ -5,7 +5,6 @@ import jwernikowski.pam_lab.db.data.Meter
 import jwernikowski.pam_lab.utils.Converters
 import org.junit.Test
 
-
 class ConvertersTest {
     @Test
     fun toMeterString_isCorrect() {

@@ -28,7 +28,7 @@ data class Meter(var measure: Int, var length: Int) {
         if (other == null) {
             return false
         }
-        val x = other!! as Meter
+        val x = other as Meter
         return x.length == this.length && x.measure == this.measure
     }
 
