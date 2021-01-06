@@ -1,37 +1,38 @@
-package jwernikowski.pam_lab.ui.songs
+package jwernikowski.pam_lab.ui.song_details
 
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import jwernikowski.pam_lab.R
-import jwernikowski.pam_lab.databinding.DialogNewSongBinding
+import jwernikowski.pam_lab.databinding.DialogNewSectionBinding
+import jwernikowski.pam_lab.db.data.Section
+import jwernikowski.pam_lab.db.data.Song
 import jwernikowski.pam_lab.utils.ErrorText
 
-class NewSongDialogFragment : DialogFragment() {
+class NewSectionDialogFragment(private val song: Song, private val existingSections: List<Section>) : DialogFragment() {
 
     companion object {
-        val TAG = "NewSongDialogFragment"
+        val TAG = "new_section"
     }
 
-    private lateinit var binding: DialogNewSongBinding
-    private lateinit var viewModel: NewSongViewModel
+    private lateinit var binding: DialogNewSectionBinding
+    private lateinit var viewModel: NewSectionViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogNewSongBinding.inflate(inflater, container, false)
+        binding = DialogNewSectionBinding.inflate(layoutInflater, container, false)
 
-        viewModel = ViewModelProvider(this).get(NewSongViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(NewSectionViewModel::class.java)
+        viewModel.song.postValue(song)
+        viewModel.existingSections.postValue(existingSections)
 
-        binding.newSongViewModel = viewModel
+        binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         observeViewModel()
@@ -40,8 +41,8 @@ class NewSongDialogFragment : DialogFragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.songNameNotEmpty.observe(viewLifecycleOwner, Observer {
-            if(!it && binding.nameEditText.isDirty) binding.nameEditText.error = getString(R.string.enter_song_name)
+        viewModel.sectionNameNotEmpty.observe(viewLifecycleOwner, Observer {
+            if(!it && binding.nameEditText.isDirty) binding.nameEditText.error = getString(R.string.enter_section_name)
         })
         viewModel.initialTempoInRange.observe(viewLifecycleOwner, Observer {
             if(!it) binding.initialTempoEditText.error = ErrorText.tempoOutOfRange(context)

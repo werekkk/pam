@@ -1,4 +1,4 @@
-package jwernikowski.pam_lab.ui.metronome
+package jwernikowski.pam_lab.ui.views.metronome
 
 import android.content.Context
 import android.graphics.Canvas
@@ -6,15 +6,10 @@ import android.graphics.Paint
 import android.graphics.PointF
 import android.util.AttributeSet
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
-import android.widget.Toast
-import androidx.lifecycle.Observer
-import jwernikowski.pam_lab.MainActivity
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.db.data.Meter
 import jwernikowski.pam_lab.db.data.rhythm.Rhythm
-import jwernikowski.pam_lab.sound.SoundPlayer
 import java.util.*
 import kotlin.math.PI
 import kotlin.math.cos
@@ -67,7 +62,7 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
 
     private var createdTime = System.currentTimeMillis()
 
-    private val timer = Timer()
+    private lateinit var timer: Timer
 
     companion object {
         val TIME_UNTIL_ANIMATION = 3000
@@ -76,6 +71,26 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
     init {
         paint.color = context.getColor(R.color.metronome_gray)
         paint.strokeWidth = 5f
+        startRefreshing()
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+
+        width = w + 0f
+        height = h + 0f
+
+        box = MetronomeBox(widthPaddingRatio, heightPaddingRatio, width, height, boxLineRatio)
+        touchHelpAnimation =
+            TouchHelpAnimation(
+                context,
+                h,
+                w
+            )
+    }
+
+    private fun startRefreshing() {
+        timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
                 drawMetronome()
@@ -83,15 +98,8 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
         }, 0, animationDelay)
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        createdTime
-
-        width = w + 0f
-        height = h + 0f
-
-        box = MetronomeBox(widthPaddingRatio, heightPaddingRatio, width, height, boxLineRatio)
-        touchHelpAnimation = TouchHelpAnimation(context, h, w)
+    fun shutdown() {
+        timer.cancel()
     }
 
     private fun startDrawing() {
@@ -101,15 +109,14 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
 
     private fun drawMetronome() {
         if (isRunning) {
-            var delta = (System.currentTimeMillis() - lastTime)
+            val delta = (System.currentTimeMillis() - lastTime)
             lastTime += delta
-            var lastAlignment = rodAlignment
             val lastPhi = phi
             phi += PI * (delta.toDouble() / (60000/bpm).toDouble())
             checkTick(lastPhi, phi)
             rodAlignment = sinToAlignment(sin(phi))
         }
-        postInvalidate()
+        postInvalidateOnAnimation()
     }
 
     private fun checkTick(prevPhi: Double, currPhi: Double) {
@@ -159,7 +166,12 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
 
     override fun onDraw(canvas: Canvas?) {
         if (shouldDisplayHelpAnimation()) {
-            touchHelpAnimation = TouchHelpAnimation(context, height.toInt(), width.toInt())
+            touchHelpAnimation =
+                TouchHelpAnimation(
+                    context,
+                    height.toInt(),
+                    width.toInt()
+                )
             touchHelpAnimation.onAnimationFinished = {
                 isTouchHelpAnimationActive = false
                 createdTime = System.currentTimeMillis()
@@ -179,7 +191,7 @@ class MetronomeView(context: Context, attributeSet: AttributeSet) : View(context
     }
 
     private fun shouldDisplayHelpAnimation(): Boolean {
-        return timeToDisplay() && !isTouchHelpAnimationActive && !touched
+        return !touched && !isTouchHelpAnimationActive && timeToDisplay()
     }
 
     private fun timeToDisplay(): Boolean {

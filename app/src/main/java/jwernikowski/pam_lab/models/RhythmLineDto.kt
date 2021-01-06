@@ -3,7 +3,7 @@ package jwernikowski.pam_lab.models;
 import jwernikowski.pam_lab.db.data.Meter
 import jwernikowski.pam_lab.db.data.rhythm.RhythmLine
 import jwernikowski.pam_lab.sound.Sound
-import jwernikowski.pam_lab.utils.Converters
+import jwernikowski.pam_lab.db.data.Converters
 
 class RhythmLineDto(val sound: Sound, var beats: Array<Boolean>) {
 

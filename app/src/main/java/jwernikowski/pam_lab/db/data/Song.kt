@@ -7,9 +7,8 @@ import java.io.Serializable
 
 @Entity
 data class Song (
-    @ColumnInfo(name = "song_name") val name: String,
-    @ColumnInfo(name = "initial_tempo") val initialTempo: Int,
-    @ColumnInfo(name = "goal_tempo") val goalTempo: Int
+    val name: String,
+    val hasSections: Boolean
 ) : Serializable {
     @PrimaryKey(autoGenerate = true) var songId: Long = 0
 }

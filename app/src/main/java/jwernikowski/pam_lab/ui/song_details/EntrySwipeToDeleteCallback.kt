@@ -1,7 +1,9 @@
 package jwernikowski.pam_lab.ui.song_details
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.ColorFilter
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -9,17 +11,23 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import jwernikowski.pam_lab.R
+import jwernikowski.pam_lab.db.data.PracticeEntry
 
 // https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
 
 class EntrySwipeToDeleteCallback(
     private val adapter: PracticeEntryAdapter,
-    private val viewModel: SongDetailsViewModel
+    private val onSwiped: (PracticeEntry) -> Unit,
+    context: Context
 ) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
     private val icon: Drawable =
-        ContextCompat.getDrawable(adapter.context, R.drawable.baseline_delete_24)!!
+        ContextCompat.getDrawable(context, R.drawable.baseline_delete_24)!!
     private val background: ColorDrawable = ColorDrawable(Color.RED)
+
+    init {
+        icon.setTint(Color.WHITE)
+    }
 
     override fun onMove(
         recyclerView: RecyclerView,
@@ -31,7 +39,7 @@ class EntrySwipeToDeleteCallback(
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.adapterPosition
-        viewModel.deletePracticeEntry(adapter.getItem(position))
+        onSwiped(adapter.getItem(position))
     }
 
     override fun onChildDraw(
@@ -75,9 +83,8 @@ class EntrySwipeToDeleteCallback(
                 itemView.bottom
             )
         } else { // no swipe
+            icon.setBounds(0, 0, 0, 0)
             background.setBounds(0, 0, 0, 0)
-            background.draw(c)
-            return
         }
         background.draw(c)
         icon.draw(c)

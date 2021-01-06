@@ -1,10 +1,9 @@
 package jwernikowski.pam_lab.ui.song_practice
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import jwernikowski.pam_lab.MainActivity
 import jwernikowski.pam_lab.db.data.PracticeEntry
+import jwernikowski.pam_lab.db.data.Section
 import jwernikowski.pam_lab.db.data.Song
 import jwernikowski.pam_lab.db.repository.PracticeEntryRepository
 import kotlinx.coroutines.Dispatchers
@@ -13,14 +12,19 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import javax.inject.Inject
 
-class SongPracticeViewModel : ViewModel() {
+class MetronomePracticeViewModel : ViewModel() {
 
     companion object {
-        const val MIN_DELAY : Int = 1000
+        const val MIN_DELAY : Int = 400
     }
 
-    @Inject
-    lateinit var practiceEntryRepository: PracticeEntryRepository
+    var song: MutableLiveData<Song> = MutableLiveData()
+    var section: MutableLiveData<Section> = MutableLiveData()
+
+    val lastPracticeEntry: LiveData<PracticeEntry?> =
+        Transformations.switchMap(section) {
+            practiceEntryRepository.getBySectionId(it.sectionId).map { it.lastOrNull() }
+        }
 
     lateinit var onRatedListener: (PracticeEntry) -> Unit
     private var lastRated = System.currentTimeMillis()
@@ -29,12 +33,14 @@ class SongPracticeViewModel : ViewModel() {
     val isOn: MutableLiveData<Boolean> = MutableLiveData()
     val progress: MutableLiveData<Float> = MutableLiveData()
 
-
     val maxBpm: MutableLiveData<Int> = MutableLiveData()
     val minBpm: MutableLiveData<Int> = MutableLiveData()
 
     val bpm: MutableLiveData<Int>
         get() = _bpm
+
+    @Inject
+    lateinit var practiceEntryRepository: PracticeEntryRepository
 
     init {
         MainActivity.component.inject(this)
@@ -55,13 +61,12 @@ class SongPracticeViewModel : ViewModel() {
 
     }
 
-    var song : MutableLiveData<Song> = MutableLiveData()
 
     fun addRating(rating: PracticeEntry.Rating) {
         bpm.value?.let { bpm ->
-            song.value?.let {
+            section.value?.let {
                 if (System.currentTimeMillis() - lastRated > MIN_DELAY) {
-                    val newEntry = PracticeEntry(it.songId, LocalDateTime.now(), rating, bpm)
+                    val newEntry = PracticeEntry(it.sectionId, LocalDateTime.now(), rating, bpm)
                     saveEntry(newEntry)
                     lastRated = System.currentTimeMillis()
                 }
@@ -84,6 +89,10 @@ class SongPracticeViewModel : ViewModel() {
                 practiceEntryRepository.delete(entry)
             }
         }
+    }
+
+    fun findLastPractice(section: Section): LiveData<PracticeEntry?> {
+        return practiceEntryRepository.getBySectionId(section.sectionId).map { it.lastOrNull() }
     }
 
 }

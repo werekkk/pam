@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -69,14 +70,14 @@ class SongsFragment : Fragment() {
     }
 
     private fun displayNewSongDialog() {
-        NewSongDialogFragment().show(fragmentManager, NewSongDialogFragment.TAG)
+        NewSongDialogFragment().show(parentFragmentManager, NewSongDialogFragment.TAG)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SongsViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(SongsViewModel::class.java)
         viewModel.getAllSongs()
-            .observe(this, Observer { newSongs -> run{
+            .observe(viewLifecycleOwner, Observer { newSongs -> run{
                 viewAdapter.setSongs(newSongs)
             }})
     }

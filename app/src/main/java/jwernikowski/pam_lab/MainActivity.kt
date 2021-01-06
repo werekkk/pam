@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
             .appModule(AppModule(application))
             .roomModule(RoomModule(application))
             .build()
-
         component.inject(this)
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)

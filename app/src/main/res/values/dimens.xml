@@ -7,7 +7,7 @@
     <dimen name="song_details_headers">20sp</dimen>
     <dimen name="practice_rate_emoji_size">40dp</dimen>
     <dimen name="change_tempo_button_size">56dp</dimen>
-    <dimen name="change_tempo_button_text_size">20sp</dimen>
+    <dimen name="change_tempo_button_text_size">18sp</dimen>
     <dimen name="tempo_text_size">40sp</dimen>
     <dimen name="rhythmPlayerBtnSize">30dp</dimen>
 </resources>

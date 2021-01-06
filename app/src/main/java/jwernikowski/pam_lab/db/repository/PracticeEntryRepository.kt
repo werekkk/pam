@@ -10,6 +10,10 @@ class PracticeEntryRepository (private val practiceEntryDao: PracticeEntryDao) {
         return practiceEntryDao.getBySongId(songId)
     }
 
+    fun getBySectionId(sectionId: Long): LiveData<List<PracticeEntry>> {
+        return practiceEntryDao.getBySectionId(sectionId)
+    }
+
     fun add(practiceEntry: PracticeEntry): Long {
         return practiceEntryDao.insertOne(practiceEntry)
     }

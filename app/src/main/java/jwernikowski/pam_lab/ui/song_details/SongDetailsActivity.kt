@@ -1,26 +1,28 @@
 package jwernikowski.pam_lab.ui.song_details
 
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.TextView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import jwernikowski.pam_lab.R
+import jwernikowski.pam_lab.databinding.ActivitySongDetailsBinding
 import jwernikowski.pam_lab.db.data.PracticeEntry
+import jwernikowski.pam_lab.db.data.Section
 import jwernikowski.pam_lab.db.data.Song
+import jwernikowski.pam_lab.ui.section_details.SectionDetailsDialogFragment
 import jwernikowski.pam_lab.ui.song_practice.SongPracticeActivity
-import lecho.lib.hellocharts.model.Line
-import lecho.lib.hellocharts.model.LineChartData
-import lecho.lib.hellocharts.view.LineChartView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SongDetailsActivity : AppCompatActivity() {
 
@@ -28,72 +30,81 @@ class SongDetailsActivity : AppCompatActivity() {
         val SONG_TAG = "song"
     }
 
+    private lateinit var binding: ActivitySongDetailsBinding
     private lateinit var viewModel: SongDetailsViewModel
+
     private lateinit var song: Song
 
     private lateinit var practiceEntriesRecyclerView: RecyclerView
-    private lateinit var viewAdapter: PracticeEntryAdapter
-    private lateinit var viewManager: LinearLayoutManager
-
-    private lateinit var progressText: TextView
-    private lateinit var daysPracticedText: TextView
+    private lateinit var practiceEntryViewManager: LinearLayoutManager
+    private lateinit var practiceEntryViewAdapter: PracticeEntryAdapter
+    private lateinit var sectionsRecyclerView: RecyclerView
+    private lateinit var sectionViewManager: LinearLayoutManager
+    private lateinit var sectionsViewAdapter: SectionAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_song_details)
 
-        daysPracticedText = findViewById(R.id.days_practiced)
-        progressText = findViewById(R.id.progress)
+        binding = ActivitySongDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        viewModel = ViewModelProvider(this).get(SongDetailsViewModel::class.java)
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setHomeButtonEnabled(true)
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        viewModel = ViewModelProviders.of(this).get(SongDetailsViewModel::class.java)
 
-        viewModel.practiceEntries.observe(this, Observer { list -> run{
-            viewAdapter.setEntries(list)
-            daysPracticedText.text = PracticeEntry.calculateDaysPracticed(list).toString()
-            viewModel.song.value!!.let {
-                progressText.text = (PracticeEntry.calculateProgress(list, it.initialTempo, it.goalTempo) * 100).toInt().toString() + "%"
-            }
-        } })
+//        viewModel.practiceEntries.observe(this, Observer { list -> run{
+//            viewAdapter.setEntries(list)
+//            daysPracticedText.text = PracticeEntry.calculateDaysPracticed(list).toString()
+//            viewModel.song.value!!.let {
+//                progressText.text = (PracticeEntry.calculateProgress(list, it.initialTempo, it.goalTempo) * 100).toInt().toString() + "%"
+//            }
+//        } }) TODO("calculate progress based on sections")
 
         song = intent.extras?.get(SONG_TAG) as Song
         loadSong()
 
-        initRecyclerView()
-        findViewById<Button>(R.id.practice_now).setOnClickListener { v -> run {handlePracticeNow()} }
+        initRecyclerViews()
+        binding.practiceNow.setOnClickListener { handlePracticeNow() }
+        binding.newSection.setOnClickListener { displayNewSectionDialog() }
     }
 
-    private fun initRecyclerView() {
-        viewManager = LinearLayoutManager(this)
-        viewAdapter = PracticeEntryAdapter({ entry ->
-            run {
-                onPracticeEntryClicked(entry)
-            }
-        }, this)
+    private fun initRecyclerViews() {
+        practiceEntryViewManager = LinearLayoutManager(this)
+        practiceEntryViewAdapter = PracticeEntryAdapter {}
+        sectionViewManager = LinearLayoutManager(this)
+        sectionsViewAdapter = SectionAdapter({
+            handlePracticeNow(it)
+        }, {
+            handleShowSectionDetails(it)
+        })
 
-        viewModel.practiceEntries.observe(this, Observer { newEntries -> run{
-            viewAdapter.setEntries(newEntries)
-        } })
+        viewModel.practiceEntries.observe(this, Observer { practiceEntryViewAdapter.setEntries(it) })
+        viewModel.sections.observe(this, Observer { sectionsViewAdapter.setSections(it) })
 
-        practiceEntriesRecyclerView = findViewById<RecyclerView>(R.id.practice_entries_recycler).apply {
+        practiceEntriesRecyclerView = binding.practiceEntriesRecycler.apply {
             setHasFixedSize(true)
-            layoutManager = viewManager
-            adapter = viewAdapter
-            val touchHelper = ItemTouchHelper(EntrySwipeToDeleteCallback(viewAdapter, viewModel))
+            layoutManager = practiceEntryViewManager
+            adapter = practiceEntryViewAdapter
+            val touchHelper = ItemTouchHelper(EntrySwipeToDeleteCallback(practiceEntryViewAdapter, {handleSwipeToDelete(it)}, context))
             touchHelper.attachToRecyclerView(this)
             isNestedScrollingEnabled = false
         }
+        sectionsRecyclerView = binding.sectionsRecycler.apply {
+            setHasFixedSize(true)
+            layoutManager = sectionViewManager
+            adapter = sectionsViewAdapter
+            isNestedScrollingEnabled = false
+        }
 
-        val divider = DividerItemDecoration(practiceEntriesRecyclerView.context, viewManager.orientation)
-        practiceEntriesRecyclerView.addItemDecoration(divider)
-    }
-
-    private fun onPracticeEntryClicked(entry: PracticeEntry) {
-
+        practiceEntriesRecyclerView.addItemDecoration(DividerItemDecoration(practiceEntriesRecyclerView.context, practiceEntryViewManager.orientation))
+        sectionsRecyclerView.addItemDecoration(DividerItemDecoration(sectionsRecyclerView.context, sectionViewManager.orientation))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -111,8 +122,8 @@ class SongDetailsActivity : AppCompatActivity() {
     }
 
     private fun loadSong() {
+        viewModel.song.postValue(song)
         viewModel.song.observe(this, Observer { song -> supportActionBar?.title = song.name })
-        viewModel.song.value = song
     }
 
     private fun displayEditNameDialog() {
@@ -127,11 +138,50 @@ class SongDetailsActivity : AppCompatActivity() {
         dialog.show(supportFragmentManager, DeleteSongDialogFragment.TAG)
     }
 
-    private fun handlePracticeNow() {
+    private fun displayNewSectionDialog() {
+        viewModel.song.value?.let { song -> run{
+                viewModel.sections.value?.let {
+                    val dialog = NewSectionDialogFragment(song, it)
+                    dialog.show(supportFragmentManager, NewSectionDialogFragment.TAG)
+                }
+            }
+        }
+    }
+
+    private fun handlePracticeNow(section: Section = viewModel.sections.value!!.first()) {
         val intent = Intent(this, SongPracticeActivity::class.java)
         intent.putExtra(SongPracticeActivity.SONG_TAG, viewModel.song.value)
-        if (viewModel.practiceEntries.value!!.isNotEmpty())
-            intent.putExtra(SongPracticeActivity.BPM_TAG, viewModel.practiceEntries.value!!.last().tempo)
+        intent.putExtra(SongPracticeActivity.SECTION_TAG, section)
         startActivity(intent)
+    }
+
+    private fun handleShowSectionDetails(section: Section) {
+        displaySectionDetailsDialog(section)
+    }
+
+    private fun displaySectionDetailsDialog(section: Section) {
+        val dialog = SectionDetailsDialogFragment(section, {handleSwipeToDelete(it)})
+        dialog.show(supportFragmentManager, SectionDetailsDialogFragment.TAG)
+    }
+
+    private fun handleSwipeToDelete(practiceEntry: PracticeEntry) {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                viewModel.deletePracticeEntry(practiceEntry)
+                showUndoDeletePracticeEntrySnackbar(practiceEntry)
+            }
+        }
+    }
+
+    private fun showUndoDeletePracticeEntrySnackbar(practiceEntry: PracticeEntry) {
+        val sb = Snackbar.make(binding.layout, R.string.entry_deleted, Snackbar.LENGTH_LONG)
+        sb.setAction(R.string.undo) {
+            undoDeletePracticeEntry(practiceEntry)
+        }
+        sb.show()
+    }
+
+    private fun undoDeletePracticeEntry(practiceEntry: PracticeEntry) {
+        viewModel.restorePracticeEntry(practiceEntry)
     }
 }

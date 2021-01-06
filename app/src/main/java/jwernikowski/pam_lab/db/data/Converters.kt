@@ -1,14 +1,9 @@
-package jwernikowski.pam_lab.utils
+package jwernikowski.pam_lab.db.data
 
-import android.icu.util.Measure
 import androidx.room.TypeConverter
-import jwernikowski.pam_lab.db.data.Meter
-import jwernikowski.pam_lab.db.data.PracticeEntry
 import jwernikowski.pam_lab.sound.Sound
 import java.lang.StringBuilder
 import java.time.LocalDateTime
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 object Converters {

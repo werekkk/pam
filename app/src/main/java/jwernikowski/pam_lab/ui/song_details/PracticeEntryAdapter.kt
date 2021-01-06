@@ -11,7 +11,7 @@ import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.db.data.PracticeEntry
 import java.time.format.DateTimeFormatter
 
-class PracticeEntryAdapter(val clickListener: (PracticeEntry) -> Unit, val context: Context) :
+class PracticeEntryAdapter(val clickListener: (PracticeEntry) -> Unit) :
         RecyclerView.Adapter<PracticeEntryAdapter.PracticeEntryViewHolder>() {
 
     private var entries: List<PracticeEntry> = ArrayList()
@@ -29,7 +29,6 @@ class PracticeEntryAdapter(val clickListener: (PracticeEntry) -> Unit, val conte
                     PracticeEntry.Rating.HIGH -> return R.drawable.rate_high
                     PracticeEntry.Rating.VERY_HIGH -> return R.drawable.rate_very_high
                 }
-                return 0
             }
         }
 
@@ -48,8 +47,6 @@ class PracticeEntryAdapter(val clickListener: (PracticeEntry) -> Unit, val conte
                 rating.setImageResource(imageResourceByRating(e.rating))
             }
     }
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PracticeEntryViewHolder {
         val layout = LayoutInflater.from(parent.context).inflate(
@@ -70,8 +67,7 @@ class PracticeEntryAdapter(val clickListener: (PracticeEntry) -> Unit, val conte
     override fun getItemCount(): Int = entries.size
 
     override fun onBindViewHolder(holder: PracticeEntryViewHolder, position: Int) {
-        val currentEntry = entries[position]
-        holder.entry = currentEntry
+        holder.entry = entries[position]
     }
 
     fun setEntries(entries: List<PracticeEntry>) {

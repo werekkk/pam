@@ -11,6 +11,9 @@ interface SongDao {
     @Insert
     fun insertAll(vararg songs: Song)
 
+    @Insert
+    fun insertOne(songs: Song): Long
+
     @Delete
     fun delete(song: Song)
 

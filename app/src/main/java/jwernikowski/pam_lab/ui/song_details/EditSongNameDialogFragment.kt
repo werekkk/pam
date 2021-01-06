@@ -39,7 +39,7 @@ class EditSongNameDialogFragment(val viewModel: SongDetailsViewModel) : DialogFr
         root.findViewById<Button>(R.id.edit).setOnClickListener { v -> run{
             var song = viewModel.song.value
             song?.let {
-                val editedSong = Song(editedName.editableText.toString(), song.initialTempo, song.goalTempo)
+                val editedSong = Song(editedName.editableText.toString(), song.hasSections)
                 song.songId?.let {
                     editedSong.songId = song.songId
                     viewModel.updateSong(editedSong)

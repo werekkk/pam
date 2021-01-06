@@ -9,14 +9,15 @@ import android.view.*
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import jwernikowski.pam_lab.MainActivity
 import jwernikowski.pam_lab.R
+import jwernikowski.pam_lab.databinding.ActivityRhythmDetailsBinding
 import jwernikowski.pam_lab.models.RhythmLineDto
 import jwernikowski.pam_lab.sound.SoundPlayer
 import jwernikowski.pam_lab.utils.ErrorText
 import jwernikowski.pam_lab.utils.Tempo
-import kotlinx.android.synthetic.main.activity_rhythm_details.*
 import javax.inject.Inject
 
 class RhythmDetailsActivity : AppCompatActivity() {
@@ -27,7 +28,10 @@ class RhythmDetailsActivity : AppCompatActivity() {
 
     @Inject
     lateinit var player: SoundPlayer
+
+    private lateinit var binding: ActivityRhythmDetailsBinding
     private lateinit var viewModel: RhythmDetailsViewModel
+
     private var isPlaying = false
     private var editTextTempoChange = false
     private var id: Long? = null
@@ -36,16 +40,21 @@ class RhythmDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MainActivity.component.inject(this)
-        volumeControlStream = AudioManager.STREAM_MUSIC
-        setContentView(R.layout.activity_rhythm_details)
 
-        viewModel = ViewModelProviders.of(this).get(RhythmDetailsViewModel::class.java)
+        binding = ActivityRhythmDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        viewModel = ViewModelProvider(this).get(RhythmDetailsViewModel::class.java)
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
         loadRhythm()
         init()
     }
 
     override fun onDestroy() {
-        resetBtn.callOnClick()
+        binding.resetBtn.callOnClick()
         super.onDestroy()
     }
 
@@ -68,28 +77,28 @@ class RhythmDetailsActivity : AppCompatActivity() {
 
     private fun onSaveClicked() {
         if (checkFields()) {
-            viewModel.rhythmLinesDto.value = rhythmDesigner.rhythmLines
-            viewModel.rhythmDto.value!!.name = nameEditText.editableText.toString()
+            viewModel.rhythmLinesDto.value = binding.rhythmDesigner.rhythmLines
+            viewModel.rhythmDto.value!!.name = binding.nameEditText.editableText.toString()
             viewModel.rhythmDto.value!!.meter = viewModel.meter.value!!
             viewModel.rhythmDto.value!!.defaultBpm = viewModel.tempo.value!!
             viewModel.save()
-            rhythmDesigner.pause()
+            binding.rhythmDesigner.pause()
             finish()
         }
     }
 
     private fun onDeleteClicked() {
         viewModel.delete()
-        rhythmDesigner.pause()
+        binding.rhythmDesigner.pause()
         finish()
     }
 
     private fun checkFields(): Boolean {
-        if (nameEditText.text.length < 3) {
-            nameEditText.error = getString(R.string.rhythm_name_too_short)
+        if (binding.nameEditText.text.length < 3) {
+            binding.nameEditText.error = getString(R.string.rhythm_name_too_short)
             return false
         }
-        if (rhythmDesigner.isRhythmEmpty()) {
+        if (binding.rhythmDesigner.isRhythmEmpty()) {
             Toast.makeText(this, getString(R.string.rhythm_empty), Toast.LENGTH_SHORT).show()
             return false
         }
@@ -108,22 +117,23 @@ class RhythmDetailsActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        volumeControlStream = AudioManager.STREAM_MUSIC
 
         viewModel.rhythmDto.observe(this, Observer {
-            nameEditText.setText(it.name)
+            binding.nameEditText.setText(it.name)
         })
 
-        tempoEditText.addTextChangedListener(object: TextWatcher {
+        binding.tempoEditText.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (tempoEditText.isFocused && s!!.isNotEmpty() && !editTextTempoChange) {
+                if (binding.tempoEditText.isFocused && s!!.isNotEmpty() && !editTextTempoChange) {
                     val enteredTempo = s.toString().toInt()
                     if (enteredTempo != Tempo.truncate(enteredTempo))
-                        tempoEditText.error = ErrorText.tempoOutOfRange(this@RhythmDetailsActivity)
+                        binding.tempoEditText.error = ErrorText.tempoOutOfRange(this@RhythmDetailsActivity)
                     editTextTempoChange = true
                     viewModel.tempo.value = Tempo.truncate(enteredTempo)
                     editTextTempoChange = false
                 } else if (s!!.isEmpty()) {
-                    tempoEditText.error = getString(R.string.enter_tempo)
+                    binding.tempoEditText.error = getString(R.string.enter_tempo)
                 }
             }
 
@@ -141,22 +151,22 @@ class RhythmDetailsActivity : AppCompatActivity() {
     }
 
     private fun onRhythmLinesChanged(newLines: List<RhythmLineDto>) {
-        rhythmDesigner.rhythmLines = newLines
+        binding.rhythmDesigner.rhythmLines = newLines
     }
 
     private fun onTempoChanged(newTempo: Int) {
         if (!editTextTempoChange)
-            tempoEditText.setText(newTempo.toString())
-        tempoSeekBar.progress = Tempo.bpmToProgress(newTempo)
-        rhythmDesigner.bpm = newTempo
+            binding.tempoEditText.setText(newTempo.toString())
+        binding.tempoSeekBar.progress = Tempo.bpmToProgress(newTempo)
+        binding.rhythmDesigner.bpm = newTempo
     }
 
     private fun initSeekBar() {
-        tempoSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.tempoSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
                     viewModel.tempo.value = Tempo.progressToBpm(progress)
-                    tempoEditText.error = null
+                    binding.tempoEditText.error = null
                 }
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) { }
@@ -166,25 +176,25 @@ class RhythmDetailsActivity : AppCompatActivity() {
 
     private fun initMeter() {
         viewModel.meter.observe(this, Observer { newMeter -> run{
-            meterEditText.setText(newMeter.toString())
-            resetBtn.callOnClick()
-            rhythmDesigner.setMeter(newMeter)
+            binding.meterEditText.setText(newMeter.toString())
+            binding.resetBtn.callOnClick()
+            binding.rhythmDesigner.setMeter(newMeter)
         } })
-        meterEditText.setOnClickListener { run {displayEditMeterDialog()} }
+        binding.meterEditText.setOnClickListener { run {displayEditMeterDialog()} }
     }
 
     private fun initButtons() {
-        playPauseBtn.setOnClickListener { run{
+        binding.playPauseBtn.setOnClickListener { run{
             when(isPlaying) {
-                true -> {rhythmDesigner.pause(); playPauseBtn.setImageResource(R.drawable.play)}
-                false -> {rhythmDesigner.play(player); playPauseBtn.setImageResource(R.drawable.pause)}
+                true -> {binding.rhythmDesigner.pause(); binding.playPauseBtn.setImageResource(R.drawable.play)}
+                false -> {binding.rhythmDesigner.play(player); binding.playPauseBtn.setImageResource(R.drawable.pause)}
             }
             isPlaying = !isPlaying
         } }
-        resetBtn.setOnClickListener{ run{
+        binding.resetBtn.setOnClickListener{ run{
             if (isPlaying)
-                playPauseBtn.callOnClick()
-            rhythmDesigner.reset()
+                binding.playPauseBtn.callOnClick()
+            binding.rhythmDesigner.reset()
         } }
     }
 

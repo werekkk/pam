@@ -14,13 +14,13 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 import kotlin.collections.ArrayList
 
-@Entity(foreignKeys = [ForeignKey(entity = Song::class,
-    parentColumns = ["songId"],
-    childColumns = ["songId"],
+@Entity(foreignKeys = [ForeignKey(entity = Section::class,
+    parentColumns = ["sectionId"],
+    childColumns = ["sectionId"],
     onDelete = ForeignKey.CASCADE)]
 )
 data class PracticeEntry(
-    val songId: Long,
+    val sectionId: Long,
     val date: LocalDateTime,
     val rating: Rating,
     val tempo: Int

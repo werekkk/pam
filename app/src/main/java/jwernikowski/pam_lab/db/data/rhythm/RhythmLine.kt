@@ -6,11 +6,11 @@ import androidx.room.PrimaryKey
 import jwernikowski.pam_lab.sound.Sound
 import java.io.Serializable
 
-@Entity (foreignKeys =
-[ForeignKey(entity = Rhythm::class,
+@Entity (foreignKeys = [ForeignKey(entity = Rhythm::class,
     parentColumns = ["rhythmId"],
     childColumns = ["rhythmId"],
-    onDelete = ForeignKey.CASCADE)])
+    onDelete = ForeignKey.CASCADE)]
+)
 data class RhythmLine(
     val rhythmId: Long,
     val sound: Sound,

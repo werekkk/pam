@@ -15,8 +15,6 @@ class SongsAdapter(val clickListener: (Song) -> Unit) :
 
     class SongsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val songName: TextView = itemView.findViewById(R.id.song_name)
-        private val initialTempo: TextView = itemView.findViewById(R.id.initial)
-        private val goalTempo: TextView = itemView.findViewById(R.id.goal)
 
         private lateinit var _song: Song
 
@@ -25,8 +23,6 @@ class SongsAdapter(val clickListener: (Song) -> Unit) :
             set(s) {
                 _song = s
                 songName.text = s.name
-                initialTempo.text = s.initialTempo.toString()
-                goalTempo.text = s.goalTempo.toString()
             }
     }
 

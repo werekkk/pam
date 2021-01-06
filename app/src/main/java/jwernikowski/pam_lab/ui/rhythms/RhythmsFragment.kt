@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.db.data.rhythm.Rhythm
 import jwernikowski.pam_lab.ui.rhythm_details.RhythmDetailsActivity
-import kotlinx.android.synthetic.main.rhythms_fragment.*
 
 class RhythmsFragment : Fragment() {
 
@@ -27,8 +27,8 @@ class RhythmsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(RhythmsViewModel::class.java)
-        viewModel.allRhythms.observe(this, Observer { newRhythms -> run{ viewAdapter.rhythms = newRhythms } })
+        viewModel = ViewModelProvider(this).get(RhythmsViewModel::class.java)
+        viewModel.allRhythms.observe(viewLifecycleOwner, Observer { newRhythms -> run{ viewAdapter.rhythms = newRhythms } })
     }
 
     override fun onCreateView(

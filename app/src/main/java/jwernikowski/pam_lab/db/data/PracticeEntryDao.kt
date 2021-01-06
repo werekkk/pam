@@ -9,8 +9,11 @@ import androidx.room.Query
 @Dao
 interface PracticeEntryDao {
 
-    @Query("SELECT * FROM practiceEntry WHERE songId = :songId ORDER BY date ASC")
+    @Query("SELECT * FROM practiceEntry pe JOIN section s on pe.sectionId = s.sectionId WHERE s.songId = :songId ORDER BY date ASC")
     fun getBySongId(songId: Long): LiveData<List<PracticeEntry>>
+
+    @Query("SELECT * FROM practiceEntry pe WHERE pe.sectionId = :sectionId ORDER BY date ASC")
+    fun getBySectionId(sectionId: Long): LiveData<List<PracticeEntry>>
 
     @Insert
     fun insertOne(practiceEntry: PracticeEntry): Long

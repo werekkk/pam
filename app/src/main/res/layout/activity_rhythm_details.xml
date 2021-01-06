@@ -1,167 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/name_textView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.rhythm_details.RhythmDetailsActivity">
+<layout>
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="@string/name"
-        app:layout_constraintBottom_toBottomOf="@+id/nameEditText"
-        app:layout_constraintEnd_toStartOf="@+id/nameEditText"
-        app:layout_constraintTop_toTopOf="@+id/nameEditText" />
+    <data>
+        <variable
+            name="viewModel"
+            type="jwernikowski.pam_lab.ui.rhythm_details.RhythmDetailsViewModel" />
+    </data>
 
-    <EditText
-        android:id="@+id/nameEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/name_textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.rhythm_details.RhythmDetailsActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameEditText">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/meter"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/meterEditText"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/meterEditText"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:focusable="false"
-                android:inputType="textPersonName"
-                android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tempo"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tempoEditText"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/tempoEditText"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="number"
-                android:maxLength="4"
-                android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView19"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/bpm"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tempoEditText"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </LinearLayout>
-
-    <SeekBar
-        android:id="@+id/tempoSeekBar"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
-
-    <HorizontalScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
-
-        <jwernikowski.pam_lab.ui.rhythm_designer.RhythmDesigner
-            android:id="@+id/rhythmDesigner"
+        <TextView
+            android:id="@+id/textView14"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/name"
+            app:layout_constraintBottom_toBottomOf="@+id/nameEditText"
+            app:layout_constraintEnd_toStartOf="@+id/nameEditText"
+            app:layout_constraintTop_toTopOf="@+id/nameEditText" />
 
-        </jwernikowski.pam_lab.ui.rhythm_designer.RhythmDesigner>
-    </HorizontalScrollView>
+        <EditText
+            android:id="@+id/nameEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempoSeekBar">
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameEditText">
 
-        <ImageView
-            android:id="@+id/playPauseBtn"
-            android:layout_width="@dimen/rhythmPlayerBtnSize"
-            android:layout_height="@dimen/rhythmPlayerBtnSize"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/play" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
-        <Space
-            android:layout_width="16dp"
-            android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/meter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/meterEditText"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/resetBtn"
-            android:layout_width="@dimen/rhythmPlayerBtnSize"
-            android:layout_height="@dimen/rhythmPlayerBtnSize"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/reset" />
+                <EditText
+                    android:id="@+id/meterEditText"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:inputType="textPersonName"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tempo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tempoEditText"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/tempoEditText"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/bpm"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tempoEditText"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/tempoSeekBar"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+        <HorizontalScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+            <jwernikowski.pam_lab.ui.rhythm_designer.RhythmDesigner
+                android:id="@+id/rhythmDesigner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+            </jwernikowski.pam_lab.ui.rhythm_designer.RhythmDesigner>
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tempoSeekBar">
+
+            <ImageView
+                android:id="@+id/playPauseBtn"
+                android:layout_width="@dimen/rhythmPlayerBtnSize"
+                android:layout_height="@dimen/rhythmPlayerBtnSize"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/play" />
+
+            <Space
+                android:layout_width="16dp"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/resetBtn"
+                android:layout_width="@dimen/rhythmPlayerBtnSize"
+                android:layout_height="@dimen/rhythmPlayerBtnSize"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/reset" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+

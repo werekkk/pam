@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="jwernikowski.pam_lab.ui.section_details.SectionDetailsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dialog_section_details_layout"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:minWidth="250dp"
+        tools:context=".ui.section_details.SectionDetailsDialogFragment">
+
+        <TextView
+            android:id="@+id/section_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:text="@{viewModel.section.name}"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/section_title">
+
+            <TextView
+                android:id="@+id/initial_tempo"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{``+viewModel.section.initialTempo}"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/goal_tempo"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{``+viewModel.section.goalTempo}"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/initial_tempo"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/goal_tempo"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/practice_log"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/practice_entries_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:scrollbars="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintHeight_max="300dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/snackbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/practice_entries_recycler"></androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+

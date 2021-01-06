@@ -23,14 +23,6 @@ class SongsViewModel : ViewModel() {
 
     private var allSongs: LiveData<List<Song>> = songsRepository.getAll()
 
-    fun insert(song: Song): Job {
-        return viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                songsRepository.add(song)
-            }
-        }
-    }
-
     fun delete(song: Song) = songsRepository.delete(song)
 
     fun getAllSongs(): LiveData<List<Song>> = allSongs

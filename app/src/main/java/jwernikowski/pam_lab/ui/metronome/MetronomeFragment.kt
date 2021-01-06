@@ -1,7 +1,6 @@
 package jwernikowski.pam_lab.ui.metronome
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +14,11 @@ import androidx.lifecycle.ViewModelProviders
 import jwernikowski.pam_lab.MainActivity
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.db.data.rhythm.Rhythm
-import jwernikowski.pam_lab.sound.Sound
 import jwernikowski.pam_lab.sound.SoundPlayer
+import jwernikowski.pam_lab.ui.views.metronome.MetronomeView
 
 
-open class MetronomeFragment : Fragment() {
+class MetronomeFragment : Fragment() {
 
     private lateinit var viewModel: MetronomeViewModel
 
@@ -52,13 +51,18 @@ open class MetronomeFragment : Fragment() {
         return root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        metronomeView.shutdown()
+    }
+
     fun setRhythm(rhythm: Rhythm) {
         viewModel.rhythm = rhythm
         metronomeView.rhythm = rhythm
     }
 
     private fun observeViewModel() {
-        viewModel.bpm.observe(this, Observer {
+        viewModel.bpm.observe(viewLifecycleOwner, Observer {
             bpmText.text = it.toString()
             tempoSeekBar.progress = (100 * ((it - MetronomeViewModel.MIN_BPM).toFloat() / (MetronomeViewModel.MAX_BPM - MetronomeViewModel.MIN_BPM))).toInt()
         })
@@ -84,13 +88,13 @@ open class MetronomeFragment : Fragment() {
             }
         }
 
-        viewModel.isOn.observe(this, Observer { isOn -> run{
+        viewModel.isOn.observe(viewLifecycleOwner, Observer { isOn -> run{
             if (isOn)
                 metronomeView.turnOn()
             else
                 metronomeView.turnOff()
         } })
-        viewModel.bpm.observe(this, Observer { bpm -> metronomeView.bpm = bpm })
+        viewModel.bpm.observe(viewLifecycleOwner, Observer { bpm -> metronomeView.bpm = bpm })
     }
 
     private fun initButtons(root: View) {
@@ -117,7 +121,7 @@ open class MetronomeFragment : Fragment() {
     }
 
     private fun onChangeRhythmClicked() {
-        ChangeRhythmDialogFragment(this).show(fragmentManager, ChangeRhythmDialogFragment.TAG)
+        ChangeRhythmDialogFragment(this).show(parentFragmentManager, ChangeRhythmDialogFragment.TAG)
     }
 
 }

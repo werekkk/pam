@@ -1,10 +1,13 @@
 package jwernikowski.pam_lab.ui.song_details
 
+import android.util.Log
 import androidx.lifecycle.*
 import jwernikowski.pam_lab.MainActivity
 import jwernikowski.pam_lab.db.data.PracticeEntry
+import jwernikowski.pam_lab.db.data.Section
 import jwernikowski.pam_lab.db.data.Song
 import jwernikowski.pam_lab.db.repository.PracticeEntryRepository
+import jwernikowski.pam_lab.db.repository.SectionRepository
 import jwernikowski.pam_lab.db.repository.SongRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,9 +18,18 @@ class SongDetailsViewModel : ViewModel() {
 
     val song: MutableLiveData<Song> = MutableLiveData()
 
+    val sections: LiveData<List<Section>> =
+        Transformations.switchMap(song) { newSong ->
+            sectionRepository.getBySongId(newSong.songId)
+        }
+
     val practiceEntries: LiveData<List<PracticeEntry>> =
         Transformations.switchMap(song) { newSong ->
-            practiceEntryRepository.getBySongId(newSong.songId)
+            if (!newSong.hasSections) {
+                practiceEntryRepository.getBySongId(newSong.songId)
+            } else {
+                MutableLiveData()
+            }
         }
 
 //    val progress: LiveData<Float> =
@@ -26,7 +38,7 @@ class SongDetailsViewModel : ViewModel() {
 //                MutableLiveData<Float>().apply { postValue(PracticeEntry.calculateProgress(newPracticeEntries, it.initialTempo, it.goalTempo)) }
 //            }
 //        }
-//        }
+//        } // TODO calculate progress
 
     init {
         MainActivity.component.inject(this)
@@ -34,6 +46,8 @@ class SongDetailsViewModel : ViewModel() {
 
     @Inject
     lateinit var songsRepository: SongRepository
+    @Inject
+    lateinit var sectionRepository: SectionRepository
     @Inject
     lateinit var practiceEntryRepository: PracticeEntryRepository
 
@@ -57,10 +71,15 @@ class SongDetailsViewModel : ViewModel() {
     }
 
     fun deletePracticeEntry(entry: PracticeEntry) {
+        practiceEntryRepository.delete(entry)
+    }
+
+    fun restorePracticeEntry(entry: PracticeEntry) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                practiceEntryRepository.delete(entry)
+                practiceEntryRepository.add(entry)
             }
         }
     }
+
 }

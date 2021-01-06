@@ -57,12 +57,21 @@
 
     <string name="undo">Undo</string>
     <string name="entry_added">Practice entry added</string>
+    <string name="entry_deleted">Practice entry deleted</string>
     <string name="save">Save</string>
 
     <string name="new_rhythm">New rhythm</string>
     <string name="edit_rhythm">Edit rhythm</string>
     <string name="rhythm_name_too_short">Rhythm name must be at least 3 characters long!</string>
     <string name="rhythm_empty">Rhythm pattern cannot be empty!</string>
-    <string name="change_rhythm">Change rhythm</string>
+    <string name="set_rhythm">Set rhythm</string>
+    <string name="divine_into_sections">Divide song into sections</string>
+
+    <string name="sections">Sections</string>
+    <string name="enter_section_name">Section name cannot be blank</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_sections_message">Your song has no sections!</string>
+    <string name="add_section">Add section</string>
 
 </resources>

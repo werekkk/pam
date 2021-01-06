@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="newSongViewModel"
-            type="jwernikowski.pam_lab.ui.songs.NewSongViewModel" />
-        <import type="android.view.View" />
+            name="viewModel"
+            type="jwernikowski.pam_lab.ui.song_details.NewSectionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/add_song"
+            android:text="@string/add_section"
             android:textSize="@dimen/dialog_header_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
             android:layout_marginTop="16dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="@={newSongViewModel.songName}"
+            android:text="@={viewModel.sectionName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.61"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +60,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"
-            android:onClick="@{() -> newSongViewModel.onAddSong()}"
+            android:onClick="@{() -> viewModel.onAddSection()}"
             android:text="@string/add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
-            android:onClick="@{() -> newSongViewModel.onCancel()}"
+            android:onClick="@{() -> viewModel.onCancel()}"
             android:text="@string/cancel"
             app:layout_constraintBottom_toBottomOf="@+id/add"
             app:layout_constraintEnd_toStartOf="@+id/add"
@@ -84,8 +84,7 @@
             android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox"
-            android:visibility="@{newSongViewModel.hasSections ? View.GONE : View.VISIBLE}">
+            app:layout_constraintTop_toBottomOf="@+id/nameEditText">
 
             <TextView
                 android:id="@+id/textView4"
@@ -106,7 +105,7 @@
                 android:ems="2"
                 android:gravity="center"
                 android:inputType="number"
-                android:text="@={`` + newSongViewModel.initialTempo}"
+                android:text="@={`` + viewModel.initialTempo}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.6"
                 app:layout_constraintStart_toStartOf="parent"
@@ -151,21 +150,13 @@
                 android:ems="2"
                 android:gravity="center"
                 android:inputType="number"
-                android:text="@={`` + newSongViewModel.goalTempo}"
+                android:text="@={`` + viewModel.goalTempo}"
                 app:layout_constraintEnd_toEndOf="@+id/initialTempoEditText"
                 app:layout_constraintStart_toStartOf="@+id/initialTempoEditText"
                 app:layout_constraintTop_toBottomOf="@+id/initialTempoEditText" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/divine_into_sections"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameEditText"
-            android:checked="@={newSongViewModel.hasSections}"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
+

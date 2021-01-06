@@ -16,10 +16,6 @@ class DeleteSongDialogFragment(val viewModel: SongDetailsViewModel) : DialogFrag
 
     lateinit var onDelete: () -> Unit
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

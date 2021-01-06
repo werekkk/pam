@@ -1,9 +1,8 @@
-package jwernikowski.pam_lab.ui.metronome
+package jwernikowski.pam_lab.ui.views.metronome
 
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import android.util.Log
 import jwernikowski.pam_lab.R
 
 class TouchHelpAnimation(context: Context, val viewHeight: Int, val viewWidth: Int) {
@@ -14,7 +13,8 @@ class TouchHelpAnimation(context: Context, val viewHeight: Int, val viewWidth: I
 
     private var x: Int = (viewWidth * 0.75).toInt()
     private var y: Int = viewHeight / 2
-    private var size: Int = ICON_SIZE
+    private var size: Int =
+        ICON_SIZE
 
     var onAnimationFinished: (() -> Unit)? = null
 
@@ -26,7 +26,8 @@ class TouchHelpAnimation(context: Context, val viewHeight: Int, val viewWidth: I
         const val ZOOM_IN_2_DURATION = 150
         const val DISAPPEAR_DURATION = 200
 
-        val APPEAR_END = APPEAR_DURATION
+        val APPEAR_END =
+            APPEAR_DURATION
         val MOVE_END = APPEAR_END + MOVE_DURATION
         val ZOOM_IN_1_END = MOVE_END + ZOOM_IN_1_DURATION
         val ZOOM_OUT_END = ZOOM_IN_1_END + ZOOM_OUT_DURATION

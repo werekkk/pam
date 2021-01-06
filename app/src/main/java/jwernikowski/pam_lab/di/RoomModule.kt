@@ -6,13 +6,11 @@ import dagger.Module
 import dagger.Provides
 import jwernikowski.pam_lab.db.AppDatabase
 import jwernikowski.pam_lab.db.data.PracticeEntryDao
+import jwernikowski.pam_lab.db.data.SectionDao
 import jwernikowski.pam_lab.db.data.SongDao
 import jwernikowski.pam_lab.db.data.rhythm.RhythmDao
 import jwernikowski.pam_lab.db.data.rhythm.RhythmLineDao
-import jwernikowski.pam_lab.db.repository.PracticeEntryRepository
-import jwernikowski.pam_lab.db.repository.RhythmLineRepository
-import jwernikowski.pam_lab.db.repository.RhythmRepository
-import jwernikowski.pam_lab.db.repository.SongRepository
+import jwernikowski.pam_lab.db.repository.*
 import javax.inject.Singleton
 
 @Module
@@ -31,7 +29,15 @@ class RoomModule(application: Application) {
 
     @Singleton
     @Provides
-    fun providesSongRepository(songDao: SongDao): SongRepository = SongRepository(songDao)
+    fun providesSongRepository(songDao: SongDao, sectionDao: SectionDao): SongRepository = SongRepository(songDao, sectionDao)
+
+    @Singleton
+    @Provides
+    fun providesSectionDao(database: AppDatabase): SectionDao = database.sectionDao()
+
+    @Singleton
+    @Provides
+    fun providesSectionRepository(sectionDao: SectionDao): SectionRepository = SectionRepository(sectionDao)
 
     @Singleton
     @Provides

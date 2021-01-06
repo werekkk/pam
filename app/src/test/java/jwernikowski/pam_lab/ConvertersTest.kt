@@ -2,7 +2,7 @@ package jwernikowski.pam_lab
 
 import com.google.common.truth.Truth.assertThat
 import jwernikowski.pam_lab.db.data.Meter
-import jwernikowski.pam_lab.utils.Converters
+import jwernikowski.pam_lab.db.data.Converters
 import org.junit.Test
 
 class ConvertersTest {

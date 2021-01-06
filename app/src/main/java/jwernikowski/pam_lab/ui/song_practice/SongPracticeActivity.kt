@@ -10,16 +10,19 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.db.data.PracticeEntry
+import jwernikowski.pam_lab.db.data.Section
 import jwernikowski.pam_lab.db.data.Song
 
 class SongPracticeActivity : AppCompatActivity() {
 
     companion object {
         val SONG_TAG = "song"
+        val SECTION_TAG = "section"
         val BPM_TAG = "bpm"
     }
 
-    lateinit private var song: Song
+    private lateinit var song: Song
+    private lateinit var section: Section
     private var bpm: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +35,8 @@ class SongPracticeActivity : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         song = intent.extras?.get(SONG_TAG) as Song
-        bpm = intent.extras?.getInt(BPM_TAG, song.initialTempo)!!
-        loadSong(song)
+        section = intent.extras?.get(SECTION_TAG) as Section
+        loadSong(song, section)
 
     }
 
@@ -41,12 +44,16 @@ class SongPracticeActivity : AppCompatActivity() {
         super.onStart()
         val mf = supportFragmentManager.findFragmentById(R.id.metronome_practice) as MetronomePracticeFragment
         mf.setSong(song)
-        mf.setBpm(bpm)
-
+        mf.setSection(section)
     }
 
-    private fun loadSong(newSong: Song) {
-        supportActionBar?.title = newSong.name
+    private fun loadSong(newSong: Song, newSection: Section) {
+        supportActionBar?.title = createTitle(newSong, newSection)
+    }
+
+    private fun createTitle(newSong: Song, newSection: Section): String {
+        return if(newSong.hasSections) "${newSong.name} - ${newSection.name}"
+            else newSong.name
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
