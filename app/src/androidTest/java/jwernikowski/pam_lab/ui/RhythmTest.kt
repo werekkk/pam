@@ -1,6 +1,5 @@
 package jwernikowski.pam_lab.ui
 
-import androidx.lifecycle.ViewModelProviders
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.*
@@ -8,12 +7,10 @@ import androidx.test.espresso.matcher.RootMatchers.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
-import jwernikowski.pam_lab.MainActivity
+import jwernikowski.pam_lab.ui.activity.MainActivity
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.db.data.Meter
-import jwernikowski.pam_lab.ui.rhythm_details.RhythmDetailsViewModel
 import jwernikowski.pam_lab.utils.ErrorText
-import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.core.AllOf.allOf
 import org.junit.Rule
@@ -24,7 +21,8 @@ import java.lang.Integer.max
 class RhythmTest {
 
     @get:Rule
-    val activityRule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+    val activityRule = ActivityTestRule<MainActivity>(
+        MainActivity::class.java)
 
     @Test
     fun addingRhythmsWorks() {

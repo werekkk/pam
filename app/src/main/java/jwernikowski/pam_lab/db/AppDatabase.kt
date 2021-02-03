@@ -3,12 +3,9 @@ package jwernikowski.pam_lab.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import jwernikowski.pam_lab.db.data.*
-import jwernikowski.pam_lab.db.data.rhythm.Rhythm
-import jwernikowski.pam_lab.db.data.rhythm.RhythmDao
-import jwernikowski.pam_lab.db.data.rhythm.RhythmLine
-import jwernikowski.pam_lab.db.data.rhythm.RhythmLineDao
 import jwernikowski.pam_lab.db.data.Converters
+import jwernikowski.pam_lab.db.data.dao.*
+import jwernikowski.pam_lab.db.data.entity.*
 
 @Database(entities = [
     Song::class,

@@ -5,11 +5,11 @@ import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import jwernikowski.pam_lab.db.AppDatabase
-import jwernikowski.pam_lab.db.data.PracticeEntryDao
-import jwernikowski.pam_lab.db.data.SectionDao
-import jwernikowski.pam_lab.db.data.SongDao
-import jwernikowski.pam_lab.db.data.rhythm.RhythmDao
-import jwernikowski.pam_lab.db.data.rhythm.RhythmLineDao
+import jwernikowski.pam_lab.db.data.dao.PracticeEntryDao
+import jwernikowski.pam_lab.db.data.dao.SectionDao
+import jwernikowski.pam_lab.db.data.dao.SongDao
+import jwernikowski.pam_lab.db.data.dao.RhythmDao
+import jwernikowski.pam_lab.db.data.dao.RhythmLineDao
 import jwernikowski.pam_lab.db.repository.*
 import javax.inject.Singleton
 

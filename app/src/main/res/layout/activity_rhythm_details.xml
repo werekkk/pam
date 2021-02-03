@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viewModel"
-            type="jwernikowski.pam_lab.ui.rhythm_details.RhythmDetailsViewModel" />
+            type="jwernikowski.pam_lab.ui.activity.rhythm_details.RhythmDetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,7 +13,7 @@
         android:id="@+id/name_textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.rhythm_details.RhythmDetailsActivity">
+        tools:context=".ui.activity.rhythm_details.RhythmDetailsActivity">
 
         <TextView
             android:id="@+id/textView14"
@@ -134,12 +134,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
-            <jwernikowski.pam_lab.ui.rhythm_designer.RhythmDesigner
+            <jwernikowski.pam_lab.ui.view.rhythm_designer.RhythmDesigner
                 android:id="@+id/rhythmDesigner"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
 
-            </jwernikowski.pam_lab.ui.rhythm_designer.RhythmDesigner>
+            </jwernikowski.pam_lab.ui.view.rhythm_designer.RhythmDesigner>
         </HorizontalScrollView>
 
         <LinearLayout

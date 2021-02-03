@@ -6,14 +6,12 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import com.google.common.truth.Truth.assertThat
 import com.jraska.livedata.test
-import jwernikowski.pam_lab.MainActivity
+import jwernikowski.pam_lab.ui.activity.MainActivity
 import jwernikowski.pam_lab.db.AppDatabase
-import jwernikowski.pam_lab.db.data.Song
-import jwernikowski.pam_lab.db.data.SongDao
+import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.db.repository.SongRepository
-import jwernikowski.pam_lab.ui.songs.SongsViewModel
+import jwernikowski.pam_lab.ui.fragment.songs.SongsViewModel
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -57,7 +55,7 @@ class SongsViewModelTest {
     @Test
     fun insertingSongsWorks() {
         val s1 = Song("test", 123, 145)
-        val s2 = Song("", 10,300)
+        val s2 = Song("", 10, 300)
         runBlocking { songViewModel.insert(s1) }
         val all = songDao.getAll()
         all.test()

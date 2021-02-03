@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/navigation_metronome"
-        android:name="jwernikowski.pam_lab.ui.metronome.MetronomeFragment"
+        android:name="jwernikowski.pam_lab.ui.fragment.metronome.MetronomeFragment"
         android:label="@string/title_metronome"
-        tools:layout="@layout/metronome_fragment" />
+        tools:layout="@layout/fragment_metronome" />
     <fragment
         android:id="@+id/navigation_rhythms"
-        android:name="jwernikowski.pam_lab.ui.rhythms.RhythmsFragment"
+        android:name="jwernikowski.pam_lab.ui.fragment.rhythms.RhythmsFragment"
         android:label="@string/title_rhythms"
-        tools:layout="@layout/rhythms_fragment"/>
+        tools:layout="@layout/fragment_rhythms"/>
     <fragment
         android:id="@+id/navigation_songs"
-        android:name="jwernikowski.pam_lab.ui.songs.SongsFragment"
+        android:name="jwernikowski.pam_lab.ui.fragment.songs.SongsFragment"
         android:label="@string/title_songs"
-        tools:layout="@layout/songs_fragment" />
+        tools:layout="@layout/fragment_songs" />
 </navigation>

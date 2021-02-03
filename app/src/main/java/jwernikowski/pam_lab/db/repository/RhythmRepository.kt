@@ -1,8 +1,8 @@
 package jwernikowski.pam_lab.db.repository
 
 import androidx.lifecycle.LiveData
-import jwernikowski.pam_lab.db.data.rhythm.Rhythm
-import jwernikowski.pam_lab.db.data.rhythm.RhythmDao
+import jwernikowski.pam_lab.db.data.entity.Rhythm
+import jwernikowski.pam_lab.db.data.dao.RhythmDao
 
 class RhythmRepository(private val rhythmDao: RhythmDao) {
 

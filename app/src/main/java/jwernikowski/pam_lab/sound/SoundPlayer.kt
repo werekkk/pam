@@ -3,8 +3,7 @@ package jwernikowski.pam_lab.sound
 import android.content.Context
 import android.media.SoundPool
 import jwernikowski.pam_lab.R
-import jwernikowski.pam_lab.models.RhythmDto
-import jwernikowski.pam_lab.models.RhythmLineDto
+import jwernikowski.pam_lab.dto.RhythmLineDto
 
 class SoundPlayer(context: Context) {
 

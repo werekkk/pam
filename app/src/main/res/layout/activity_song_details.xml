@@ -7,19 +7,20 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="jwernikowski.pam_lab.ui.song_details.SongDetailsViewModel" />
+            type="jwernikowski.pam_lab.ui.activity.song_details.SongDetailsViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.song_details.SongDetailsActivity">
+        tools:context=".ui.activity.song_details.SongDetailsActivity">
 
         <LinearLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:descendantFocusability="blocksDescendants">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
@@ -57,20 +58,38 @@
                         <TextView
                             android:id="@+id/days_practiced"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="0"
-                            android:textSize="@dimen/statistics_big_numbers_text_size" />
+                            android:text="@{`` + viewModel.daysPracticed}"
+                            android:textSize="@dimen/statistics_big_numbers_text_size"
+                            android:visibility="@{viewModel.daysPracticedLoaded ? View.VISIBLE : View.GONE}" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar2"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
+                            android:visibility="@{viewModel.daysPracticedLoaded ? View.GONE : View.VISIBLE}" />
 
                         <TextView
                             android:id="@+id/progress"
                             android:layout_width="100dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="0%"
-                            android:textSize="@dimen/statistics_big_numbers_text_size" />
+                            android:text="@{(int)(viewModel.progress * 100) + `%`}"
+                            android:textSize="@dimen/statistics_big_numbers_text_size"
+                            android:visibility="@{viewModel.progressLoaded ? View.VISIBLE : View.GONE}" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar3"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
+                            android:visibility="@{viewModel.progressLoaded ? View.GONE : View.VISIBLE}" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -152,31 +171,41 @@
                 android:layout_margin="8dp"
                 android:visibility="@{!viewModel.song.hasSections ? View.VISIBLE : View.GONE}">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/practice_log"
+                            android:textSize="@dimen/song_details_headers" />
+
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar5"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/practice_log"
-                        android:textSize="@dimen/song_details_headers"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:visibility="@{viewModel.practiceEntriesLoaded ? View.GONE : View.VISIBLE}"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/practice_entries_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView17" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:visibility="@{viewModel.practiceEntriesLoaded ? View.VISIBLE : View.GONE}" />
+
+                </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -219,11 +248,18 @@
                             app:icon="@drawable/ic_baseline_add_24" />
                     </LinearLayout>
 
+                    <ProgressBar
+                        android:id="@+id/progressBar4"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{viewModel.progressLoaded ? View.GONE : View.VISIBLE}" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:visibility="@{viewModel.sections.size() == 0 ? View.VISIBLE : View.GONE}">
+                        android:visibility="@{viewModel.progressLoaded ? View.VISIBLE : View.GONE}">
 
                         <TextView
                             android:id="@+id/textView6"
@@ -234,21 +270,17 @@
                             android:layout_marginTop="8dp"
                             android:text="@string/no_sections_message"
                             android:textAlignment="center"
-                            android:textColor="?android:attr/textColorHint" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:visibility="@{viewModel.sections.size() == 0 ? View.GONE : View.VISIBLE}">
+                            android:textColor="?android:attr/textColorHint"
+                            android:visibility="@{viewModel.sections.size() == 0 ? View.VISIBLE : View.GONE}" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/sections_recycler"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:visibility="@{viewModel.sections.size() == 0 ? View.GONE : View.VISIBLE}" />
+
                     </LinearLayout>
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
+import androidx.lifecycle.MutableLiveData
 import java.lang.Exception
 import kotlin.math.max
 
@@ -23,6 +24,7 @@ fun View.setMargins(left: Int, right: Int, top: Int, bottom: Int) {
 fun ViewGroup.getChildMaxEnd(): Int {
     return getChildMax { view -> (view.x + view.layoutParams.width).toInt() }
 }
+
 
 private fun ViewGroup.getChildMax(property: (View) -> Int): Int {
     var max = 0

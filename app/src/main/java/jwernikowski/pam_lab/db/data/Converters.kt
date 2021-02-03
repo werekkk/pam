@@ -1,6 +1,7 @@
 package jwernikowski.pam_lab.db.data
 
 import androidx.room.TypeConverter
+import jwernikowski.pam_lab.db.data.entity.PracticeEntry
 import jwernikowski.pam_lab.sound.Sound
 import java.lang.StringBuilder
 import java.time.LocalDateTime

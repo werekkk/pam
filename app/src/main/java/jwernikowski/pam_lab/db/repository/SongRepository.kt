@@ -2,10 +2,10 @@ package jwernikowski.pam_lab.db.repository
 
 import androidx.lifecycle.LiveData
 import androidx.room.Transaction
-import jwernikowski.pam_lab.db.data.Section
-import jwernikowski.pam_lab.db.data.SectionDao
-import jwernikowski.pam_lab.db.data.Song
-import jwernikowski.pam_lab.db.data.SongDao
+import jwernikowski.pam_lab.db.data.entity.Section
+import jwernikowski.pam_lab.db.data.dao.SectionDao
+import jwernikowski.pam_lab.db.data.entity.Song
+import jwernikowski.pam_lab.db.data.dao.SongDao
 
 class SongRepository (private val songDao: SongDao, private val sectionDao: SectionDao) {
 

@@ -1,8 +1,7 @@
 package jwernikowski.pam_lab.db.repository
 
-import androidx.lifecycle.LiveData
-import jwernikowski.pam_lab.db.data.rhythm.RhythmLine
-import jwernikowski.pam_lab.db.data.rhythm.RhythmLineDao
+import jwernikowski.pam_lab.db.data.entity.RhythmLine
+import jwernikowski.pam_lab.db.data.dao.RhythmLineDao
 
 class RhythmLineRepository(private val rhythmLineDao: RhythmLineDao) {
     fun getByRhythmId(rhythmId: Long): List<RhythmLine> {
