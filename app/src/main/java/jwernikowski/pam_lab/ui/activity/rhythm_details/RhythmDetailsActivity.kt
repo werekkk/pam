@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.*
 import android.widget.SeekBar
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import jwernikowski.pam_lab.ui.activity.MainActivity
@@ -88,9 +89,16 @@ class RhythmDetailsActivity : AppCompatActivity() {
     }
 
     private fun onDeleteClicked() {
-        viewModel.delete()
-        binding.rhythmDesigner.pause()
-        finish()
+        AlertDialog.Builder(this)
+            .setTitle(R.string.delete_rhythm)
+            .setMessage(R.string.delete_rhythm_sure)
+            .setPositiveButton(R.string.delete) { _, _ ->
+                viewModel.delete()
+                binding.rhythmDesigner.pause()
+                finish()
+            }
+            .setNegativeButton(R.string.cancel) { _, _ -> Unit}
+            .show()
     }
 
     private fun checkFields(): Boolean {

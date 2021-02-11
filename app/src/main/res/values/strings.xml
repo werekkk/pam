@@ -44,6 +44,8 @@
     <string name="delete_song_sure">Are you sure you want to delete the song?</string>
     <string name="delete_section">Delete section</string>
     <string name="delete_section_sure">Are you sure you want to delete the section?</string>
+    <string name="delete_rhythm">Delete rhythm</string>
+    <string name="delete_rhythm_sure">Are you sure you want to delete the rhythm?</string>
 
     <string name="edit_song_name">Edit song name</string>
     <string name="edit">Edit</string>

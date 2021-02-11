@@ -22,7 +22,6 @@ import jwernikowski.pam_lab.db.data.entity.Section
 import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.ui.dialog.section_details.SectionDetailsDialogFragment
 import jwernikowski.pam_lab.ui.activity.song_practice.SongPracticeActivity
-import jwernikowski.pam_lab.ui.dialog.song_delete.DeleteSongDialogFragment
 import jwernikowski.pam_lab.ui.dialog.song_edit_name.EditSongNameDialogFragment
 import jwernikowski.pam_lab.ui.dialog.section_new.NewSectionDialogFragment
 import kotlinx.coroutines.Dispatchers
