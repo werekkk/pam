@@ -15,12 +15,17 @@ import javax.inject.Inject
 
 class SongDetailsViewModel : ViewModel() {
 
-    val song: MutableLiveData<Song> = MutableLiveData()
+    val songId: MutableLiveData<Long> = MutableLiveData()
 
     val sectionsLoaded = MutableLiveData(false)
     val practiceEntriesLoaded = MutableLiveData(false)
     val daysPracticedLoaded = MutableLiveData(false)
     val progressLoaded = MutableLiveData(false)
+
+    val song: LiveData<Song> =
+        Transformations.switchMap(songId) {
+            songsRepository.getById(it)
+        }
 
     val sections: LiveData<List<Section>> =
         Transformations.switchMap(song) { newSong ->
@@ -76,6 +81,10 @@ class SongDetailsViewModel : ViewModel() {
     @Inject
     lateinit var practiceEntryRepository: PracticeEntryRepository
 
+    fun setSong(song: Song) {
+        songId.postValue(song.songId)
+    }
+
     fun deleteSong() {
         song.value?.let {
             viewModelScope.launch {
@@ -84,15 +93,6 @@ class SongDetailsViewModel : ViewModel() {
                 }
             }
         }
-    }
-
-    fun updateSong(newSong: Song) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                songsRepository.update(newSong)
-            }
-        }
-        song.value = newSong
     }
 
     fun deletePracticeEntry(entry: PracticeEntry) {

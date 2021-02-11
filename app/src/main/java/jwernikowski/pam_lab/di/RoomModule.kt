@@ -29,7 +29,7 @@ class RoomModule(application: Application) {
 
     @Singleton
     @Provides
-    fun providesSongRepository(songDao: SongDao, sectionDao: SectionDao): SongRepository = SongRepository(songDao, sectionDao)
+    fun providesSongRepository(songDao: SongDao, sectionDao: SectionDao, database: AppDatabase): SongRepository = SongRepository(songDao, sectionDao, database)
 
     @Singleton
     @Provides

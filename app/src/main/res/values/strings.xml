@@ -39,6 +39,8 @@
     <string name="cancel">Cancel</string>
     <string name="add">Add</string>
     <string name="rename">Rename</string>
+    <string name="warning">Warning</string>
+
     <string name="delete">Delete</string>
     <string name="delete_song">Delete song</string>
     <string name="delete_song_sure">Are you sure you want to delete the song?</string>
@@ -47,8 +49,10 @@
     <string name="delete_rhythm">Delete rhythm</string>
     <string name="delete_rhythm_sure">Are you sure you want to delete the rhythm?</string>
 
-    <string name="edit_song_name">Edit song name</string>
     <string name="edit">Edit</string>
+    <string name="edit_song">Edit song</string>
+    <string name="edit_rhythm">Edit rhythm</string>
+    <string name="edit_section">Edit section</string>
 
     <string name="statistics">Statistics</string>
     <string name="days_practiced">Days practiced</string>
@@ -66,16 +70,21 @@
     <string name="save">Save</string>
 
     <string name="new_rhythm">New rhythm</string>
-    <string name="edit_rhythm">Edit rhythm</string>
     <string name="rhythm_name_too_short">Rhythm name must be at least 3 characters long!</string>
     <string name="rhythm_empty">Rhythm pattern cannot be empty!</string>
     <string name="set_rhythm">Set rhythm</string>
     <string name="divine_into_sections">Divide song into sections</string>
 
     <string name="sections">Sections</string>
-    <string name="edit_section">Edit section</string>
     <string name="enter_section_name">Section name cannot be blank</string>
     <string name="no_sections_message">Your song has no sections!</string>
     <string name="add_section">Add section</string>
+
+    <string name="change_to_sections_warning_message">By choosing to divide song into sections
+        all of the existing practice entries are going to be removed.\nAre you sure you want to
+        apply changes?</string>
+    <string name="change_to_no_sections_warning_message">By choosing not to divide song into sections
+        all of the existing practice entries and sections are going to be removed.\nAre you sure you want to
+        apply changes?</string>
 
 </resources>

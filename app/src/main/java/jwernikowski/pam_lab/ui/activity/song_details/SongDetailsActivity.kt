@@ -3,7 +3,6 @@ package jwernikowski.pam_lab.ui.activity.song_details
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -22,7 +21,7 @@ import jwernikowski.pam_lab.db.data.entity.Section
 import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.ui.dialog.section_details.SectionDetailsDialogFragment
 import jwernikowski.pam_lab.ui.activity.song_practice.SongPracticeActivity
-import jwernikowski.pam_lab.ui.dialog.song_edit_name.EditSongNameDialogFragment
+import jwernikowski.pam_lab.ui.dialog.song_edit.EditSongDialogFragment
 import jwernikowski.pam_lab.ui.dialog.section_new.NewSectionDialogFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -131,19 +130,13 @@ class SongDetailsActivity : AppCompatActivity() {
     }
 
     private fun loadSong() {
-        viewModel.song.postValue(song)
+        viewModel.setSong(song)
         viewModel.song.observe(this, Observer { song -> supportActionBar?.title = song.name })
     }
 
     private fun displayEditNameDialog() {
-        val dialog =
-            EditSongNameDialogFragment(
-                viewModel
-            )
-        dialog.onSongEdited = {run{finish()}}
-        dialog.show(supportFragmentManager,
-            EditSongNameDialogFragment.TAG
-        )
+        val dialog = EditSongDialogFragment(viewModel.song.value!!)
+        dialog.show(supportFragmentManager, EditSongDialogFragment.TAG)
     }
 
     private fun displayDeleteSongDialog() {

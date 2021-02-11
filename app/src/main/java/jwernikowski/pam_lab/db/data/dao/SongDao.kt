@@ -6,6 +6,10 @@ import jwernikowski.pam_lab.db.data.entity.Song
 
 @Dao
 interface SongDao {
+
+    @Query("SELECT * FROM song WHERE songId = :songId")
+    fun getById(songId: Long): LiveData<Song>
+
     @Query("SELECT * FROM song")
     fun getAll(): LiveData<List<Song>>
 
@@ -20,4 +24,5 @@ interface SongDao {
 
     @Update
     fun update(song: Song)
+
 }

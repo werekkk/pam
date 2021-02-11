@@ -19,6 +19,9 @@ interface SectionDao {
     @Delete
     fun delete(section: Section)
 
+    @Query("DELETE FROM section WHERE songId = :songId")
+    fun deleteAllBySongId(songId: Long)
+
     @Update
     fun update(section: Section)
 

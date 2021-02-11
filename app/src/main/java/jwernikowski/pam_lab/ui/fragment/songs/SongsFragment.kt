@@ -68,7 +68,7 @@ class SongsFragment : Fragment() {
     }
 
     private fun displayNewSongDialog() {
-        NewSongDialogFragment()
+        NewSongDialogFragment {startSongDetailsActivity(it)}
             .show(parentFragmentManager, NewSongDialogFragment.TAG)
     }
 

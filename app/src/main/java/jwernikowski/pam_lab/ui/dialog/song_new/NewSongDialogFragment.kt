@@ -9,9 +9,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.databinding.DialogNewSongBinding
+import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.utils.ErrorText
 
-class NewSongDialogFragment : DialogFragment() {
+class NewSongDialogFragment(
+    private val onSongCreated: (Song) -> Unit
+): DialogFragment() {
 
     companion object {
         val TAG = "NewSongDialogFragment"
@@ -53,6 +56,7 @@ class NewSongDialogFragment : DialogFragment() {
 
         viewModel.dismissView.observe(viewLifecycleOwner, Observer {
             dismiss()
+            if (it != null) onSongCreated(it)
         })
     }
 

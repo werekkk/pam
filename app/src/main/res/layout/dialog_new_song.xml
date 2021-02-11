@@ -78,6 +78,16 @@
             app:layout_constraintTop_toTopOf="@+id/add"
             app:layout_constraintVertical_bias="0.0" />
 
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/divine_into_sections"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameEditText"
+            android:checked="@={newSongViewModel.hasSections}"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tempos_section"
             android:layout_width="0dp"
@@ -156,16 +166,6 @@
                 app:layout_constraintStart_toStartOf="@+id/initialTempoEditText"
                 app:layout_constraintTop_toBottomOf="@+id/initialTempoEditText" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/divine_into_sections"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameEditText"
-            android:checked="@={newSongViewModel.hasSections}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

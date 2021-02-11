@@ -18,7 +18,7 @@ import java.lang.IllegalStateException
 class EditSectionDialogFragment(private val section: Section) : DialogFragment() {
 
     companion object {
-        val TAG = "edit_section_name"
+        val TAG = "edit_section"
     }
 
     private lateinit var binding: DialogEditSectionBinding

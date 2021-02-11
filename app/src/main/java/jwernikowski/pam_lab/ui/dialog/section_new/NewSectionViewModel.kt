@@ -1,5 +1,6 @@
 package jwernikowski.pam_lab.ui.dialog.section_new
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +20,6 @@ import javax.inject.Inject
 class NewSectionViewModel : ViewModel() {
 
     private val _dismissView: MutableLiveData<Unit> = MutableLiveData()
-    private var saving = false
 
     val song: MutableLiveData<Song> = MutableLiveData()
     val existingSections: MutableLiveData<List<Section>> = MutableLiveData()
@@ -29,12 +29,12 @@ class NewSectionViewModel : ViewModel() {
     val goalTempo: MutableLiveData<Int> = MutableLiveData(Tempo.DEFAULT_GOAL)
     val dismissView: LiveData<Unit> = _dismissView
 
-    val sectionNameNotEmpty = validateLiveData(sectionName, { Section.isSectionNameValid(it) })
-    val initialTempoInRange = validateLiveData(initialTempo, { Tempo.isTempoValid(it) })
-    val goalTempoInRange = validateLiveData(goalTempo, { Tempo.isTempoValid(it)} )
-    val initialTempoSmallerThanGoal = validateLiveData(goalTempo, {initialTempo.value == null || initialTempo.value!! <= it})
+    val sectionNameNotEmpty = validateLiveData(sectionName) { Section.isSectionNameValid(it) }
+    val initialTempoInRange = validateLiveData(initialTempo) { Tempo.isTempoValid(it) }
+    val goalTempoInRange = validateLiveData(goalTempo) { Tempo.isTempoValid(it)}
+    val initialTempoSmallerThanGoal = validateLiveData(goalTempo) {initialTempo.value == null || initialTempo.value!! <= it}
 
-    private val addSectionValidators = arrayOf(sectionNameNotEmpty, initialTempoInRange, goalTempoInRange, initialTempoInRange)
+    private val addSectionValidators = arrayOf(sectionNameNotEmpty, initialTempoInRange, goalTempoInRange, initialTempoSmallerThanGoal)
 
     init {
         MainActivity.component.inject(this)
@@ -44,14 +44,12 @@ class NewSectionViewModel : ViewModel() {
     lateinit var sectionRepository: SectionRepository
 
     fun onAddSection() {
-        if (isDataValid() && !saving) {
-            saving = true
+        if (isDataValid()) {
             val newSection = enteredSectionData()
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     sectionRepository.add(newSection)
                     _dismissView.postValue(null)
-                    saving = false
                 }
             }
         }

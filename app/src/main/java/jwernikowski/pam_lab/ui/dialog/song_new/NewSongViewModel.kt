@@ -15,20 +15,20 @@ import javax.inject.Inject
 
 class NewSongViewModel : ViewModel() {
 
-    private val _dismissView: MutableLiveData<Unit> = MutableLiveData()
+    private val _dismissView: MutableLiveData<Song?> = MutableLiveData()
 
-    val hasSections: MutableLiveData<Boolean> = MutableLiveData(false)
     val songName: MutableLiveData<String> = MutableLiveData()
+    val hasSections: MutableLiveData<Boolean> = MutableLiveData(false)
     val initialTempo: MutableLiveData<Int> = MutableLiveData(Tempo.DEFAULT_INITIAL)
     val goalTempo: MutableLiveData<Int> = MutableLiveData(Tempo.DEFAULT_GOAL)
-    val dismissView: LiveData<Unit> = _dismissView
+    val dismissView: LiveData<Song?> = _dismissView
 
-    val songNameNotEmpty = validateLiveData(songName, ::isSongNameValid)
-    val initialTempoInRange = validateLiveData(initialTempo, ::isTempoValid)
-    val goalTempoInRange = validateLiveData(goalTempo, ::isTempoValid)
-    val initialTempoSmallerThanGoal = validateLiveData(goalTempo, {initialTempo.value == null || initialTempo.value!! <= it})
+    val songNameNotEmpty = validateLiveData(songName) { Song.isSectionNameValid(it)}
+    val initialTempoInRange = validateLiveData(initialTempo) { Tempo.isTempoValid(it) }
+    val goalTempoInRange = validateLiveData(goalTempo) { Tempo.isTempoValid(it) }
+    val initialTempoSmallerThanGoal = validateLiveData(goalTempo) {initialTempo.value == null || initialTempo.value!! <= it}
 
-    private val addSongValidators = arrayOf(songNameNotEmpty, initialTempoInRange, goalTempoInRange, initialTempoInRange)
+    private val addSongValidators = arrayOf(songNameNotEmpty, initialTempoInRange, goalTempoInRange, initialTempoSmallerThanGoal)
 
     init {
         MainActivity.component.inject(this)
@@ -43,7 +43,7 @@ class NewSongViewModel : ViewModel() {
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     songRepository.addSong(newSong, sections)
-                    _dismissView.postValue(null)
+                    _dismissView.postValue(newSong)
                 }
             }
         }
@@ -74,14 +74,6 @@ class NewSongViewModel : ViewModel() {
 
     fun onCancel() {
         _dismissView.postValue(null)
-    }
-
-    private fun isSongNameValid(songName: String?): Boolean {
-        return songName != null && songName.isNotEmpty()
-    }
-
-    private fun isTempoValid(tempo: Int): Boolean {
-        return tempo >= Tempo.MIN_BPM && tempo <= Tempo.MAX_BPM
     }
 
 }

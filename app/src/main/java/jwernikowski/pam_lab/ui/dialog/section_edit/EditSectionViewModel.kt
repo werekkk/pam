@@ -1,6 +1,5 @@
 package jwernikowski.pam_lab.ui.dialog.section_edit
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,17 +16,17 @@ import javax.inject.Inject
 
 class EditSectionViewModel : ViewModel() {
 
-    val section = MutableLiveData<Section>()
+    private lateinit var section: Section
     val sectionName: MutableLiveData<String> = MutableLiveData()
     val initialTempo: MutableLiveData<Int> = MutableLiveData(Tempo.DEFAULT_INITIAL)
     val goalTempo: MutableLiveData<Int> = MutableLiveData(Tempo.DEFAULT_GOAL)
 
-    val sectionNameNotEmpty = validateLiveData(sectionName, { Section.isSectionNameValid(it) })
-    val initialTempoInRange = validateLiveData(initialTempo, { Tempo.isTempoValid(it) })
-    val goalTempoInRange = validateLiveData(goalTempo, { Tempo.isTempoValid(it)} )
-    val initialTempoSmallerThanGoal = validateLiveData(goalTempo, {initialTempo.value == null || initialTempo.value!! <= it})
+    val sectionNameNotEmpty = validateLiveData(sectionName) { Section.isSectionNameValid(it) }
+    val initialTempoInRange = validateLiveData(initialTempo) { Tempo.isTempoValid(it) }
+    val goalTempoInRange = validateLiveData(goalTempo) { Tempo.isTempoValid(it)}
+    val initialTempoSmallerThanGoal = validateLiveData(goalTempo) { initialTempo.value == null || initialTempo.value!! <= it }
 
-    private val addSectionValidators = arrayOf(sectionNameNotEmpty, initialTempoInRange, goalTempoInRange, initialTempoInRange)
+    private val addSectionValidators = arrayOf(sectionNameNotEmpty, initialTempoInRange, goalTempoInRange, initialTempoSmallerThanGoal)
 
     init {
         MainActivity.component.inject(this)
@@ -36,11 +35,11 @@ class EditSectionViewModel : ViewModel() {
     @Inject
     lateinit var sectionRepository: SectionRepository
 
-    fun setSection(section: Section) {
-        this.section.postValue(section)
-        this.sectionName.postValue(section.name)
-        this.initialTempo.postValue(section.initialTempo)
-        this.goalTempo.postValue(section.goalTempo)
+    fun setSection(newSection: Section) {
+        section = newSection
+        sectionName.postValue(newSection.name)
+        initialTempo.postValue(newSection.initialTempo)
+        goalTempo.postValue(newSection.goalTempo)
     }
 
     fun handleSave() {
@@ -55,7 +54,7 @@ class EditSectionViewModel : ViewModel() {
     }
 
     private fun enteredSectionData(): Section {
-        val updatedSection = section.value!!.copy(
+        val updatedSection = section.copy(
             name = sectionName.value!!,
             initialTempo = initialTempo.value!!,
             goalTempo = goalTempo.value!!
