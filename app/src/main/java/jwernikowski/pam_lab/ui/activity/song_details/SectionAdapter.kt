@@ -20,7 +20,7 @@ class SectionAdapter(
     var sections: List<Section> = ArrayList()
     get() = field
     set(value) {
-        if (field.map { it.sectionId } != value.map { it.sectionId }) {
+        if (!hasOnlySectionOrderChanged(field, value)) {
             field = value
             notifyDataSetChanged()
         }
@@ -34,6 +34,11 @@ class SectionAdapter(
                 }
             }
         })
+    }
+
+    private fun hasOnlySectionOrderChanged(oldSections: List<Section>, newSections: List<Section>): Boolean {
+        return oldSections.map { it.copy(order = 1) }.sortedBy { it.sectionId } ==
+         newSections.map { it.copy(order = 1) }.sortedBy { it.sectionId }
     }
 
     class SectionViewHolder(

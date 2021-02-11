@@ -14,17 +14,16 @@ data class Section(
     val name: String,
     val initialTempo: Int,
     val goalTempo: Int,
-    val order: Int
+    val order: Int,
+    var songId: Long = 0L,
+    @PrimaryKey(autoGenerate = true) var sectionId: Long = 0L
 ) : Serializable {
-    var songId = 0L
-    @PrimaryKey(autoGenerate = true) var sectionId = 0L
 
     companion object {
         val DEFAULT_SECTION_NAME = "default_section"
+
+        fun isSectionNameValid(sectionName: String?): Boolean {
+            return sectionName != null && sectionName.isNotEmpty()
+        }
     }
 }
-
-data class SectionOrder (
-    val sectionId: Long,
-    val order: Int
-)

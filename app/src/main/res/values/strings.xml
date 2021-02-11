@@ -42,6 +42,8 @@
     <string name="delete">Delete</string>
     <string name="delete_song">Delete song</string>
     <string name="delete_song_sure">Are you sure you want to delete the song?</string>
+    <string name="delete_section">Delete section</string>
+    <string name="delete_section_sure">Are you sure you want to delete the section?</string>
 
     <string name="edit_song_name">Edit song name</string>
     <string name="edit">Edit</string>
@@ -51,6 +53,7 @@
     <string name="progress">Progress</string>
     <string name="practice">Practice</string>
     <string name="practice_log">Practice log</string>
+    <string name="no_practice_entries_message">There are no practice entries!</string>
     <string name="practice_now">Practice now</string>
 
     <string name="rate_performance">Rate your performance:</string>
@@ -68,6 +71,7 @@
     <string name="divine_into_sections">Divide song into sections</string>
 
     <string name="sections">Sections</string>
+    <string name="edit_section">Edit section</string>
     <string name="enter_section_name">Section name cannot be blank</string>
     <string name="no_sections_message">Your song has no sections!</string>
     <string name="add_section">Add section</string>

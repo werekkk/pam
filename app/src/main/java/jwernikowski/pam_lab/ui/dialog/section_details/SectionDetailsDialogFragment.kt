@@ -1,5 +1,6 @@
 package jwernikowski.pam_lab.ui.dialog.section_details
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ import jwernikowski.pam_lab.db.data.entity.PracticeEntry
 import jwernikowski.pam_lab.db.data.entity.Section
 import jwernikowski.pam_lab.ui.activity.song_details.EntrySwipeToDeleteCallback
 import jwernikowski.pam_lab.ui.activity.song_details.PracticeEntryAdapter
+import jwernikowski.pam_lab.ui.dialog.section_edit.EditSectionDialogFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -47,6 +49,7 @@ class SectionDetailsDialogFragment(private val section: Section) : DialogFragmen
         binding.lifecycleOwner = this
 
         initRecyclerView()
+        initButtons()
 
         return binding.root
     }
@@ -97,4 +100,27 @@ class SectionDetailsDialogFragment(private val section: Section) : DialogFragmen
         viewModel.restorePracticeEntry(practiceEntry)
     }
 
+    private fun initButtons() {
+        binding.editBtn.setOnClickListener { displayEditSectionNameDialog() }
+        binding.deleteBtn.setOnClickListener { displayDeleteSectionDialog() }
+    }
+
+    private fun displayEditSectionNameDialog() {
+        viewModel.section.value?.let {
+            val dialog = EditSectionDialogFragment(it)
+            dialog.show(parentFragmentManager, EditSectionDialogFragment.TAG)
+        }
+    }
+
+    private fun displayDeleteSectionDialog() {
+        AlertDialog.Builder(activity)
+            .setTitle(R.string.delete_section)
+            .setMessage(R.string.delete_section_sure)
+            .setPositiveButton(R.string.delete) { _, _ ->
+                viewModel.handleDeleteSection()
+                dismiss()
+            }
+            .setNegativeButton(R.string.cancel) { _, _ -> Unit }
+            .show()
+    }
 }

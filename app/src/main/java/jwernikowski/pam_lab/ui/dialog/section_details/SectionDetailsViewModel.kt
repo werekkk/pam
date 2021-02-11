@@ -5,6 +5,7 @@ import jwernikowski.pam_lab.ui.activity.MainActivity
 import jwernikowski.pam_lab.db.data.entity.PracticeEntry
 import jwernikowski.pam_lab.db.data.entity.Section
 import jwernikowski.pam_lab.db.repository.PracticeEntryRepository
+import jwernikowski.pam_lab.db.repository.SectionRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -12,9 +13,12 @@ import javax.inject.Inject
 
 class SectionDetailsViewModel : ViewModel() {
 
-    private val _section: MutableLiveData<Section> = MutableLiveData()
+    private val currentSectionId: MutableLiveData<Long> = MutableLiveData()
 
-    val section: LiveData<Section> = _section
+    val section: LiveData<Section> =
+        Transformations.switchMap(currentSectionId) {
+            sectionRepository.getBySectionId(it)
+        }
 
     val practiceEntries: LiveData<List<PracticeEntry>> =
         Transformations.switchMap(section) {
@@ -28,8 +32,11 @@ class SectionDetailsViewModel : ViewModel() {
     @Inject
     lateinit var practiceEntryRepository: PracticeEntryRepository
 
+    @Inject
+    lateinit var sectionRepository: SectionRepository
+
     fun setSection(newSection: Section) {
-        _section.postValue(newSection)
+        currentSectionId.postValue(newSection.sectionId)
     }
 
     fun deletePracticeEntry(practiceEntry: PracticeEntry) {
@@ -40,6 +47,16 @@ class SectionDetailsViewModel : ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 practiceEntryRepository.add(entry)
+            }
+        }
+    }
+
+    fun handleDeleteSection() {
+        section.value?.let {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    sectionRepository.delete(it)
+                }
             }
         }
     }

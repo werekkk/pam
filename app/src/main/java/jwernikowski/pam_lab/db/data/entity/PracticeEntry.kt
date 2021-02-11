@@ -25,16 +25,8 @@ data class PracticeEntry(
     companion object {
 
         fun calculateProgress(orderedEntries: List<PracticeEntry>, initial: Int, goal: Int): Float {
-            val entriesByDay : List<List<PracticeEntry>> =
-                getEntriesByDay(
-                    orderedEntries
-                )
-            val progress : List<Float> =
-                getProgressFromDays(
-                    entriesByDay,
-                    initial,
-                    goal
-                )
+            val entriesByDay : List<List<PracticeEntry>> = getEntriesByDay(orderedEntries)
+            val progress : List<Float> = getProgressFromDays(entriesByDay, initial, goal)
             if (progress.isEmpty())
                 return 0f
             return progress.last()

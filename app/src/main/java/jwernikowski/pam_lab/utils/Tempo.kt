@@ -1,6 +1,7 @@
 package jwernikowski.pam_lab.utils
 
 class Tempo {
+
     companion object {
         val MIN_BPM = 10
         val MAX_BPM = 300
@@ -22,6 +23,10 @@ class Tempo {
             if (tempo > MAX_BPM)
                 return MAX_BPM
             return tempo
+        }
+
+        fun isTempoValid(tempo: Int): Boolean {
+            return tempo >= MIN_BPM && tempo <= MAX_BPM
         }
     }
 }

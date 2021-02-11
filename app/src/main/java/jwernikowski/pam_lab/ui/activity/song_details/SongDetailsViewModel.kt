@@ -1,11 +1,9 @@
 package jwernikowski.pam_lab.ui.activity.song_details
 
-import android.util.Log
 import androidx.lifecycle.*
 import jwernikowski.pam_lab.ui.activity.MainActivity
 import jwernikowski.pam_lab.db.data.entity.PracticeEntry
 import jwernikowski.pam_lab.db.data.entity.Section
-import jwernikowski.pam_lab.db.data.entity.SectionOrder
 import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.db.repository.PracticeEntryRepository
 import jwernikowski.pam_lab.db.repository.SectionRepository
@@ -55,9 +53,10 @@ class SongDetailsViewModel : ViewModel() {
             Transformations.map(sections) { sections -> run{
                 progressLoaded.postValue(false)
                 val sectionBySectionId = sections.associateBy({it.sectionId}, {it})
-                val progressBySectionId = entries.groupBy { it.sectionId }.mapValues {
-                    val section = sectionBySectionId[it.key]!!
-                    PracticeEntry.calculateProgress(it.value, section.initialTempo, section.goalTempo)
+                val entriesBySectionId = entries.groupBy { it.sectionId }
+                val progressBySectionId = sectionBySectionId.mapValues {
+                    val entries = entriesBySectionId[it.key] ?: listOf()
+                    PracticeEntry.calculateProgress(entries, it.value.initialTempo, it.value.goalTempo)
                 }
                 val avgProgress = progressBySectionId.toList().fold(0.0f, {acc, pair -> acc + pair.second }) / sections.size
                 progressLoaded.postValue(true)
@@ -109,11 +108,11 @@ class SongDetailsViewModel : ViewModel() {
     }
 
     fun reorderSections(reorderedSections: List<Section>) {
-        val updatedSections = reorderedSections.mapIndexed { i, s -> SectionOrder(s.sectionId, i+1)}
+        val updatedOrder = reorderedSections.mapIndexed { i, s -> s.copy(order = i+1)}
         sectionsLoaded.postValue(false)
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                sectionRepository.updateSections(updatedSections)
+                sectionRepository.update(updatedOrder)
                 sectionsLoaded.postValue(true)
             }
         }

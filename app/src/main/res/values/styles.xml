@@ -4,16 +4,12 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
-        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
-<!--        <item name="buttonStyle">@style/RobotoButtonStyle</item>-->
+        <item name="android:textViewStyle">@style/defaultTextView</item>
     </style>
 
 
-    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
+    <style name="defaultTextView" parent="android:Widget.TextView">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textColor">@color/black</item>
-    </style>
-    <style name="RobotoButtonStyle" parent="android:Widget.Button">
-        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 </resources>

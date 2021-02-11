@@ -3,8 +3,10 @@ package jwernikowski.pam_lab.ui.activity.song_details
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -112,6 +114,7 @@ class SongDetailsActivity : AppCompatActivity() {
         }
 
         practiceEntriesRecyclerView.addItemDecoration(DividerItemDecoration(practiceEntriesRecyclerView.context, practiceEntryViewManager.orientation))
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -145,14 +148,15 @@ class SongDetailsActivity : AppCompatActivity() {
     }
 
     private fun displayDeleteSongDialog() {
-        val dialog =
-            DeleteSongDialogFragment(
-                viewModel
-            )
-        dialog.onDelete = {run{finish()}}
-        dialog.show(supportFragmentManager,
-            DeleteSongDialogFragment.TAG
-        )
+        AlertDialog.Builder(this)
+            .setTitle(R.string.delete_song)
+            .setMessage(R.string.delete_song_sure)
+            .setPositiveButton(R.string.delete) { _, _ ->
+                viewModel.deleteSong()
+                finish()
+            }
+            .setNegativeButton(R.string.cancel) { _, _ -> Unit}
+            .show()
     }
 
     private fun displayNewSectionDialog() {

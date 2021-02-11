@@ -1,45 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout>
 
     <data>
         <variable
             name="viewModel"
-            type="jwernikowski.pam_lab.ui.dialog.section_new.NewSectionViewModel" />
+            type="jwernikowski.pam_lab.ui.dialog.section_edit.EditSectionViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dialog_new_song_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:animateLayoutChanges="true"
-        tools:context="jwernikowski.pam_lab.ui.dialog.song_new.NewSongDialogFragment">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/name"
-            app:layout_constraintBottom_toBottomOf="@+id/nameEditText"
-            app:layout_constraintEnd_toStartOf="@+id/nameEditText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/nameEditText" />
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/nameEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="@={viewModel.sectionName}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.61"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tempos_section"
@@ -118,6 +103,7 @@
                 app:layout_constraintStart_toStartOf="@+id/initialTempoEditText"
                 app:layout_constraintTop_toBottomOf="@+id/initialTempoEditText" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

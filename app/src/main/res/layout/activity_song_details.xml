@@ -198,11 +198,30 @@
                         android:layout_height="wrap_content"
                         android:visibility="@{viewModel.practiceEntriesLoaded ? View.GONE : View.VISIBLE}"/>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/practice_entries_recycler"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="@{viewModel.practiceEntriesLoaded ? View.VISIBLE : View.GONE}" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="@{viewModel.practiceEntriesLoaded ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/no_practice_entries_message"
+                            android:textAlignment="center"
+                            android:textColor="?android:attr/textColorHint"
+                            android:visibility="@{viewModel.practiceEntries.size() == 0 ? View.VISIBLE : View.GONE}" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/practice_entries_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{viewModel.practiceEntries.size() != 0 ? View.VISIBLE : View.GONE}" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
