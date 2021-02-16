@@ -134,7 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:visibility="@{!viewModel.song.hasSections ? View.VISIBLE : View.GONE}">
+                android:visibility="@{!viewModel.song.hasSections &amp;&amp; viewModel.songLoaded ? View.VISIBLE : View.GONE}">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

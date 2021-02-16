@@ -4,6 +4,8 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import java.lang.Exception
 import kotlin.math.max
@@ -30,4 +32,10 @@ private fun ViewGroup.getChildMax(property: (View) -> Int): Int {
     var max = 0
     this.children.forEach { child -> run {max = max(max, property(child)) } }
     return max
+}
+
+fun <T> mergeLiveData(vararg liveData: LiveData<T>): MediatorLiveData<T> {
+    val mergedLiveData = MediatorLiveData<T>()
+    liveData.forEach { mergedLiveData.addSource(it) { mergedLiveData.postValue(it) } }
+    return mergedLiveData
 }

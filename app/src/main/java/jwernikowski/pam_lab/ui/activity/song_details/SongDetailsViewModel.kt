@@ -17,6 +17,7 @@ class SongDetailsViewModel : ViewModel() {
 
     val songId: MutableLiveData<Long> = MutableLiveData()
 
+    val songLoaded = MutableLiveData(false)
     val sectionsLoaded = MutableLiveData(false)
     val practiceEntriesLoaded = MutableLiveData(false)
     val daysPracticedLoaded = MutableLiveData(false)
@@ -24,7 +25,10 @@ class SongDetailsViewModel : ViewModel() {
 
     val song: LiveData<Song> =
         Transformations.switchMap(songId) {
-            songsRepository.getById(it)
+            songLoaded.postValue(false)
+            val loadedSong = songsRepository.getById(it)
+            songLoaded.postValue(true)
+            loadedSong
         }
 
     val sections: LiveData<List<Section>> =

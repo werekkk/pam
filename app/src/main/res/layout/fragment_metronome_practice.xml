@@ -17,17 +17,6 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragment.metronome_practice.MetronomePracticeFragment">
 
-        <TextView
-            android:id="@+id/bpm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="aa"
-            android:textSize="@dimen/tempo_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/metronomeView" />
-
         <jwernikowski.pam_lab.ui.view.metronome.MetronomeView
             android:id="@+id/metronomeView"
             android:layout_width="0dp"
@@ -37,62 +26,98 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/plus1btn"
-            android:layout_width="@dimen/change_tempo_button_size"
-            android:layout_height="@dimen/change_tempo_button_size"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/round_button"
-            android:text="+1"
-            android:textSize="@dimen/change_tempo_button_text_size"
-            app:layout_constraintEnd_toStartOf="@+id/plus4btn"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/minus1btn"
-            app:layout_constraintTop_toBottomOf="@+id/tempoSeekBar"
-            android:onClick="@{() -> viewModel.increaseBpm(1)}"/>
-
-        <Button
-            android:id="@+id/plus4btn"
-            android:layout_width="@dimen/change_tempo_button_size"
-            android:layout_height="@dimen/change_tempo_button_size"
-            android:background="@drawable/round_button"
-            android:text="+4"
-            android:textSize="@dimen/change_tempo_button_text_size"
-            app:layout_constraintBottom_toBottomOf="@+id/plus1btn"
+        <LinearLayout
+            android:id="@+id/linearLayout9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/plus1btn"
-            android:onClick="@{() -> viewModel.increaseBpm(4)}"/>
-
-        <Button
-            android:id="@+id/minus1btn"
-            android:layout_width="@dimen/change_tempo_button_size"
-            android:layout_height="@dimen/change_tempo_button_size"
-            android:background="@drawable/round_button"
-            android:text="-1"
-            android:textSize="@dimen/change_tempo_button_text_size"
-            app:layout_constraintBottom_toBottomOf="@+id/plus1btn"
-            app:layout_constraintEnd_toStartOf="@+id/plus1btn"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/minus4btn"
-            app:layout_constraintTop_toTopOf="@+id/plus1btn"
-            android:onClick="@{() -> viewModel.increaseBpm(-1)}"/>
-
-        <Button
-            android:id="@+id/minus4btn"
-            android:layout_width="@dimen/change_tempo_button_size"
-            android:layout_height="@dimen/change_tempo_button_size"
-            android:background="@drawable/round_button"
-            android:text="-4"
-            android:textSize="@dimen/change_tempo_button_text_size"
-            app:layout_constraintBottom_toBottomOf="@+id/minus1btn"
-            app:layout_constraintEnd_toStartOf="@+id/minus1btn"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/minus1btn"
-            android:onClick="@{() -> viewModel.increaseBpm(-4)}"/>
+            app:layout_constraintTop_toBottomOf="@+id/metronomeView">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/bpm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="2"
+                    android:text="aa"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/tempo_text_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/minus4btn"
+                    android:layout_width="@dimen/change_tempo_button_size"
+                    android:layout_height="@dimen/change_tempo_button_size"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/round_button"
+                    android:insetLeft="-4dp"
+                    android:insetRight="-4dp"
+                    android:onClick="@{() -> viewModel.increaseBpm(-4)}"
+                    android:text="-4"
+                    android:textSize="@dimen/change_tempo_button_text_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/minus1btn"
+                    android:layout_width="@dimen/change_tempo_button_size"
+                    android:layout_height="@dimen/change_tempo_button_size"
+                    android:background="@drawable/round_button"
+                    android:insetLeft="-4dp"
+                    android:onClick="@{() -> viewModel.increaseBpm(-1)}"
+                    android:text="-1"
+                    android:textSize="@dimen/change_tempo_button_text_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/bpm"
+                    app:layout_constraintStart_toEndOf="@+id/minus4btn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/plus4btn"
+                    android:layout_width="@dimen/change_tempo_button_size"
+                    android:layout_height="@dimen/change_tempo_button_size"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/round_button"
+                    android:insetLeft="-4dp"
+                    android:insetRight="-4dp"
+                    android:onClick="@{() -> viewModel.increaseBpm(4)}"
+                    android:text="+4"
+                    android:textSize="@dimen/change_tempo_button_text_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/plus1btn"
+                    android:layout_width="@dimen/change_tempo_button_size"
+                    android:layout_height="@dimen/change_tempo_button_size"
+                    android:background="@drawable/round_button"
+                    android:insetLeft="-4dp"
+                    android:insetRight="-4dp"
+                    android:onClick="@{() -> viewModel.increaseBpm(1)}"
+                    android:text="+1"
+                    android:textSize="@dimen/change_tempo_button_text_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/plus4btn"
+                    app:layout_constraintStart_toEndOf="@+id/bpm"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -115,11 +140,11 @@
                     android:layout_width="@dimen/practice_rate_emoji_size"
                     android:layout_height="@dimen/practice_rate_emoji_size"
                     android:layout_gravity="center"
+                    android:gravity="center"
+                    android:onClick="@{() -> viewModel.addRating(PracticeEntry.Rating.VERY_LOW)}"
                     android:padding="0dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/rate_very_low"
-                    android:gravity="center"
-                    android:onClick="@{() -> viewModel.addRating(PracticeEntry.Rating.VERY_LOW)}"/>
+                    android:src="@drawable/rate_very_low" />
             </LinearLayout>
 
             <LinearLayout
@@ -133,10 +158,10 @@
                     android:layout_width="@dimen/practice_rate_emoji_size"
                     android:layout_height="@dimen/practice_rate_emoji_size"
                     android:layout_gravity="center"
+                    android:onClick="@{() -> viewModel.addRating(PracticeEntry.Rating.LOW)}"
                     android:padding="0dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/rate_low"
-                    android:onClick="@{() -> viewModel.addRating(PracticeEntry.Rating.LOW)}"/>
+                    android:src="@drawable/rate_low" />
             </LinearLayout>
 
             <LinearLayout
@@ -150,10 +175,10 @@
                     android:layout_width="@dimen/practice_rate_emoji_size"
                     android:layout_height="@dimen/practice_rate_emoji_size"
                     android:layout_gravity="center"
+                    android:onClick="@{() -> viewModel.addRating(PracticeEntry.Rating.MEDIUM)}"
                     android:padding="0dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/rate_medium"
-                    android:onClick="@{() -> viewModel.addRating(PracticeEntry.Rating.MEDIUM)}"/>
+                    android:src="@drawable/rate_medium" />
             </LinearLayout>
 
             <LinearLayout
@@ -167,10 +192,10 @@
                     android:layout_width="@dimen/practice_rate_emoji_size"
                     android:layout_height="@dimen/practice_rate_emoji_size"
                     android:layout_gravity="center"
+                    android:onClick="@{() -> viewModel.addRating(PracticeEntry.Rating.HIGH)}"
                     android:padding="0dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/rate_high"
-                    android:onClick="@{() -> viewModel.addRating(PracticeEntry.Rating.HIGH)}"/>
+                    android:src="@drawable/rate_high" />
             </LinearLayout>
 
             <LinearLayout
@@ -184,10 +209,10 @@
                     android:layout_width="@dimen/practice_rate_emoji_size"
                     android:layout_height="@dimen/practice_rate_emoji_size"
                     android:layout_gravity="center"
+                    android:onClick="@{() -> viewModel.addRating(PracticeEntry.Rating.VERY_HIGH)}"
                     android:padding="0dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/rate_very_high"
-                    android:onClick="@{() -> viewModel.addRating(PracticeEntry.Rating.VERY_HIGH)}"/>
+                    android:src="@drawable/rate_very_high" />
             </LinearLayout>
 
         </LinearLayout>
@@ -196,20 +221,20 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/rate_performance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/plus1btn" />
+            app:layout_constraintTop_toBottomOf="@+id/tempoSeekBar" />
 
         <SeekBar
             android:id="@+id/tempoSeekBar"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bpm" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
