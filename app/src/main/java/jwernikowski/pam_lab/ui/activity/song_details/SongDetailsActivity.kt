@@ -48,16 +48,17 @@ class SongDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivitySongDetailsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
         viewModel = ViewModelProvider(this).get(SongDetailsViewModel::class.java)
 
+        binding = ActivitySongDetailsBinding.inflate(layoutInflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        setContentView(binding.root)
+
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
         actionBar?.setHomeButtonEnabled(true)
         actionBar?.setDisplayHomeAsUpEnabled(true)
 

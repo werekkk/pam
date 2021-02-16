@@ -20,6 +20,7 @@ import jwernikowski.pam_lab.ui.fragment.rhythms.RhythmsViewModel
 import jwernikowski.pam_lab.ui.dialog.section_details.SectionDetailsViewModel
 import jwernikowski.pam_lab.ui.dialog.section_new.NewSectionViewModel
 import jwernikowski.pam_lab.ui.activity.song_details.SongDetailsViewModel
+import jwernikowski.pam_lab.ui.activity.song_practice.SongPracticeViewModel
 import jwernikowski.pam_lab.ui.dialog.section_edit.EditSectionViewModel
 import jwernikowski.pam_lab.ui.dialog.song_edit.EditSongViewModel
 import jwernikowski.pam_lab.ui.fragment.metronome_practice.MetronomePracticeViewModel
@@ -48,6 +49,7 @@ interface AppComponent {
     fun inject(sectionDetailsViewModel: SectionDetailsViewModel)
     fun inject(editSectionViewModel: EditSectionViewModel)
     fun inject(editSongViewModel: EditSongViewModel)
+    fun inject(songPracticeViewModel: SongPracticeViewModel)
 
     val songDao: SongDao
     val songRepository: SongRepository

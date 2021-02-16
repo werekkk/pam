@@ -3,7 +3,11 @@ package jwernikowski.pam_lab.ui.activity.song_practice
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.fragment.app.findFragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import jwernikowski.pam_lab.R
+import jwernikowski.pam_lab.databinding.ActivitySongPracticeBinding
 import jwernikowski.pam_lab.db.data.entity.Section
 import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.ui.fragment.metronome_practice.MetronomePracticeFragment
@@ -16,39 +20,46 @@ class SongPracticeActivity : AppCompatActivity() {
         val BPM_TAG = "bpm"
     }
 
+    private lateinit var binding: ActivitySongPracticeBinding
+    private lateinit var viewModel: SongPracticeViewModel
+
     private lateinit var song: Song
     private lateinit var section: Section
-    private var bpm: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_song_practice)
+
+        viewModel = ViewModelProvider(this).get(SongPracticeViewModel::class.java)
+
+        binding = ActivitySongPracticeBinding.inflate(layoutInflater)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
+        setContentView(binding.root)
 
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(R.string.practice)
         actionBar?.setHomeButtonEnabled(true)
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         song = intent.extras?.get(SONG_TAG) as Song
         section = intent.extras?.get(SECTION_TAG) as Section
+
         loadSong(song, section)
+        observeViewModel()
 
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val mf = supportFragmentManager.findFragmentById(R.id.metronome_practice) as MetronomePracticeFragment
-        mf.setSong(song)
-        mf.setSection(section)
     }
 
     private fun loadSong(newSong: Song, newSection: Section) {
-        supportActionBar?.title = createTitle(newSong, newSection)
+        viewModel.setState(newSong, newSection)
     }
 
-    private fun createTitle(newSong: Song, newSection: Section): String {
-        return if(newSong.hasSections) "${newSong.name} - ${newSection.name}"
-            else newSong.name
+    private fun observeViewModel() {
+        val mf = supportFragmentManager.findFragmentById(R.id.metronome_practice) as MetronomePracticeFragment
+        viewModel.song.observe(this) { mf.setSong(it) }
+        viewModel.currentSection.observe(this) { mf.setSection(it)}
+        viewModel.sections.observe(this) {}
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -33,9 +33,3 @@ private fun ViewGroup.getChildMax(property: (View) -> Int): Int {
     this.children.forEach { child -> run {max = max(max, property(child)) } }
     return max
 }
-
-fun <T> mergeLiveData(vararg liveData: LiveData<T>): MediatorLiveData<T> {
-    val mergedLiveData = MediatorLiveData<T>()
-    liveData.forEach { mergedLiveData.addSource(it) { mergedLiveData.postValue(it) } }
-    return mergedLiveData
-}

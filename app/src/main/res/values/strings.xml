@@ -61,6 +61,7 @@
     <string name="practice_log">Practice log</string>
     <string name="no_practice_entries_message">There are no practice entries!</string>
     <string name="practice_now">Practice now</string>
+    <string name="now_practicing">Now practicing:</string>
 
     <string name="rate_performance">Rate your performance:</string>
 

@@ -27,6 +27,10 @@ class MetronomePracticeFragment : Fragment() {
 
     private lateinit var player: SoundPlayer
 
+    companion object {
+        const val TAG = "metronome_practice_fragment"
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         player = MainActivity.component.soundPlayer
