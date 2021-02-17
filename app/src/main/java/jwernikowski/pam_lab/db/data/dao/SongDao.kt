@@ -7,7 +7,7 @@ import jwernikowski.pam_lab.db.data.entity.Song
 @Dao
 interface SongDao {
 
-    @Query("SELECT * FROM song WHERE songId = :songId")
+    @Query("SELECT * FROM song WHERE songId = :songId ORDER BY name ASC")
     fun getById(songId: Long): LiveData<Song?>
 
     @Query("SELECT * FROM song")

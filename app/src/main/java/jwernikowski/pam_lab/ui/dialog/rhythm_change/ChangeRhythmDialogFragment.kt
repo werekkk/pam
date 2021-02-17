@@ -1,73 +1,84 @@
 package jwernikowski.pam_lab.ui.dialog.rhythm_change
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import jwernikowski.pam_lab.R
+import jwernikowski.pam_lab.databinding.DialogChangeRhythmBinding
 import jwernikowski.pam_lab.db.data.entity.Rhythm
 import jwernikowski.pam_lab.ui.fragment.metronome.MetronomeFragment
 import jwernikowski.pam_lab.ui.fragment.metronome.MetronomeViewModel
+import java.lang.IllegalStateException
 
-class ChangeRhythmDialogFragment(private val parent: MetronomeFragment) : DialogFragment() {
+class ChangeRhythmDialogFragment(val onRhythmSelected: (Rhythm) -> Unit) : DialogFragment() {
 
     companion object {
         val TAG = "ChangeRhythmDialogFragment"
     }
 
-    private lateinit var rhythmsRecyclerView: RecyclerView
     private lateinit var adapter: ChangeRhythmAdapter
     private lateinit var viewManager: LinearLayoutManager
 
-    private lateinit var viewModel: MetronomeViewModel
+    private lateinit var binding: DialogChangeRhythmBinding
+    private lateinit var viewModel: ChangeRhythmViewModel
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return activity?.let {
+            binding = DialogChangeRhythmBinding.inflate(layoutInflater)
+
+            AlertDialog.Builder(it)
+                .setView(binding.root)
+                .setTitle(R.string.choose_rhythm)
+                .create()
+        } ?: throw IllegalStateException()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.dialog_change_rhythm, container)
+        viewModel = ViewModelProvider(this).get(ChangeRhythmViewModel::class.java)
 
-        initRecyclerView(root)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
-        parentFragment?.let {
-            viewModel = ViewModelProviders.of(it).get(MetronomeViewModel::class.java)
-        }
+        initRecyclerView()
 
-        viewModel.rhythms.observe(this, Observer { newRhythms -> run{
-            adapter.rhythms = ArrayList(newRhythms)
-        } })
-        return root
+        return binding.root
     }
 
-    private fun initRecyclerView(root: View) {
+    private fun initRecyclerView() {
         viewManager = LinearLayoutManager(context)
-        adapter =
-            ChangeRhythmAdapter { r ->
-                run {
-                    onRhythmClicked(r)
-                }
-            }
+        adapter = ChangeRhythmAdapter { onRhythmClicked(it) }
 
-        rhythmsRecyclerView = root.findViewById(R.id.rhythmList)
-        rhythmsRecyclerView.apply {
+        binding.rhythmList.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = this@ChangeRhythmDialogFragment.adapter
         }
 
-        val divider = DividerItemDecoration(rhythmsRecyclerView.context, viewManager.orientation)
-        rhythmsRecyclerView.addItemDecoration(divider)
+        val divider = DividerItemDecoration(context, viewManager.orientation)
+        binding.rhythmList.addItemDecoration(divider)
+
+        viewModel.allRhythms.observe(this) {
+            adapter.rhythms = ArrayList(it)
+        }
     }
 
     private fun onRhythmClicked(rhythm: Rhythm) {
-        parent.setRhythm(rhythm)
+        onRhythmSelected(rhythm)
         dismiss()
     }
 }

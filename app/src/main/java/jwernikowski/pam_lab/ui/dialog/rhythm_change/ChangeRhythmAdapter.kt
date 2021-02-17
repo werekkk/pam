@@ -9,33 +9,49 @@ import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.db.data.entity.Rhythm
 
 class ChangeRhythmAdapter(private val clickListener: (Rhythm) -> Unit):
-    RecyclerView.Adapter<ChangeRhythmAdapter.RhythmViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var rhythms: ArrayList<Rhythm> = arrayListOf()
         set(value) {
-            value.add(0, Rhythm.DEFAULT_RHYTHM)
             field = value
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RhythmViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layout = LayoutInflater.from(parent.context).inflate(
-            R.layout.item_change_rhythm,
+            ItemType.fromInt(viewType)!!.getLayout(),
             parent,
             false
         ) as ViewGroup
-        val vh =
-            RhythmViewHolder(
-                layout
-            )
-        vh.itemView.setOnClickListener {run{clickListener(vh.rhythm)}}
-        return vh
+
+        return when(ItemType.fromInt(viewType)!!) {
+            ItemType.NO_RHYTHM_ITEM -> {
+                val vh = NoRhythmViewHolder(layout)
+                vh.itemView.setOnClickListener { clickListener(Rhythm.DEFAULT_RHYTHM) }
+                vh
+            }
+            ItemType.RHYTHM_ITEM -> {
+                val vh = RhythmViewHolder(layout)
+                vh.itemView.setOnClickListener {run{clickListener(vh.rhythm)}}
+                vh
+            }
+        }
+
     }
 
-    override fun getItemCount(): Int = rhythms.size
+    override fun getItemCount(): Int = rhythms.size + 1
 
-    override fun onBindViewHolder(holder: RhythmViewHolder, position: Int) {
-        holder.rhythm = rhythms[position]
+    override fun getItemViewType(position: Int): Int {
+        return when(position) {
+            0 -> ItemType.NO_RHYTHM_ITEM.value
+            else -> ItemType.RHYTHM_ITEM.value
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder.itemViewType == ItemType.RHYTHM_ITEM.value) {
+            (holder as RhythmViewHolder).rhythm = rhythms[position - 1]
+        }
     }
 
     class RhythmViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -52,5 +68,25 @@ class ChangeRhythmAdapter(private val clickListener: (Rhythm) -> Unit):
                 if (r != Rhythm.DEFAULT_RHYTHM)
                     rhythmMeter.text = r.meter.toString()
             }
+    }
+
+    class NoRhythmViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+
+    enum class ItemType(val value: Int) {
+        NO_RHYTHM_ITEM(0),
+        RHYTHM_ITEM(1);
+
+        companion object {
+            private val map = values().associateBy(ItemType::value)
+            fun fromInt(type: Int) = map[type]
+        }
+
+        fun getLayout(): Int {
+            return when(value) {
+                0 -> R.layout.item_rhythm_default
+                1 -> R.layout.item_rhythm
+                else -> 0
+            }
+        }
     }
 }

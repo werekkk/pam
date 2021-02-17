@@ -1,108 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.metronome.MetronomeFragment">
+<layout>
 
-    <TextView
-        android:id="@+id/bpm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="aa"
-        android:textSize="@dimen/tempo_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/metronomeView" />
+    <data>
+        <variable
+            name="viewModel"
+            type="jwernikowski.pam_lab.ui.fragment.metronome.MetronomeViewModel" />
+    </data>
 
-    <jwernikowski.pam_lab.ui.view.metronome.MetronomeView
-        android:id="@+id/metronomeView"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragment.metronome.MetronomeFragment">
 
-    <Button
-        android:id="@+id/plus1btn"
-        android:layout_width="@dimen/change_tempo_button_size"
-        android:layout_height="@dimen/change_tempo_button_size"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/round_button"
-        android:insetLeft="-4dp"
-        android:insetRight="-4dp"
-        android:text="+1"
-        android:textSize="@dimen/change_tempo_button_text_size"
-        app:layout_constraintEnd_toStartOf="@+id/plus4btn"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/minus1btn"
-        app:layout_constraintTop_toBottomOf="@+id/tempoSeekBar" />
+        <TextView
+            android:id="@+id/bpm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@{viewModel.bpm + ``}"
+            android:textSize="@dimen/tempo_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/metronomeView" />
 
-    <Button
-        android:id="@+id/plus4btn"
-        android:layout_width="@dimen/change_tempo_button_size"
-        android:layout_height="@dimen/change_tempo_button_size"
-        android:background="@drawable/round_button"
-        android:insetLeft="-4dp"
-        android:insetRight="-4dp"
-        android:text="+4"
-        android:textSize="@dimen/change_tempo_button_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/plus1btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/plus1btn" />
+        <jwernikowski.pam_lab.ui.view.metronome.MetronomeView
+            android:id="@+id/metronomeView"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/minus1btn"
-        android:layout_width="@dimen/change_tempo_button_size"
-        android:layout_height="@dimen/change_tempo_button_size"
-        android:background="@drawable/round_button"
-        android:insetLeft="-4dp"
-        android:insetRight="-4dp"
-        android:text="-1"
-        android:textSize="@dimen/change_tempo_button_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/plus1btn"
-        app:layout_constraintEnd_toStartOf="@+id/plus1btn"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/minus4btn"
-        app:layout_constraintTop_toTopOf="@+id/plus1btn" />
+        <Button
+            android:id="@+id/plus1btn"
+            android:layout_width="@dimen/change_tempo_button_size"
+            android:layout_height="@dimen/change_tempo_button_size"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/round_button"
+            android:insetLeft="-4dp"
+            android:insetRight="-4dp"
+            android:text="+1"
+            android:textSize="@dimen/change_tempo_button_text_size"
+            android:onClick="@{() -> viewModel.increaseBpm(1)}"
+            app:layout_constraintEnd_toStartOf="@+id/plus4btn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/minus1btn"
+            app:layout_constraintTop_toBottomOf="@+id/tempoSeekBar" />
 
-    <Button
-        android:id="@+id/minus4btn"
-        android:layout_width="@dimen/change_tempo_button_size"
-        android:layout_height="@dimen/change_tempo_button_size"
-        android:background="@drawable/round_button"
-        android:insetLeft="-4dp"
-        android:insetRight="-4dp"
-        android:text="-4"
-        android:textSize="@dimen/change_tempo_button_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/minus1btn"
-        app:layout_constraintEnd_toStartOf="@+id/minus1btn"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/minus1btn" />
+        <Button
+            android:id="@+id/plus4btn"
+            android:layout_width="@dimen/change_tempo_button_size"
+            android:layout_height="@dimen/change_tempo_button_size"
+            android:background="@drawable/round_button"
+            android:insetLeft="-4dp"
+            android:insetRight="-4dp"
+            android:text="+4"
+            android:textSize="@dimen/change_tempo_button_text_size"
+            android:onClick="@{() -> viewModel.increaseBpm(4)}"
+            app:layout_constraintBottom_toBottomOf="@+id/plus1btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/plus1btn" />
 
-    <SeekBar
-        android:id="@+id/tempoSeekBar"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bpm" />
+        <Button
+            android:id="@+id/minus1btn"
+            android:layout_width="@dimen/change_tempo_button_size"
+            android:layout_height="@dimen/change_tempo_button_size"
+            android:background="@drawable/round_button"
+            android:insetLeft="-4dp"
+            android:insetRight="-4dp"
+            android:text="-1"
+            android:textSize="@dimen/change_tempo_button_text_size"
+            android:onClick="@{() -> viewModel.increaseBpm(-1)}"
+            app:layout_constraintBottom_toBottomOf="@+id/plus1btn"
+            app:layout_constraintEnd_toStartOf="@+id/plus1btn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/minus4btn"
+            app:layout_constraintTop_toTopOf="@+id/plus1btn" />
 
-    <Button
-        android:id="@+id/changeRhythmBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/secondaryColor"
-        android:text="@string/set_rhythm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plus4btn" />
+        <Button
+            android:id="@+id/minus4btn"
+            android:layout_width="@dimen/change_tempo_button_size"
+            android:layout_height="@dimen/change_tempo_button_size"
+            android:background="@drawable/round_button"
+            android:insetLeft="-4dp"
+            android:insetRight="-4dp"
+            android:text="-4"
+            android:textSize="@dimen/change_tempo_button_text_size"
+            android:onClick="@{() -> viewModel.increaseBpm(-4)}"
+            app:layout_constraintBottom_toBottomOf="@+id/minus1btn"
+            app:layout_constraintEnd_toStartOf="@+id/minus1btn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/minus1btn" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <SeekBar
+            android:id="@+id/tempoSeekBar"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bpm" />
+
+        <Button
+            android:id="@+id/changeRhythmBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/secondaryColor"
+            android:text="@string/set_rhythm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/plus4btn" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

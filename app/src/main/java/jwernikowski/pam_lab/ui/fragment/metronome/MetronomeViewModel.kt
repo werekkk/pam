@@ -31,7 +31,7 @@ open class MetronomeViewModel : ViewModel() {
     lateinit var rhythmLineRepository: RhythmLineRepository
 
     private val _bpm: MutableLiveData<Int> = MutableLiveData()
-    val isOn: MutableLiveData<Boolean> = MutableLiveData()
+    val isOn: MutableLiveData<Boolean> = MutableLiveData(false)
     val rhythms: LiveData<List<Rhythm>> = rhythmRepository.getAll()
 
     var rhythm: Rhythm = Rhythm.DEFAULT_RHYTHM

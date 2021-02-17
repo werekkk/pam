@@ -6,7 +6,7 @@ import jwernikowski.pam_lab.db.data.entity.Rhythm
 
 @Dao
 interface RhythmDao {
-    @Query("SELECT * FROM rhythm")
+    @Query("SELECT * FROM rhythm ORDER BY name ASC")
     fun getAll(): LiveData<List<Rhythm>>
 
     @Query("SELECT * FROM rhythm WHERE rhythmId = :rhythmId")
