@@ -1,19 +1,23 @@
 package jwernikowski.pam_lab.ui.dialog.song_new
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.databinding.DialogNewSongBinding
 import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.utils.ErrorText
+import java.lang.IllegalStateException
 
 class NewSongDialogFragment(
-    private val onSongCreated: (Song) -> Unit
+    private val onSongCreated: (LiveData<Song>) -> Unit
 ): DialogFragment() {
 
     companion object {
@@ -23,20 +27,30 @@ class NewSongDialogFragment(
     private lateinit var binding: DialogNewSongBinding
     private lateinit var viewModel: NewSongViewModel
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return activity?.let {
+            binding = DialogNewSongBinding.inflate(layoutInflater, null, false)
+
+            AlertDialog.Builder(it)
+                .setView(binding.root)
+                .setTitle(R.string.add_song)
+                .setPositiveButton(R.string.add) { _, _ -> viewModel.onAddSong() }
+                .setNegativeButton(R.string.cancel) { _, _ -> Unit }
+                .create()
+        } ?: throw IllegalStateException()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogNewSongBinding.inflate(inflater, container, false)
-
         viewModel = ViewModelProvider(this).get(NewSongViewModel::class.java)
 
         binding.newSongViewModel = viewModel
         binding.lifecycleOwner = this
 
         observeViewModel()
-
         return binding.root
     }
 
@@ -53,10 +67,8 @@ class NewSongDialogFragment(
         viewModel.initialTempoSmallerThanGoal.observe(viewLifecycleOwner, Observer {
             if(!it) binding.goalTempoEditText.error = getString(R.string.goal_higher_than_initial)
         })
-
-        viewModel.dismissView.observe(viewLifecycleOwner, Observer {
-            dismiss()
-            if (it != null) onSongCreated(it)
+        viewModel.createdSong.observe(viewLifecycleOwner, Observer {
+            onSongCreated(it)
         })
     }
 

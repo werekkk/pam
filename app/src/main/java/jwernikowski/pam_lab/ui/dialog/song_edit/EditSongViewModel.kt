@@ -1,16 +1,12 @@
 package jwernikowski.pam_lab.ui.dialog.song_edit
 
-import android.util.Log
 import androidx.lifecycle.*
-import androidx.room.Transaction
 import jwernikowski.pam_lab.db.data.entity.Section
 import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.db.repository.SectionRepository
 import jwernikowski.pam_lab.db.repository.SongRepository
 import jwernikowski.pam_lab.ui.activity.MainActivity
-import jwernikowski.pam_lab.utils.Tempo
-import jwernikowski.pam_lab.utils.checkValidators
-import jwernikowski.pam_lab.utils.validateLiveData
+import jwernikowski.pam_lab.utils.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -18,23 +14,34 @@ class EditSongViewModel : ViewModel() {
 
     val song: MutableLiveData<Song> = MutableLiveData()
 
-    private val sections: LiveData<List<Section>> =
+    val sections: LiveData<List<Section>> =
         Transformations.switchMap(song) {
             songLoaded.postValue(false)
             val sections = sectionRepository.getBySongId(it.songId)
-            if (!it.hasSections) {
-                val defaultSection = sections.value!![0]
-                initialTempo.postValue(defaultSection.initialTempo)
-                goalTempo.postValue(defaultSection.goalTempo)
-            }
             songLoaded.postValue(true)
             sections
         }
 
     val songName: MutableLiveData<String> = MutableLiveData()
     val hasSections: MutableLiveData<Boolean> = MutableLiveData(false)
-    val initialTempo: MutableLiveData<Int> = MutableLiveData(Tempo.DEFAULT_INITIAL)
-    val goalTempo: MutableLiveData<Int> = MutableLiveData(Tempo.DEFAULT_GOAL)
+    val initialTempo: MutableLiveData<Int> = MutableLiveDataWithDelayedInitialValue(Tempo.DEFAULT_INITIAL,
+        Transformations.map(sections) {
+            if (!song.value!!.hasSections) {
+                it[0].initialTempo
+            } else {
+                Tempo.DEFAULT_INITIAL
+            }
+        }
+    )
+    val goalTempo: MutableLiveData<Int> = MutableLiveDataWithDelayedInitialValue(Tempo.DEFAULT_GOAL,
+        Transformations.map(sections) {
+            if (!song.value!!.hasSections) {
+                it[0].goalTempo
+            } else {
+                Tempo.DEFAULT_GOAL
+            }
+        }
+    )
 
     val songLoaded: MutableLiveData<Boolean> = MutableLiveData(false)
 
@@ -65,9 +72,15 @@ class EditSongViewModel : ViewModel() {
         if (isDataValid()) {
             val updatedSong = enteredSongData()
             val oldHasSections = song.value!!.hasSections
+            val updatedInitialTempo = initialTempo.value!!
+            val updatedGoalTempo = goalTempo.value!!
             (if (viewModelScope.isActive) viewModelScope else GlobalScope).launch {
                 withContext(Dispatchers.IO) {
-                    songRepository.update(updatedSong, oldHasSections)
+                    if (updatedSong.hasSections) {
+                        songRepository.update(updatedSong, oldHasSections)
+                    } else {
+                        songRepository.update(updatedSong, oldHasSections, updatedInitialTempo, updatedGoalTempo)
+                    }
                 }
             }
         }

@@ -23,7 +23,7 @@ class SongDetailsViewModel : ViewModel() {
     val daysPracticedLoaded = MutableLiveData(false)
     val progressLoaded = MutableLiveData(false)
 
-    val song: LiveData<Song> =
+    val song: LiveData<Song?> =
         Transformations.switchMap(songId) {
             songLoaded.postValue(false)
             val loadedSong = songsRepository.getById(it)
@@ -32,21 +32,25 @@ class SongDetailsViewModel : ViewModel() {
         }
 
     val sections: LiveData<List<Section>> =
-        Transformations.switchMap(song) { newSong ->
-            sectionsLoaded.postValue(false)
-            val sections = sectionRepository.getBySongId(newSong.songId)
-            sectionsLoaded.postValue(true)
-            sections
+        Transformations.switchMap(song) {
+            it?.let {
+                sectionsLoaded.postValue(false)
+                val sections = sectionRepository.getBySongId(it.songId)
+                sectionsLoaded.postValue(true)
+                sections
+            }
         }
 
     val practiceEntries: LiveData<List<PracticeEntry>> =
         Transformations.switchMap(song) {
-            practiceEntriesLoaded.postValue(false)
-            daysPracticedLoaded.postValue(false)
-            progressLoaded.postValue(false)
-            val entries = practiceEntryRepository.getBySongId(it.songId)
-            practiceEntriesLoaded.postValue(true)
-            entries
+            it?.let {
+                practiceEntriesLoaded.postValue(false)
+                daysPracticedLoaded.postValue(false)
+                progressLoaded.postValue(false)
+                val entries = practiceEntryRepository.getBySongId(it.songId)
+                practiceEntriesLoaded.postValue(true)
+                entries
+            }
         }
 
     val daysPracticed: LiveData<Int> =
@@ -121,4 +125,5 @@ class SongDetailsViewModel : ViewModel() {
             }
         }
     }
+
 }

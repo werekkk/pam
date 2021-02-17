@@ -15,13 +15,12 @@ import javax.inject.Inject
 
 class NewSongViewModel : ViewModel() {
 
-    private val _dismissView: MutableLiveData<Song?> = MutableLiveData()
 
     val songName: MutableLiveData<String> = MutableLiveData()
     val hasSections: MutableLiveData<Boolean> = MutableLiveData(false)
     val initialTempo: MutableLiveData<Int> = MutableLiveData(Tempo.DEFAULT_INITIAL)
     val goalTempo: MutableLiveData<Int> = MutableLiveData(Tempo.DEFAULT_GOAL)
-    val dismissView: LiveData<Song?> = _dismissView
+    val createdSong: MutableLiveData<LiveData<Song>> = MutableLiveData()
 
     val songNameNotEmpty = validateLiveData(songName) { Song.isSectionNameValid(it)}
     val initialTempoInRange = validateLiveData(initialTempo) { Tempo.isTempoValid(it) }
@@ -42,8 +41,7 @@ class NewSongViewModel : ViewModel() {
             val (newSong, sections) = enteredSongData()
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
-                    songRepository.addSong(newSong, sections)
-                    _dismissView.postValue(newSong)
+                    createdSong.postValue(songRepository.addSong(newSong, sections))
                 }
             }
         }
@@ -70,10 +68,6 @@ class NewSongViewModel : ViewModel() {
 
     private fun isDataValid(): Boolean {
         return checkValidators(addSongValidators)
-    }
-
-    fun onCancel() {
-        _dismissView.postValue(null)
     }
 
 }

@@ -18,65 +18,19 @@
         android:animateLayoutChanges="true"
         tools:context="jwernikowski.pam_lab.ui.dialog.song_new.NewSongDialogFragment">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/add_song"
-            android:textSize="@dimen/dialog_header_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/name"
-            app:layout_constraintBottom_toBottomOf="@+id/nameEditText"
-            app:layout_constraintEnd_toStartOf="@+id/nameEditText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/nameEditText" />
-
         <EditText
             android:id="@+id/nameEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:ems="10"
+            android:hint="@string/name"
             android:inputType="textPersonName"
             android:text="@={newSongViewModel.songName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.61"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
-
-        <Button
-            android:id="@+id/add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"
-            android:onClick="@{() -> newSongViewModel.onAddSong()}"
-            android:text="@string/add"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tempos_section" />
-
-        <Button
-            android:id="@+id/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:onClick="@{() -> newSongViewModel.onCancel()}"
-            android:text="@string/cancel"
-            app:layout_constraintBottom_toBottomOf="@+id/add"
-            app:layout_constraintEnd_toStartOf="@+id/add"
-            app:layout_constraintTop_toTopOf="@+id/add"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox
             android:id="@+id/checkBox"

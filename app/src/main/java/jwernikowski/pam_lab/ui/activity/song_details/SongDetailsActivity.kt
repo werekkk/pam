@@ -132,7 +132,7 @@ class SongDetailsActivity : AppCompatActivity() {
 
     private fun loadSong() {
         viewModel.setSong(song)
-        viewModel.song.observe(this, Observer { song -> supportActionBar?.title = song.name })
+        viewModel.song.observe(this, Observer { song -> supportActionBar?.title = song?.name })
     }
 
     private fun displayEditNameDialog() {

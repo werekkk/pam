@@ -2,6 +2,7 @@ package jwernikowski.pam_lab.db.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Transaction
 import jwernikowski.pam_lab.db.AppDatabase
 import jwernikowski.pam_lab.db.data.entity.Section
@@ -16,7 +17,7 @@ class SongRepository (
     private val database: AppDatabase
 ) {
 
-    fun getById(songId: Long): LiveData<Song> {
+    fun getById(songId: Long): LiveData<Song?> {
         return songDao.getById(songId)
     }
 
@@ -24,14 +25,17 @@ class SongRepository (
         return songDao.getAll()
     }
 
-    fun addSong(song: Song, sections: List<Section>) {
+    fun addSong(song: Song, sections: List<Section>): LiveData<Song> {
+        val result = MutableLiveData<Song>()
         database.runInTransaction {
             val savedSongId = songDao.insertOne(song)
             sections.forEach {
                 it.songId = savedSongId
                 sectionDao.insertOne(it)
             }
+            result.postValue(song.copy(songId = savedSongId))
         }
+        return result
     }
 
     fun delete(song: Song) {
@@ -56,6 +60,12 @@ class SongRepository (
                     )
                     sectionDao.insertOne(defaultSection)
                 }
+            } else if (!song.hasSections) {
+                val existingSection = sectionDao.getBySongIdBlocking(song.songId)[0]
+                sectionDao.update(existingSection.copy(
+                    initialTempo = initialTempo,
+                    goalTempo = goalTempo
+                ))
             }
             songDao.update(song)
         }

@@ -10,6 +10,9 @@ interface SectionDao {
     @Query("SELECT * FROM section WHERE songId = :songId ORDER BY `order` ASC")
     fun getBySongId(songId: Long): LiveData<List<Section>>
 
+    @Query("SELECT * FROM section WHERE songId = :songId ORDER BY `order` ASC")
+    fun getBySongIdBlocking(songId: Long): List<Section>
+
     @Query("SELECT * FROM section WHERE sectionId = :sectionId")
     fun getBySectionId(sectionId: Long): LiveData<Section>
 

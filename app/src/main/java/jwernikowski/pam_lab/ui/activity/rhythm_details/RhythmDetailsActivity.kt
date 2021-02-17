@@ -97,6 +97,7 @@ class RhythmDetailsActivity : AppCompatActivity() {
                 binding.rhythmDesigner.pause()
                 finish()
             }
+            .setNegativeButton(R.string.cancel) { _, _ -> Unit}
             .show()
     }
 

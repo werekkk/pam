@@ -8,9 +8,7 @@ import androidx.lifecycle.ViewModel
 import jwernikowski.pam_lab.db.data.entity.Section
 import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.db.repository.SectionRepository
-import jwernikowski.pam_lab.db.repository.SongRepository
 import jwernikowski.pam_lab.ui.activity.MainActivity
-import jwernikowski.pam_lab.utils.mergeLiveData
 import javax.inject.Inject
 
 class SongPracticeViewModel : ViewModel() {
