@@ -6,7 +6,7 @@
     <string name="title_notifications">Notifications</string>
 
     <string name="title_metronome">Metronome</string>
-    <string name="title_rhythms">Custom Rhythms</string>
+    <string name="title_rhythms">Rhythms</string>
     <string name="title_songs">Songs</string>
 
     <string name="nav_title_metronome">Metronome</string>
@@ -18,6 +18,7 @@
     <string name="bpm">BPM</string>
     <string name="meter">Meter</string>
     <string name="tempo">Tempo</string>
+    <string name="no_songs_message">There are no songs yet! Tap \'+\' button to add a new song.</string>
 
     <string name="add_song">Add song</string>
 
@@ -78,6 +79,7 @@
     <string name="choose_rhythm">Choose rhythm</string>
     <string name="divide_into_sections">Divide song into sections</string>
     <string name="no_rhythm">No rhythm</string>
+    <string name="no_rhythms_message">There are no rhythms yet! Tap \'+\' button to add a new rhythm.</string>
 
     <string name="sections">Sections</string>
     <string name="enter_section_name">Section name cannot be blank</string>

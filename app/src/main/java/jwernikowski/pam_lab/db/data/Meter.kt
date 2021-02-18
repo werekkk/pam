@@ -11,6 +11,9 @@ data class Meter(var measure: Int, var length: Int) {
         fun default(): Meter {
             return Meter(4, 2)
         }
+
+        fun truncateMeasure(measure: Int): Int = measure.coerceIn(MIN_MEASURE, MAX_MEASURE)
+        fun truncateLength(length: Int): Int = length.coerceIn(MIN_LENGTH, MAX_LENGTH)
     }
 
     init {
@@ -33,7 +36,7 @@ data class Meter(var measure: Int, var length: Int) {
     }
 
     fun truncate() {
-        length = length.coerceIn(MIN_LENGTH, MAX_LENGTH)
-        measure = measure.coerceIn(MIN_MEASURE, MAX_MEASURE)
+        length = truncateLength(length)
+        measure = truncateMeasure(measure)
     }
 }

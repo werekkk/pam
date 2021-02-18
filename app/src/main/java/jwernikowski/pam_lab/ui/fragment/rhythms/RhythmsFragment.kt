@@ -8,62 +8,58 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import jwernikowski.pam_lab.R
+import jwernikowski.pam_lab.databinding.FragmentRhythmsBinding
 import jwernikowski.pam_lab.db.data.entity.Rhythm
 import jwernikowski.pam_lab.ui.activity.rhythm_details.RhythmDetailsActivity
 
 class RhythmsFragment : Fragment() {
 
+    private lateinit var binding: FragmentRhythmsBinding
     private lateinit var viewModel: RhythmsViewModel
 
-    private lateinit var rhythmsRecyclerView: RecyclerView
     private lateinit var viewAdapter: RhythmsAdapter
     private lateinit var viewManager: LinearLayoutManager
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(RhythmsViewModel::class.java)
-        viewModel.allRhythms.observe(viewLifecycleOwner, Observer { newRhythms -> run{ viewAdapter.rhythms = newRhythms } })
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_rhythms, container, false)
-        initFloatingActionButton(root)
-        initRecyclerView(root)
-        return root
+        viewModel = ViewModelProvider(this).get(RhythmsViewModel::class.java)
+
+        binding = FragmentRhythmsBinding.inflate(layoutInflater)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
+        viewModel.allRhythms.observe(viewLifecycleOwner)  { viewAdapter.rhythms = it }
+
+        initFloatingActionButton()
+        initRecyclerView()
+
+        return binding.root
     }
 
-    private fun initFloatingActionButton(root: View) {
-        root.findViewById<View>(R.id.add_rhythm_fab).setOnClickListener { v -> run {
-            startRhythmDetailsActivity(null)
-        } }
+    private fun initFloatingActionButton() {
+        binding.addRhythmFab.setOnClickListener { startRhythmDetailsActivity(null) }
     }
 
-    private fun initRecyclerView(root: View) {
+    private fun initRecyclerView() {
         viewManager = LinearLayoutManager(context)
-        viewAdapter =
-            RhythmsAdapter { rhythm ->
-                run {
-                    startRhythmDetailsActivity(rhythm)
-                }
-            }
+        viewAdapter = RhythmsAdapter { startRhythmDetailsActivity(it) }
 
-        rhythmsRecyclerView = root.findViewById<RecyclerView>(R.id.rhythmsRecyclerView)
-        rhythmsRecyclerView.apply {
+        binding.rhythmsRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
         }
 
-        val divider = DividerItemDecoration(rhythmsRecyclerView.context, viewManager.orientation)
-        rhythmsRecyclerView.addItemDecoration(divider)
+        val divider = DividerItemDecoration(binding.rhythmsRecyclerView.context, viewManager.orientation)
+        binding.rhythmsRecyclerView.addItemDecoration(divider)
     }
 
     private fun startRhythmDetailsActivity(rhythm: Rhythm?) {

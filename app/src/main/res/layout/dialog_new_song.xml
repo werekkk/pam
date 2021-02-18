@@ -26,9 +26,9 @@
             android:ems="10"
             android:hint="@string/name"
             android:inputType="textPersonName"
+            android:maxLength="@integer/max_input_string_length"
             android:text="@={newSongViewModel.songName}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.61"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

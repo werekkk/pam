@@ -2,4 +2,5 @@
 <resources>
     <integer name="min_tempo">10</integer>
     <integer name="max_tempo">300</integer>
+    <integer name="max_input_string_length">500</integer>
 </resources>

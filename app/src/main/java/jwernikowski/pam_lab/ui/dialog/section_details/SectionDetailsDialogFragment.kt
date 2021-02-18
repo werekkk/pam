@@ -1,6 +1,7 @@
 package jwernikowski.pam_lab.ui.dialog.section_details
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +26,7 @@ import jwernikowski.pam_lab.ui.dialog.section_edit.EditSectionDialogFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.IllegalStateException
 
 class SectionDetailsDialogFragment(private val section: Section) : DialogFragment() {
 
@@ -35,23 +38,41 @@ class SectionDetailsDialogFragment(private val section: Section) : DialogFragmen
     private lateinit var viewModel: SectionDetailsViewModel
 
     private lateinit var practiceEntryRecyclerView: RecyclerView
+    private lateinit var dialog: AlertDialog
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return activity?.let {
+            binding = DialogSectionDetailsBinding.inflate(layoutInflater)
+
+            dialog = AlertDialog.Builder(it)
+                .setTitle(section.name)
+                .setView(binding.root)
+                .create()
+            dialog
+        } ?: throw IllegalStateException()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogSectionDetailsBinding.inflate(inflater, container, false)
-
         viewModel = ViewModelProvider(this).get(SectionDetailsViewModel::class.java)
         viewModel.setSection(section)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        observeViewModel()
         initRecyclerView()
         initButtons()
 
         return binding.root
+    }
+
+    private fun observeViewModel() {
+        viewModel.section.observe(this) {
+            dialog.setTitle(it.name)
+        }
     }
 
     private fun initRecyclerView() {

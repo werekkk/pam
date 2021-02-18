@@ -30,7 +30,7 @@ class MetronomePracticeViewModel : ViewModel() {
     private var lastRated = System.currentTimeMillis()
 
     private val _bpm: MutableLiveData<Int> = MutableLiveData()
-    val isOn: MutableLiveData<Boolean> = MutableLiveData()
+    val isOn: MutableLiveData<Boolean> = MutableLiveData(false)
     val progress: MutableLiveData<Float> = MutableLiveData()
 
     val maxBpm: MutableLiveData<Int> = MutableLiveData()

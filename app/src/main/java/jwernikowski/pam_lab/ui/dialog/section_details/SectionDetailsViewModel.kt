@@ -22,8 +22,13 @@ class SectionDetailsViewModel : ViewModel() {
 
     val practiceEntries: LiveData<List<PracticeEntry>> =
         Transformations.switchMap(section) {
-            practiceEntryRepository.getBySectionId(it.sectionId)
+            practiceEntriesLoaded.postValue(false)
+            val entries = practiceEntryRepository.getBySectionId(it.sectionId)
+            practiceEntriesLoaded.postValue(true)
+            entries
         }
+
+    val practiceEntriesLoaded = MutableLiveData(false)
 
     init {
         MainActivity.component.inject(this)

@@ -82,7 +82,7 @@ class MetronomeFragment : Fragment() {
         viewModel.isOn.observe(viewLifecycleOwner) {
             binding.metronomeView.apply { if (it) turnOn() else turnOff() }
         }
-        viewModel.bpm.observe(viewLifecycleOwner, Observer { bpm -> binding.metronomeView.bpm = bpm })
+        viewModel.bpm.observe(viewLifecycleOwner) { binding.metronomeView.bpm = it }
     }
 
     private fun initSeekBar() {

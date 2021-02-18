@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import jwernikowski.pam_lab.ui.activity.MainActivity
 
@@ -73,41 +74,24 @@ class MetronomePracticeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.lastPracticeEntry.observe(viewLifecycleOwner, Observer {
+        viewModel.lastPracticeEntry.observe(viewLifecycleOwner) {
             viewModel.bpm.postValue(it?.tempo ?: viewModel.section.value!!.initialTempo)
-        })
-        viewModel.bpm.observe(viewLifecycleOwner, Observer {
+        }
+        viewModel.bpm.observe(viewLifecycleOwner) {
             binding.bpm.text = it.toString()
             if (viewModel.minBpm.value != null && viewModel.maxBpm.value != null)
             binding.tempoSeekBar.progress = (100 * ((it - viewModel.minBpm.value!!).toFloat() / (viewModel.maxBpm.value!! - viewModel.minBpm.value!!))).toInt()
-        })
+        }
     }
 
     private fun initMetronomeView() {
-        binding.metronomeView.setOnClickListener {
-            run{
-            viewModel.isOn.let { isOn ->
-                isOn.value.let { value ->
-                    if (value != null) {
-                        isOn.value = !value
-                    } else {
-                        isOn.value = true
-                    }
-                }
-            }
-        } }
+        binding.metronomeView.setOnClickListener { viewModel.isOn.apply { value = !value!! } }
+        binding.metronomeView.onMetronomeTickListener = { player.play(Sound.WOOD) }
 
-        binding.metronomeView.onMetronomeTickListener = {
-            player.play(Sound.WOOD)
+        viewModel.isOn.observe(viewLifecycleOwner) {
+            binding.metronomeView.apply { if (it) turnOn() else turnOff() }
         }
-
-        viewModel.isOn.observe(viewLifecycleOwner, Observer { isOn -> run{
-            if (isOn)
-                binding.metronomeView.turnOn()
-            else
-                binding.metronomeView.turnOff()
-        } })
-        viewModel.bpm.observe(viewLifecycleOwner, Observer { bpm -> binding.metronomeView.bpm = bpm })
+        viewModel.bpm.observe(viewLifecycleOwner) { binding.metronomeView.bpm = it }
     }
 
     private fun initSeekBar() {
@@ -117,20 +101,15 @@ class MetronomePracticeFragment : Fragment() {
                     viewModel.bpm.value = ((viewModel.maxBpm.value!! - viewModel.minBpm.value!!) * (progress.toFloat() / 100) + viewModel.minBpm.value!!).toInt()
                 }
             }
-
             override fun onStartTrackingTouch(seekBar: SeekBar?) { }
-
             override fun onStopTrackingTouch(seekBar: SeekBar?) { }
-
         })
     }
 
     private fun undoSnackbar(entry: PracticeEntry) {
-        val sb = Snackbar.make(binding.layout, R.string.entry_added, Snackbar.LENGTH_LONG)
-        sb.setAction(R.string.undo) {
-            viewModel.removeEntry(entry)
-        }
-        sb.show()
+        Snackbar.make(binding.layout, R.string.entry_added, Snackbar.LENGTH_LONG)
+            .setAction(R.string.undo) { viewModel.removeEntry(entry) }
+            .show()
     }
 
 }

@@ -14,12 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import jwernikowski.pam_lab.R
+import jwernikowski.pam_lab.databinding.FragmentSongsBinding
 import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.ui.activity.song_details.SongDetailsActivity
 import jwernikowski.pam_lab.ui.dialog.song_new.NewSongDialogFragment
 
 class SongsFragment : Fragment() {
 
+    private lateinit var binding: FragmentSongsBinding
     private lateinit var viewModel: SongsViewModel
 
     private lateinit var songsRecyclerView: RecyclerView
@@ -31,29 +33,35 @@ class SongsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_songs, container, false)
+        viewModel = ViewModelProvider(this).get(SongsViewModel::class.java)
 
-        initRecyclerView(root)
-        initFloatingActionButton(root)
+        binding = FragmentSongsBinding.inflate(layoutInflater)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
-        return root
+        initRecyclerView()
+        initFloatingActionButton()
+
+        viewModel.allSongs.observe(viewLifecycleOwner) { viewAdapter.setSongs(it) }
+
+        return binding.root
     }
 
-    private fun initRecyclerView(root: View) {
+    private fun initRecyclerView() {
         viewManager = LinearLayoutManager(context)
 
         viewAdapter = SongsAdapter { song -> run{
             startSongDetailsActivity(song)
         }}
 
-        songsRecyclerView = root.findViewById<RecyclerView>(R.id.songs_recycler_view).apply {
+        binding.songsRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
         }
 
-        val divider = DividerItemDecoration(songsRecyclerView.context, viewManager.orientation)
-        songsRecyclerView.addItemDecoration(divider)
+        val divider = DividerItemDecoration(binding.songsRecyclerView.context, viewManager.orientation)
+        binding.songsRecyclerView.addItemDecoration(divider)
     }
 
     private fun startSongDetailsActivity(song: Song) {
@@ -62,10 +70,8 @@ class SongsFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun initFloatingActionButton(root: View) {
-        root.findViewById<View>(R.id.add_song_fab).setOnClickListener {
-            displayNewSongDialog()
-        }
+    private fun initFloatingActionButton() {
+        binding.addSongFab.setOnClickListener { displayNewSongDialog() }
     }
 
     private fun displayNewSongDialog() {
@@ -75,15 +81,6 @@ class SongsFragment : Fragment() {
                 source.removeObservers(viewLifecycleOwner)
             }
         }.show(parentFragmentManager, NewSongDialogFragment.TAG)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SongsViewModel::class.java)
-        viewModel.getAllSongs()
-            .observe(viewLifecycleOwner, Observer { newSongs -> run{
-                viewAdapter.setSongs(newSongs)
-            }})
     }
 
 }

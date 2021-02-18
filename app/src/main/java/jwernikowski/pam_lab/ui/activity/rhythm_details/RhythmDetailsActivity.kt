@@ -207,12 +207,7 @@ class RhythmDetailsActivity : AppCompatActivity() {
     }
 
     private fun displayEditMeterDialog() {
-        val dialog =
-            EditMeterDialogFragment(
-                viewModel
-            )
-        dialog.show(supportFragmentManager,
-            EditMeterDialogFragment.TAG
-        )
+        EditMeterDialogFragment(viewModel.meter.value!!) { viewModel.handleNewMeter(it) }
+            .show(supportFragmentManager, EditMeterDialogFragment.TAG)
     }
 }

@@ -45,13 +45,9 @@ class RhythmDetailsViewModel : ViewModel() {
     val meter : LiveData<Meter>
         get() = _meter
 
-    fun updateMeter(measureChange: Int, lengthChange: Int) {
-        _meter.value?.let {
-            val newMeter = Meter(it.measure + measureChange, it.length + lengthChange)
-            newMeter.truncate()
-            _meter.value = newMeter
-            rhythmLinesDto.value = RhythmLineDto.default(newMeter)
-        }
+    fun handleNewMeter(newMeter: Meter) {
+        _meter.value = newMeter
+        rhythmLinesDto.value = RhythmLineDto.default(newMeter)
     }
 
     fun newRhythm() {
