@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import jwernikowski.pam_lab.ui.activity.MainActivity
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.databinding.FragmentMetronomeBinding
@@ -69,9 +70,8 @@ class MetronomeFragment : Fragment() {
 
     private fun initMetronomeView() {
         binding.metronomeView.setOnClickListener {
-            run{
-                viewModel.isOn.apply { value = !value!! }
-        } }
+            viewModel.isOn.apply { value = !value!! }
+        }
 
         binding.metronomeView.onMetronomeTickListener = { index ->
             viewModel.chosenRhythmLines.value?.let {
@@ -79,12 +79,9 @@ class MetronomeFragment : Fragment() {
             }
         }
 
-        viewModel.isOn.observe(viewLifecycleOwner, Observer { isOn -> run{
-            if (isOn)
-                binding.metronomeView.turnOn()
-            else
-                binding.metronomeView.turnOff()
-        } })
+        viewModel.isOn.observe(viewLifecycleOwner) {
+            binding.metronomeView.apply { if (it) turnOn() else turnOff() }
+        }
         viewModel.bpm.observe(viewLifecycleOwner, Observer { bpm -> binding.metronomeView.bpm = bpm })
     }
 

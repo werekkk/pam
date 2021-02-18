@@ -10,4 +10,5 @@
     <dimen name="change_tempo_button_text_size">14sp</dimen>
     <dimen name="tempo_text_size">40sp</dimen>
     <dimen name="rhythmPlayerBtnSize">30dp</dimen>
+    <dimen name="switch_section_arrow_size">24dp</dimen>
 </resources>

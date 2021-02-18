@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pam_lab</string>
+    <string name="app_name">Practice Assistant</string>
 
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -7,7 +7,7 @@
 
     <string name="title_metronome">Metronome</string>
     <string name="title_rhythms">Custom Rhythms</string>
-    <string name="title_songs">Songs Diary</string>
+    <string name="title_songs">Songs</string>
 
     <string name="nav_title_metronome">Metronome</string>
     <string name="nav_title_rhythms">Rhythms</string>

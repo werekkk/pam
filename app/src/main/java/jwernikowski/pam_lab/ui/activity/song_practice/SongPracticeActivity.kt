@@ -1,5 +1,6 @@
 package jwernikowski.pam_lab.ui.activity.song_practice
 
+import android.media.AudioManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -28,6 +29,7 @@ class SongPracticeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        volumeControlStream = AudioManager.STREAM_MUSIC
 
         viewModel = ViewModelProvider(this).get(SongPracticeViewModel::class.java)
 

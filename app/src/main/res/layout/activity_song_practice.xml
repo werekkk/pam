@@ -17,13 +17,37 @@
         tools:context=".ui.activity.song_practice.SongPracticeActivity">
 
         <LinearLayout
-            android:id="@+id/linearLayout10"
-            android:layout_width="wrap_content"
+            android:id="@+id/linearLayout11"
+            android:layout_width="48dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="8dp"
+            android:gravity="right|center_vertical"
+            android:onClick="@{() -> viewModel.handlePreviousSection()}"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/metronome_practice"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/button"
+                android:layout_width="@dimen/switch_section_arrow_size"
+                android:layout_height="@dimen/switch_section_arrow_size"
+                android:src="@drawable/ic_baseline_navigate_before_24"
+                android:visibility="@{viewModel.hasPreviousSection ? View.VISIBLE : View.GONE}"
+                app:tint="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout12"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout11"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
@@ -38,6 +62,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="2dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{viewModel.song.hasSections ? viewModel.currentSection.name : viewModel.song.name}"
                 android:textAlignment="center"
                 android:textSize="20sp"
@@ -47,6 +73,8 @@
                 android:id="@+id/songName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{viewModel.song.hasSections ? viewModel.song.name : ``}"
                 android:textAlignment="center" />
 
@@ -63,31 +91,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout10" />
 
-        <ImageView
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_navigate_before_24"
-            app:layout_constraintBottom_toTopOf="@+id/metronome_practice"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout10"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/black"
-            android:visibility="@{viewModel.hasPreviousSection ? View.VISIBLE : View.GONE}"
-            android:onClick="@{() -> viewModel.handlePreviousSection()}"/>
-
-        <ImageView
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_navigate_next_24"
+        <LinearLayout
+            android:id="@+id/linearLayout12"
+            android:layout_width="48dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="start|center_vertical"
+            android:onClick="@{() -> viewModel.handleNextSection()}"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/metronome_practice"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout10"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/black"
-            android:visibility="@{viewModel.hasNextSection ? View.VISIBLE : View.GONE}"
-            android:onClick="@{() -> viewModel.handleNextSection()}"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/button2"
+                android:layout_width="@dimen/switch_section_arrow_size"
+                android:layout_height="@dimen/switch_section_arrow_size"
+                android:src="@drawable/ic_baseline_navigate_next_24"
+                android:visibility="@{viewModel.hasNextSection ? View.VISIBLE : View.GONE}"
+                app:tint="@color/black" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
