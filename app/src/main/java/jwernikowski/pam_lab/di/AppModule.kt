@@ -4,6 +4,7 @@ import android.app.Application
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import jwernikowski.pam_lab.db.repository.SharedPreferencesRepository
 import jwernikowski.pam_lab.sound.SoundPlayer
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,4 +19,8 @@ class AppModule (val application: Application){
     @Singleton
     @Provides
     fun providesSoundPlayer(): SoundPlayer = SoundPlayer(application)
+
+    @Singleton
+    @Provides
+    fun providesSharedPreferencesRepository(): SharedPreferencesRepository = SharedPreferencesRepository(application)
 }

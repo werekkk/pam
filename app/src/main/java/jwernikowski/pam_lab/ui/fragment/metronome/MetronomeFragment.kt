@@ -29,25 +29,21 @@ class MetronomeFragment : Fragment() {
 
     private lateinit var player: SoundPlayer
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        player = MainActivity.component.soundPlayer
-        observeViewModel()
-        initMetronomeView()
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        player = MainActivity.component.soundPlayer
+
         viewModel = ViewModelProvider(this).get(MetronomeViewModel::class.java)
 
         binding = FragmentMetronomeBinding.inflate(layoutInflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-
         binding.changeRhythmBtn.setOnClickListener { onChangeRhythmClicked() }
+        observeViewModel()
+        initMetronomeView()
         initSeekBar()
         return binding.root
     }
@@ -57,21 +53,21 @@ class MetronomeFragment : Fragment() {
         binding.metronomeView.shutdown()
     }
 
-    fun setRhythm(rhythm: Rhythm) {
-        viewModel.rhythm = rhythm
-        binding.metronomeView.rhythm = rhythm
+    override fun onPause() {
+        super.onPause()
+        viewModel.persistPreviousTempoAndRhythm()
     }
 
     private fun observeViewModel() {
-        viewModel.bpm.observe(viewLifecycleOwner, Observer {
+        viewModel.bpm.observe(viewLifecycleOwner) {
             binding.tempoSeekBar.progress = (100 * ((it - MetronomeViewModel.MIN_BPM).toFloat() / (MetronomeViewModel.MAX_BPM - MetronomeViewModel.MIN_BPM))).toInt()
-        })
+        }
+        viewModel.rhythm.observe(viewLifecycleOwner) { binding.metronomeView.rhythm = it ?: Rhythm.DEFAULT_RHYTHM }
+        viewModel.chosenRhythmLines.observe(viewLifecycleOwner) {}
     }
 
     private fun initMetronomeView() {
-        binding.metronomeView.setOnClickListener {
-            viewModel.isOn.apply { value = !value!! }
-        }
+        binding.metronomeView.setOnClickListener { viewModel.isOn.apply { value = !value!! } }
 
         binding.metronomeView.onMetronomeTickListener = { index ->
             viewModel.chosenRhythmLines.value?.let {
@@ -100,6 +96,10 @@ class MetronomeFragment : Fragment() {
     private fun onChangeRhythmClicked() {
         ChangeRhythmDialogFragment { setRhythm(it) }
             .show(parentFragmentManager, ChangeRhythmDialogFragment.TAG)
+    }
+
+    private fun setRhythm(rhythm: Rhythm) {
+        viewModel.setRhythm(rhythm)
     }
 
 }

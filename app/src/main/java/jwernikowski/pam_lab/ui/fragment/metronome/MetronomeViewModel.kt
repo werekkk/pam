@@ -1,20 +1,16 @@
 package jwernikowski.pam_lab.ui.fragment.metronome
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import jwernikowski.pam_lab.ui.activity.MainActivity
 import jwernikowski.pam_lab.db.data.entity.Rhythm
 import jwernikowski.pam_lab.db.repository.RhythmLineRepository
 import jwernikowski.pam_lab.db.repository.RhythmRepository
+import jwernikowski.pam_lab.db.repository.SharedPreferencesRepository
 import jwernikowski.pam_lab.dto.RhythmLineDto
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import jwernikowski.pam_lab.ui.fragment.shared.MetronomeViewViewModel
 import javax.inject.Inject
 
-open class MetronomeViewModel : ViewModel() {
+open class MetronomeViewModel : MetronomeViewViewModel() {
 
     companion object {
         const val MAX_BPM = 300
@@ -23,58 +19,24 @@ open class MetronomeViewModel : ViewModel() {
 
     init {
         MainActivity.component.inject(this)
+        initViewModel(
+            sharedPreferencesRepository.previousTempo,
+            sharedPreferencesRepository.previousRhythmId
+        )
     }
 
     @Inject
-    lateinit var rhythmRepository: RhythmRepository
-    @Inject
-    lateinit var rhythmLineRepository: RhythmLineRepository
+    lateinit var sharedPreferencesRepository: SharedPreferencesRepository
 
-    private val _bpm: MutableLiveData<Int> = MutableLiveData()
-    val isOn: MutableLiveData<Boolean> = MutableLiveData(false)
-    val rhythms: LiveData<List<Rhythm>> = rhythmRepository.getAll()
-
-    var rhythm: Rhythm = Rhythm.DEFAULT_RHYTHM
-    set(value) {
-        field = value
-        _bpm.value = value.defaultBpm
-        if (value == Rhythm.DEFAULT_RHYTHM)
-            chosenRhythmLines.value = RhythmLineDto.DEFAULT_RHYTHM_LINES
-        else {
-            viewModelScope.launch {
-                withContext(Dispatchers.IO) {
-                    val newLines = RhythmLineDto.fromRhythmLines(rhythmLineRepository.getByRhythmId(value.rhythmId))
-                    withContext(Dispatchers.Main) {
-                        chosenRhythmLines.value = newLines
-                    }
-                }
-            }
-        }
-    }
-    val chosenRhythmLines: MutableLiveData<List<RhythmLineDto>> = MutableLiveData()
-
-
-    val bpm: MutableLiveData<Int>
-    get() = _bpm
-
-    init {
-        _bpm.value = 140
-        isOn.value = false
-        chosenRhythmLines.value = RhythmLineDto.DEFAULT_RHYTHM_LINES
+    override fun setRhythm(rhythm: Rhythm) {
+        super.setRhythm(rhythm)
+        bpm.value = rhythm.defaultBpm
     }
 
-    fun increaseBpm(value: Int) {
-        _bpm.value?.let {
-            val newBpm = it + value
-            if (newBpm < MIN_BPM)
-                _bpm.value =
-                    MIN_BPM
-            else if (newBpm > MAX_BPM)
-                _bpm.value =
-                    MAX_BPM
-            else
-                _bpm.value = newBpm
-        }
+    fun persistPreviousTempoAndRhythm() {
+        sharedPreferencesRepository.previousTempo = bpm.value
+        val previousRhythmId = rhythm.value!!.rhythmId.let { if (it == 0L) null else it }
+        sharedPreferencesRepository.previousRhythmId = previousRhythmId
     }
 
 }

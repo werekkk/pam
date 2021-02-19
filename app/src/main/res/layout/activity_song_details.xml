@@ -61,8 +61,8 @@
                             android:layout_height="50dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="@{`` + viewModel.daysPracticed}"
                             android:textSize="@dimen/statistics_big_numbers_text_size"
+                            android:textStyle="bold"
                             android:visibility="@{viewModel.daysPracticedLoaded ? View.VISIBLE : View.GONE}" />
 
                         <ProgressBar
@@ -73,14 +73,14 @@
                             android:layout_weight="1"
                             android:visibility="@{viewModel.daysPracticedLoaded ? View.GONE : View.VISIBLE}" />
 
-                        <TextView
+                        <jwernikowski.pam_lab.ui.view.ColoredPercentageTextView
                             android:id="@+id/progress"
                             android:layout_width="100dp"
                             android:layout_height="50dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="@{(int)(viewModel.progress * 100) + `%`}"
                             android:textSize="@dimen/statistics_big_numbers_text_size"
+                            android:textStyle="bold"
                             android:visibility="@{viewModel.progressLoaded ? View.VISIBLE : View.GONE}" />
 
                         <ProgressBar

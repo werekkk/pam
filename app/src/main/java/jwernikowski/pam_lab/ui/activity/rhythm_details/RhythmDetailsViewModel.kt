@@ -59,17 +59,17 @@ class RhythmDetailsViewModel : ViewModel() {
 
     fun loadRhythm(rhythmId: Long) {
         viewModelScope.launch {
-            lateinit var rhythm: Rhythm
-            lateinit var rhythmLines: List<RhythmLine>
             withContext(Dispatchers.IO) {
-                rhythm = rhythmRepository.getById(rhythmId)
-                rhythmLines = rhythmLineRepository.getByRhythmId(rhythmId)
-                withContext(Dispatchers.Main) {
-                    rhythmDto.value = RhythmDto(rhythm!!)
-                    tempo.value = rhythmDto.value!!.defaultBpm
-                    _meter.value = rhythmDto.value!!.meter
-                    rhythmLinesDto.value = RhythmLineDto.fromRhythmLines(rhythmLines!!)
+                rhythmRepository.getByIdBlocking(rhythmId)?.let {
+                    val rhythmLines = rhythmLineRepository.getByRhythmIdBlocking(rhythmId)
+                    withContext(Dispatchers.Main) {
+                        rhythmDto.value = RhythmDto(it)
+                        tempo.value = rhythmDto.value!!.defaultBpm
+                        _meter.value = rhythmDto.value!!.meter
+                        rhythmLinesDto.value = RhythmLineDto.fromRhythmLines(rhythmLines)
+                    }
                 }
+
             }
         }
     }

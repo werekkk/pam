@@ -65,11 +65,7 @@ class PracticeEntryAdapter(val clickListener: (PracticeEntry) -> Unit) :
             PracticeEntryViewHolder(
                 layout
             )
-        vh.itemView.setOnClickListener { v ->
-            run {
-                clickListener(vh.entry)
-            }
-        }
+        vh.itemView.setOnClickListener { clickListener(vh.entry) }
         return vh
     }
 

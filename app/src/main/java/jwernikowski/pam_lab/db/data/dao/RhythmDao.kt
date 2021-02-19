@@ -10,7 +10,10 @@ interface RhythmDao {
     fun getAll(): LiveData<List<Rhythm>>
 
     @Query("SELECT * FROM rhythm WHERE rhythmId = :rhythmId")
-    fun getById(rhythmId: Long): Rhythm
+    fun getById(rhythmId: Long): LiveData<Rhythm?>
+
+    @Query("SELECT * FROM rhythm WHERE rhythmId = :rhythmId")
+    fun getByIdBlocking(rhythmId: Long): Rhythm?
 
     @Insert
     fun insertOne(rhythm: Rhythm): Long

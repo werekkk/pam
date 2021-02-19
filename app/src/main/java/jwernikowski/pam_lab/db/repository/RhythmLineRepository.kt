@@ -1,11 +1,16 @@
 package jwernikowski.pam_lab.db.repository
 
+import androidx.lifecycle.LiveData
 import jwernikowski.pam_lab.db.data.entity.RhythmLine
 import jwernikowski.pam_lab.db.data.dao.RhythmLineDao
 
 class RhythmLineRepository(private val rhythmLineDao: RhythmLineDao) {
-    fun getByRhythmId(rhythmId: Long): List<RhythmLine> {
+    fun getByRhythmId(rhythmId: Long): LiveData<List<RhythmLine>> {
         return rhythmLineDao.getByRhythmId(rhythmId)
+    }
+
+    fun getByRhythmIdBlocking(rhythmId: Long): List<RhythmLine> {
+        return rhythmLineDao.getByRhythmIdBlocking(rhythmId)
     }
 
     fun add(rhythmLine: RhythmLine): Long {

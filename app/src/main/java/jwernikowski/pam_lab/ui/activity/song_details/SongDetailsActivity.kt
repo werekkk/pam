@@ -1,5 +1,6 @@
 package jwernikowski.pam_lab.ui.activity.song_details
 
+import android.animation.ValueAnimator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,7 +32,8 @@ import kotlinx.coroutines.withContext
 class SongDetailsActivity : AppCompatActivity() {
 
     companion object {
-        val SONG_TAG = "song"
+        const val SONG_TAG = "song"
+        const val ANIMATION_DURATION = 300L
     }
 
     private lateinit var binding: ActivitySongDetailsBinding
@@ -44,6 +47,9 @@ class SongDetailsActivity : AppCompatActivity() {
     private lateinit var sectionsRecyclerView: RecyclerView
     private lateinit var sectionViewManager: LinearLayoutManager
     private lateinit var sectionsViewAdapter: SectionAdapter
+
+    private var previousDaysPracticed = 0
+    private var previousProgress = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,11 +69,38 @@ class SongDetailsActivity : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         song = intent.extras?.get(SONG_TAG) as Song
-        loadSong()
 
+        loadSong()
+        observeViewModel()
         initRecyclerViews()
+
         binding.practiceNow.setOnClickListener { handlePracticeNow() }
         binding.newSection.setOnClickListener { displayNewSectionDialog() }
+    }
+
+    private fun loadSong() {
+        viewModel.setSong(song)
+        viewModel.song.observe(this, Observer { song -> supportActionBar?.title = song?.name })
+    }
+
+    private fun observeViewModel() {
+        viewModel.progress.observe(this) {
+            val newProgress = (it*100).toInt()
+            ValueAnimator.ofInt(previousProgress, newProgress).apply {
+                duration = ANIMATION_DURATION
+                addUpdateListener { binding.progress.setPercentage(it.animatedValue as Int) }
+                start()
+            }
+            previousProgress = newProgress
+        }
+        viewModel.daysPracticed.observe(this) {
+            ValueAnimator.ofInt(previousDaysPracticed, it).apply {
+                duration = ANIMATION_DURATION
+                addUpdateListener { binding.daysPracticed.text = "${it.animatedValue as Int}" }
+                start()
+            }
+            previousDaysPracticed = it
+        }
     }
 
     private fun initRecyclerViews() {
@@ -82,8 +115,8 @@ class SongDetailsActivity : AppCompatActivity() {
                 handleShowSectionDetails(it)
             })
 
-        viewModel.practiceEntries.observe(this, Observer { practiceEntryViewAdapter.entries = it })
-        viewModel.sections.observe(this, Observer { sectionsViewAdapter.sections = it })
+        viewModel.practiceEntries.observe(this) { practiceEntryViewAdapter.entries = it }
+        viewModel.sections.observe(this) { sectionsViewAdapter.sections = it }
 
         practiceEntriesRecyclerView = binding.practiceEntriesRecycler.apply {
             setHasFixedSize(true)
@@ -128,11 +161,6 @@ class SongDetailsActivity : AppCompatActivity() {
             R.id.delete -> displayDeleteSongDialog()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun loadSong() {
-        viewModel.setSong(song)
-        viewModel.song.observe(this, Observer { song -> supportActionBar?.title = song?.name })
     }
 
     private fun displayEditNameDialog() {

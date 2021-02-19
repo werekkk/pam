@@ -36,10 +36,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="16dp"
+            android:gravity="center"
             android:text="@string/no_songs_message"
             android:textAlignment="center"
             android:textColor="?android:attr/textColorHint"
-            android:visibility="@{viewModel.songsLoaded &amp;&amp; viewModel.allSongs.size() == 0 ? View.VISIBLE : View.GONE}"/>
+            android:visibility="@{viewModel.songsLoaded &amp;&amp; viewModel.allSongs.size() == 0 ? View.VISIBLE : View.GONE}" />
 
         <ProgressBar
             android:id="@+id/progressBar"

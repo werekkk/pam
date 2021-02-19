@@ -1,12 +1,16 @@
 package jwernikowski.pam_lab.db.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import jwernikowski.pam_lab.db.data.entity.RhythmLine
 
 @Dao
 interface RhythmLineDao {
     @Query("SELECT * FROM rhythmLine WHERE rhythmId = :rhythmId ORDER BY sound ASC")
-    fun getByRhythmId(rhythmId: Long): List<RhythmLine>
+    fun getByRhythmId(rhythmId: Long): LiveData<List<RhythmLine>>
+
+    @Query("SELECT * FROM rhythmLine WHERE rhythmId = :rhythmId ORDER BY sound ASC")
+    fun getByRhythmIdBlocking(rhythmId: Long): List<RhythmLine>
 
     @Insert
     fun insertOne(rhythmLine: RhythmLine): Long

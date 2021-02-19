@@ -16,10 +16,12 @@ import jwernikowski.pam_lab.ui.activity.MainActivity
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.databinding.FragmentMetronomePracticeBinding
 import jwernikowski.pam_lab.db.data.entity.PracticeEntry
+import jwernikowski.pam_lab.db.data.entity.Rhythm
 import jwernikowski.pam_lab.db.data.entity.Section
 import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.sound.Sound
 import jwernikowski.pam_lab.sound.SoundPlayer
+import jwernikowski.pam_lab.ui.dialog.rhythm_change.ChangeRhythmDialogFragment
 
 class MetronomePracticeFragment : Fragment() {
 
@@ -30,17 +32,6 @@ class MetronomePracticeFragment : Fragment() {
 
     companion object {
         const val TAG = "metronome_practice_fragment"
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        player = MainActivity.component.soundPlayer
-
-        viewModel.onRatedListener = {entry -> run{
-            undoSnackbar(entry)
-        }}
-        observeViewModel()
-        initMetronomeView()
     }
 
     fun setSong(song: Song) {
@@ -57,13 +48,17 @@ class MetronomePracticeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMetronomePracticeBinding.inflate(layoutInflater, container, false)
+        player = MainActivity.component.soundPlayer
 
         viewModel = ViewModelProvider(this).get(MetronomePracticeViewModel::class.java)
 
+        binding = FragmentMetronomePracticeBinding.inflate(layoutInflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        binding.setRhythmBtn.setOnClickListener { onChangeRhythmClicked() }
+        observeViewModel()
+        initMetronomeView()
         initSeekBar()
         return binding.root
     }
@@ -74,19 +69,27 @@ class MetronomePracticeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewModel.onRatedListener = {entry -> run{
+            undoSnackbar(entry)
+        }}
         viewModel.lastPracticeEntry.observe(viewLifecycleOwner) {
             viewModel.bpm.postValue(it?.tempo ?: viewModel.section.value!!.initialTempo)
         }
         viewModel.bpm.observe(viewLifecycleOwner) {
-            binding.bpm.text = it.toString()
-            if (viewModel.minBpm.value != null && viewModel.maxBpm.value != null)
             binding.tempoSeekBar.progress = (100 * ((it - viewModel.minBpm.value!!).toFloat() / (viewModel.maxBpm.value!! - viewModel.minBpm.value!!))).toInt()
         }
+        viewModel.rhythm.observe(viewLifecycleOwner) { binding.metronomeView.rhythm = it ?: Rhythm.DEFAULT_RHYTHM }
+        viewModel.chosenRhythmLines.observe(viewLifecycleOwner) {}
     }
 
     private fun initMetronomeView() {
         binding.metronomeView.setOnClickListener { viewModel.isOn.apply { value = !value!! } }
-        binding.metronomeView.onMetronomeTickListener = { player.play(Sound.WOOD) }
+
+        binding.metronomeView.onMetronomeTickListener = { index ->
+            viewModel.chosenRhythmLines.value?.let {
+                player.playRhythmLines(it, index)
+            }
+        }
 
         viewModel.isOn.observe(viewLifecycleOwner) {
             binding.metronomeView.apply { if (it) turnOn() else turnOff() }
@@ -110,6 +113,15 @@ class MetronomePracticeFragment : Fragment() {
         Snackbar.make(binding.layout, R.string.entry_added, Snackbar.LENGTH_LONG)
             .setAction(R.string.undo) { viewModel.removeEntry(entry) }
             .show()
+    }
+
+    private fun onChangeRhythmClicked() {
+        ChangeRhythmDialogFragment { setRhythm(it) }
+            .show(parentFragmentManager, ChangeRhythmDialogFragment.TAG)
+    }
+
+    private fun setRhythm(rhythm: Rhythm) {
+        viewModel.setRhythm(rhythm)
     }
 
 }

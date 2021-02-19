@@ -10,8 +10,12 @@ class RhythmRepository(private val rhythmDao: RhythmDao) {
         return rhythmDao.getAll()
     }
 
-    fun getById(rhythmId: Long): Rhythm {
+    fun getById(rhythmId: Long): LiveData<Rhythm?> {
         return rhythmDao.getById(rhythmId)
+    }
+
+    fun getByIdBlocking(rhythmId: Long): Rhythm? {
+        return rhythmDao.getByIdBlocking(rhythmId)
     }
 
     fun add(rhythm: Rhythm): Long {
