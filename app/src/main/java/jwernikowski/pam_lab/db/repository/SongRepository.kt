@@ -9,6 +9,7 @@ import jwernikowski.pam_lab.db.data.entity.Section
 import jwernikowski.pam_lab.db.data.dao.SectionDao
 import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.db.data.dao.SongDao
+import jwernikowski.pam_lab.db.data.helper_entity.SongProgressUpdate
 import jwernikowski.pam_lab.utils.Tempo
 
 class SongRepository (
@@ -69,6 +70,10 @@ class SongRepository (
             }
             songDao.update(song)
         }
+    }
+
+    fun progressUpdate(progressUpdate: SongProgressUpdate) {
+        songDao.progressUpdate(progressUpdate)
     }
 
 }

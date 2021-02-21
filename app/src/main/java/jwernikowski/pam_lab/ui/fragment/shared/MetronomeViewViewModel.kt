@@ -52,8 +52,8 @@ open class MetronomeViewViewModel : ViewModel() {
         this.rhythmId.value = rhythmId
     }
 
-    open fun setRhythm(rhythm: Rhythm) {
-        rhythmId.value = rhythm.rhythmId
+    open fun setRhythm(rhythmId: Long?) {
+        this.rhythmId.value = rhythmId
     }
 
     fun increaseBpm(value: Int) {

@@ -81,6 +81,15 @@
                 android:text="@{``+viewModel.section.goalTempo}"
                 android:textAlignment="center"
                 android:textSize="18sp" />
+
+            <jwernikowski.pam_lab.ui.view.ColoredPercentageTextView
+                android:id="@+id/section_progress"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -110,6 +119,16 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/goal_tempo"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/progress"
                 android:textAlignment="center"
                 android:textSize="12sp" />
         </LinearLayout>

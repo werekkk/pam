@@ -5,7 +5,7 @@ import jwernikowski.pam_lab.db.data.entity.RhythmLine
 import jwernikowski.pam_lab.sound.Sound
 import jwernikowski.pam_lab.db.data.Converters
 
-class RhythmLineDto(val sound: Sound, var beats: Array<Boolean>) {
+data class RhythmLineDto(val sound: Sound, var beats: Array<Boolean>) {
 
     constructor(rhythmLine: RhythmLine) : this(rhythmLine.sound, rhythmLine.beats.clone())
 
@@ -22,8 +22,20 @@ class RhythmLineDto(val sound: Sound, var beats: Array<Boolean>) {
         fun fromRhythmLines(rhythmLines: List<RhythmLine>): List<RhythmLineDto> {
             return rhythmLines.map { line -> RhythmLineDto(line) }
         }
+
+        fun copyOf(rhythmLines: List<RhythmLineDto>): List<RhythmLineDto> {
+            val list = ArrayList<RhythmLineDto>(rhythmLines.size)
+            rhythmLines.forEach { list.add(it.copy(beats = it.beats.copyOf())) }
+            return list
+        }
     }
 
     override fun toString(): String = "$sound ${Converters.toBoolArrayString(beats)}"
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is RhythmLineDto) {
+            sound == other.sound && beats.contentDeepEquals(other.beats)
+        } else false
+    }
 }
 

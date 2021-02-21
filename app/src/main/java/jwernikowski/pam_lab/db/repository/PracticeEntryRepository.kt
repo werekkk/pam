@@ -14,6 +14,10 @@ class PracticeEntryRepository (private val practiceEntryDao: PracticeEntryDao) {
         return practiceEntryDao.getBySectionId(sectionId)
     }
 
+    fun getBySectionIdBlocking(sectionId: Long): List<PracticeEntry> {
+        return practiceEntryDao.getBySectionIdBlocking(sectionId)
+    }
+
     fun add(practiceEntry: PracticeEntry): Long {
         return practiceEntryDao.insertOne(practiceEntry)
     }

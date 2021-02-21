@@ -1,9 +1,11 @@
 package jwernikowski.pam_lab.ui.dialog.section_details
 
 import androidx.lifecycle.*
+import jwernikowski.pam_lab.db.data.dao.SectionDao
 import jwernikowski.pam_lab.ui.activity.MainActivity
 import jwernikowski.pam_lab.db.data.entity.PracticeEntry
 import jwernikowski.pam_lab.db.data.entity.Section
+import jwernikowski.pam_lab.db.data.helper_entity.SectionProgressUpdate
 import jwernikowski.pam_lab.db.repository.PracticeEntryRepository
 import jwernikowski.pam_lab.db.repository.SectionRepository
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +31,13 @@ class SectionDetailsViewModel : ViewModel() {
         }
 
     val practiceEntriesLoaded = MutableLiveData(false)
+
+    val progress: LiveData<Int> =
+        Transformations.map(practiceEntries) { e ->
+            section.value?.let {
+                (PracticeEntry.calculateProgress(e, it.initialTempo, it.goalTempo)*100).toInt()
+            } ?: 0
+        }
 
     init {
         MainActivity.component.inject(this)
@@ -61,6 +70,20 @@ class SectionDetailsViewModel : ViewModel() {
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     sectionRepository.delete(it)
+                }
+            }
+        }
+    }
+
+    fun updateProgress() {
+        val section = section.value
+        val progress = progress.value ?: 0
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                section?.let {
+                    sectionRepository.progressUpdate(
+                        SectionProgressUpdate(it.sectionId, progress)
+                    )
                 }
             }
         }

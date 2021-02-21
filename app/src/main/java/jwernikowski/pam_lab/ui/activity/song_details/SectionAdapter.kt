@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.db.data.entity.Section
+import jwernikowski.pam_lab.ui.view.ColoredPercentageTextView
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -48,6 +49,7 @@ class SectionAdapter(
     ) : RecyclerView.ViewHolder(itemView) {
 
         private val sectionName: TextView = itemView.findViewById(R.id.section_name)
+        private val sectionProgress: ColoredPercentageTextView = itemView.findViewById(R.id.section_progress)
         private val practiceBtn: Button = itemView.findViewById(R.id.practice_btn)
 
         private lateinit var _section: Section
@@ -57,6 +59,7 @@ class SectionAdapter(
             set(s) {
                 _section = s
                 sectionName.text = s.name
+                sectionProgress.setPercentage(s.previousProgress)
             }
 
         init {

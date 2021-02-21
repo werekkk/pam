@@ -39,9 +39,7 @@ class MetronomePracticeFragment : Fragment() {
     }
 
     fun setSection(section: Section) {
-        viewModel.section.postValue(section)
-        viewModel.minBpm.value = section.initialTempo
-        viewModel.maxBpm.value = section.goalTempo
+        viewModel.setSection(section)
     }
 
     override fun onCreateView(
@@ -51,6 +49,7 @@ class MetronomePracticeFragment : Fragment() {
         player = MainActivity.component.soundPlayer
 
         viewModel = ViewModelProvider(this).get(MetronomePracticeViewModel::class.java)
+        viewModel.init(this)
 
         binding = FragmentMetronomePracticeBinding.inflate(layoutInflater, container, false)
         binding.viewModel = viewModel
@@ -68,13 +67,13 @@ class MetronomePracticeFragment : Fragment() {
         binding.metronomeView.shutdown()
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.persistPreviousBpmAndRhythm()
+    }
+
     private fun observeViewModel() {
-        viewModel.onRatedListener = {entry -> run{
-            undoSnackbar(entry)
-        }}
-        viewModel.lastPracticeEntry.observe(viewLifecycleOwner) {
-            viewModel.bpm.postValue(it?.tempo ?: viewModel.section.value!!.initialTempo)
-        }
+        viewModel.onRatedListener = { undoSnackbar(it) }
         viewModel.bpm.observe(viewLifecycleOwner) {
             binding.tempoSeekBar.progress = (100 * ((it - viewModel.minBpm.value!!).toFloat() / (viewModel.maxBpm.value!! - viewModel.minBpm.value!!))).toInt()
         }
@@ -121,7 +120,7 @@ class MetronomePracticeFragment : Fragment() {
     }
 
     private fun setRhythm(rhythm: Rhythm) {
-        viewModel.setRhythm(rhythm)
+        viewModel.setRhythm(rhythm.rhythmId)
     }
 
 }

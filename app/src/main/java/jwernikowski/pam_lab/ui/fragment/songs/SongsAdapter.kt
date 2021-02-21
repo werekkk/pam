@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.db.data.entity.Song
+import jwernikowski.pam_lab.ui.view.ColoredPercentageTextView
 
 class SongsAdapter(val clickListener: (Song) -> Unit) :
     RecyclerView.Adapter<SongsAdapter.SongsViewHolder>() {
@@ -14,7 +15,9 @@ class SongsAdapter(val clickListener: (Song) -> Unit) :
     private var songs: List<Song> = ArrayList()
 
     class SongsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         private val songName: TextView = itemView.findViewById(R.id.song_name)
+        private val songProgress: ColoredPercentageTextView = itemView.findViewById(R.id.song_progress)
 
         private lateinit var _song: Song
 
@@ -23,6 +26,7 @@ class SongsAdapter(val clickListener: (Song) -> Unit) :
             set(s) {
                 _song = s
                 songName.text = s.name
+                songProgress.setPercentage(song.previousProgress)
             }
     }
 

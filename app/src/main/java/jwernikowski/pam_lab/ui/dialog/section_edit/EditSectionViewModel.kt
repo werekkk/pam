@@ -42,8 +42,10 @@ class EditSectionViewModel : ViewModel() {
         goalTempo.postValue(newSection.goalTempo)
     }
 
-    fun handleSave() {
-        if (isDataValid()) {
+    /** @return true if data is valid and ViewModel is saving updates; false otherwise */
+    fun handleSave(): Boolean {
+        val shouldSave = isDataValid()
+        if (shouldSave) {
             val updatedSection = enteredSectionData()
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
@@ -51,15 +53,15 @@ class EditSectionViewModel : ViewModel() {
                 }
             }
         }
+        return shouldSave
     }
 
     private fun enteredSectionData(): Section {
-        val updatedSection = section.copy(
+        return section.copy(
             name = sectionName.value!!,
             initialTempo = initialTempo.value!!,
             goalTempo = goalTempo.value!!
         )
-        return updatedSection
     }
 
     private fun isDataValid(): Boolean {

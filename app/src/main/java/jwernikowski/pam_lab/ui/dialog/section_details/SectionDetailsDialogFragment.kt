@@ -1,8 +1,10 @@
 package jwernikowski.pam_lab.ui.dialog.section_details
 
+import android.animation.ValueAnimator
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +24,7 @@ import jwernikowski.pam_lab.db.data.entity.PracticeEntry
 import jwernikowski.pam_lab.db.data.entity.Section
 import jwernikowski.pam_lab.ui.activity.song_details.EntrySwipeToDeleteCallback
 import jwernikowski.pam_lab.ui.activity.song_details.PracticeEntryAdapter
+import jwernikowski.pam_lab.ui.activity.song_details.SongDetailsActivity
 import jwernikowski.pam_lab.ui.dialog.section_edit.EditSectionDialogFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,6 +35,7 @@ class SectionDetailsDialogFragment(private val section: Section) : DialogFragmen
 
     companion object {
         val TAG = "SectionDetailsDialogFragment"
+        val ANIMATION_DURATION = 300L
     }
 
     private lateinit var binding: DialogSectionDetailsBinding
@@ -39,6 +43,8 @@ class SectionDetailsDialogFragment(private val section: Section) : DialogFragmen
 
     private lateinit var practiceEntryRecyclerView: RecyclerView
     private lateinit var dialog: AlertDialog
+
+    private var previousProgress = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -69,9 +75,25 @@ class SectionDetailsDialogFragment(private val section: Section) : DialogFragmen
         return binding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.i("12345", "ON PAUSE")
+        viewModel.updateProgress()
+    }
+
     private fun observeViewModel() {
         viewModel.section.observe(this) {
             dialog.setTitle(it.name)
+            binding.sectionProgress.setPercentage(it.previousProgress)
+        }
+        viewModel.progress.observe(this) {
+            val newProgress = (it)
+            ValueAnimator.ofInt(previousProgress, newProgress).apply {
+                duration = ANIMATION_DURATION
+                addUpdateListener { binding.sectionProgress.setPercentage(it.animatedValue as Int) }
+                start()
+            }
+            previousProgress = newProgress
         }
     }
 

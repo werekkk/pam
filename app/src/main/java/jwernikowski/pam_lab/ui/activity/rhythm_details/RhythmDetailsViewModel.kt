@@ -39,6 +39,8 @@ class RhythmDetailsViewModel : ViewModel() {
     val rhythmDto: MutableLiveData<RhythmDto> = MutableLiveData()
     val rhythmLinesDto: MutableLiveData<List<RhythmLineDto>> = MutableLiveData()
 
+    lateinit var initialRhythmLinesDto: List<RhythmLineDto>
+
     val tempo: MutableLiveData<Int> = MutableLiveData()
 
     private val _meter: MutableLiveData<Meter> = MutableLiveData()
@@ -67,6 +69,7 @@ class RhythmDetailsViewModel : ViewModel() {
                         tempo.value = rhythmDto.value!!.defaultBpm
                         _meter.value = rhythmDto.value!!.meter
                         rhythmLinesDto.value = RhythmLineDto.fromRhythmLines(rhythmLines)
+                        initialRhythmLinesDto = RhythmLineDto.copyOf(rhythmLinesDto.value!!)
                     }
                 }
 

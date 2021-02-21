@@ -15,6 +15,6 @@ fun checkValidators(validators: Array<MediatorLiveData<Boolean>>): Boolean {
     return validators.fold(true) { prev, validator ->
         val value = validator.value ?: false
         if (!value) validator.postValue(value)
-        return value && prev
+        value && prev
     }
 }

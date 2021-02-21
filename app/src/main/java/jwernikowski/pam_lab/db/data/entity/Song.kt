@@ -9,7 +9,8 @@ import java.io.Serializable
 data class Song (
     val name: String,
     val hasSections: Boolean,
-    @PrimaryKey(autoGenerate = true) var songId: Long = 0
+    @PrimaryKey(autoGenerate = true) var songId: Long = 0,
+    var previousProgress: Int = 0
 ) : Serializable {
 
     companion object {

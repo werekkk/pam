@@ -5,10 +5,16 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity(foreignKeys = [ForeignKey(entity = Song::class,
-parentColumns = ["songId"],
-childColumns = ["songId"],
-onDelete = ForeignKey.CASCADE)]
+@Entity(foreignKeys = [
+    ForeignKey(entity = Song::class,
+        parentColumns = ["songId"],
+        childColumns = ["songId"],
+        onDelete = ForeignKey.CASCADE),
+    ForeignKey(entity = Rhythm::class,
+        parentColumns = ["rhythmId"],
+        childColumns = ["previousRhythmId"],
+        onDelete = ForeignKey.SET_NULL)
+]
 )
 data class Section(
     val name: String,
@@ -16,7 +22,10 @@ data class Section(
     val goalTempo: Int,
     val order: Int,
     var songId: Long = 0L,
-    @PrimaryKey(autoGenerate = true) var sectionId: Long = 0L
+    @PrimaryKey(autoGenerate = true) var sectionId: Long = 0L,
+    var previousProgress: Int = 0,
+    var previousBpm: Int = initialTempo,
+    var previousRhythmId: Long? = null
 ) : Serializable {
 
     companion object {

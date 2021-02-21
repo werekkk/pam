@@ -1,8 +1,13 @@
 package jwernikowski.pam_lab.db.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.room.ColumnInfo
+import androidx.room.Entity
 import jwernikowski.pam_lab.db.data.entity.Section
 import jwernikowski.pam_lab.db.data.dao.SectionDao
+import jwernikowski.pam_lab.db.data.helper_entity.SectionPreviousBpmAndRhythmUpdate
+import jwernikowski.pam_lab.db.data.helper_entity.SectionProgressUpdate
 
 class SectionRepository (private val sectionDao: SectionDao) {
 
@@ -20,6 +25,14 @@ class SectionRepository (private val sectionDao: SectionDao) {
 
     fun update(section: Section) {
         sectionDao.update(section)
+    }
+
+    fun progressUpdate(update: SectionProgressUpdate) {
+        sectionDao.progressUpdate(update)
+    }
+
+    fun previousBpmAndRhythmUpdate(update: SectionPreviousBpmAndRhythmUpdate) {
+        sectionDao.previousBpmAndRhythmUpdate(update)
     }
 
     fun update(sections: List<Section>) {

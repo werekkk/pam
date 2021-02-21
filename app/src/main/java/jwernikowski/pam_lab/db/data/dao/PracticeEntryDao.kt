@@ -16,6 +16,9 @@ interface PracticeEntryDao {
     @Query("SELECT * FROM practiceEntry pe WHERE pe.sectionId = :sectionId ORDER BY date ASC")
     fun getBySectionId(sectionId: Long): LiveData<List<PracticeEntry>>
 
+    @Query("SELECT * FROM practiceEntry pe WHERE pe.sectionId = :sectionId ORDER BY date ASC")
+    fun getBySectionIdBlocking(sectionId: Long): List<PracticeEntry>
+
     @Insert
     fun insertOne(practiceEntry: PracticeEntry): Long
 

@@ -26,12 +26,12 @@ class SoundPlayer(context: Context) {
     }
 
     fun playRhythmLines(rhythmLines: Iterable<RhythmLineDto>, blockIndex: Int) {
-        if (blockIndex >= rhythmLines.first().beats.size)
-            return
-        rhythmLines.forEach { line -> run{
-            if (line.beats[blockIndex])
-                play(line.sound)
-        } }
+        if (blockIndex < rhythmLines.first().beats.size) {
+            rhythmLines.forEach {
+                if (it.beats[blockIndex])
+                    play(it.sound)
+            }
+        }
     }
 
 }

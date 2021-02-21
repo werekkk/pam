@@ -1,10 +1,12 @@
 package jwernikowski.pam_lab.ui.activity.song_details
 
 import androidx.lifecycle.*
+import jwernikowski.pam_lab.db.data.dao.SongDao
 import jwernikowski.pam_lab.ui.activity.MainActivity
 import jwernikowski.pam_lab.db.data.entity.PracticeEntry
 import jwernikowski.pam_lab.db.data.entity.Section
 import jwernikowski.pam_lab.db.data.entity.Song
+import jwernikowski.pam_lab.db.data.helper_entity.SongProgressUpdate
 import jwernikowski.pam_lab.db.repository.PracticeEntryRepository
 import jwernikowski.pam_lab.db.repository.SectionRepository
 import jwernikowski.pam_lab.db.repository.SongRepository
@@ -63,19 +65,18 @@ class SongDetailsViewModel : ViewModel() {
 
     val progress: LiveData<Float> =
         Transformations.switchMap(practiceEntries) { entries ->
-            Transformations.map(sections) { sections -> run{
+            Transformations.map(sections) {
                 progressLoaded.postValue(false)
-                val sectionBySectionId = sections.associateBy({it.sectionId}, {it})
+                val sectionBySectionId = it.associateBy({it.sectionId}, {it})
                 val entriesBySectionId = entries.groupBy { it.sectionId }
                 val progressBySectionId = sectionBySectionId.mapValues {
                     val entries = entriesBySectionId[it.key] ?: listOf()
                     PracticeEntry.calculateProgress(entries, it.value.initialTempo, it.value.goalTempo)
                 }
-                val avgProgress = progressBySectionId.toList().fold(0.0f, {acc, pair -> acc + pair.second }) / sections.size
+                val avgProgress = progressBySectionId.toList().fold(0.0f, {acc, pair -> acc + pair.second }) / it.size
                 progressLoaded.postValue(true)
                 avgProgress
             }
-        }
         }
 
     init {
@@ -122,6 +123,18 @@ class SongDetailsViewModel : ViewModel() {
             withContext(Dispatchers.IO) {
                 sectionRepository.update(updatedOrder)
                 sectionsLoaded.postValue(true)
+            }
+        }
+    }
+
+    fun updateProgress() {
+        val song = song.value
+        val progress = ((progress.value ?: 0.0f)*100).toInt()
+        song?.let {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    songsRepository.progressUpdate(SongProgressUpdate(it.songId, progress))
+                }
             }
         }
     }

@@ -20,7 +20,7 @@ class ColoredPercentageTextView @JvmOverloads constructor(
     }
 
     private fun updateColor(percentage: Int) {
-        setTextColor((evaluator.evaluate((percentage.toFloat() / 100), Color.rgb(200,0,0), Color.rgb(0,200,0)) as Int))
+        setTextColor((evaluator.evaluate((percentage.toFloat() / 100), Color.rgb(190,0,0), Color.rgb(0,170,0)) as Int))
     }
 
 }

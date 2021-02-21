@@ -38,7 +38,7 @@ class EditMeterDialogFragment(private val initialMeter: Meter, private val onNew
 
     fun init() {
         viewModel.setMeter(initialMeter)
-        viewModel.meterChange.observe(this) { onNewMeter(it) }
+        viewModel.meterChange.observe(this) { if (it != initialMeter) onNewMeter(it) }
     }
 
 }

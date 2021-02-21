@@ -28,14 +28,14 @@ open class MetronomeViewModel : MetronomeViewViewModel() {
     @Inject
     lateinit var sharedPreferencesRepository: SharedPreferencesRepository
 
-    override fun setRhythm(rhythm: Rhythm) {
-        super.setRhythm(rhythm)
+    fun setRhythm(rhythm: Rhythm) {
+        super.setRhythm(rhythm.rhythmId)
         bpm.value = rhythm.defaultBpm
     }
 
     fun persistPreviousTempoAndRhythm() {
         sharedPreferencesRepository.previousTempo = bpm.value
-        val previousRhythmId = rhythm.value!!.rhythmId.let { if (it == 0L) null else it }
+        val previousRhythmId = rhythm.value?.rhythmId.let { if (it == 0L) null else it }
         sharedPreferencesRepository.previousRhythmId = previousRhythmId
     }
 

@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import jwernikowski.pam_lab.ui.activity.MainActivity
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.databinding.ActivityRhythmDetailsBinding
@@ -76,6 +77,17 @@ class RhythmDetailsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onBackPressed() {
+        if (unsavedChanges()) onUnsavedChanges() else finish()
+    }
+
+    private fun unsavedChanges(): Boolean {
+        return viewModel.rhythmDto.value!!.name != binding.nameEditText.editableText.toString() ||
+                viewModel.rhythmDto.value!!.meter != viewModel.meter.value!! ||
+                viewModel.rhythmDto.value!!.defaultBpm != viewModel.tempo.value!! ||
+                viewModel.initialRhythmLinesDto != binding.rhythmDesigner.rhythmLines
+    }
+
     private fun onSaveClicked() {
         if (checkFields()) {
             viewModel.rhythmLinesDto.value = binding.rhythmDesigner.rhythmLines
@@ -98,6 +110,18 @@ class RhythmDetailsActivity : AppCompatActivity() {
                 finish()
             }
             .setNegativeButton(R.string.cancel) { _, _ -> Unit}
+            .show()
+    }
+
+    private fun onUnsavedChanges() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.unsaved_changes)
+            .setMessage(R.string.unsaved_rhythm_warning_message)
+            .setPositiveButton(R.string.save) { _, _ ->
+                onSaveClicked()
+            }
+            .setNegativeButton(R.string.dont_save) { _, _ -> finish() }
+            .setNeutralButton(R.string.cancel) { _, _ -> }
             .show()
     }
 
@@ -150,8 +174,8 @@ class RhythmDetailsActivity : AppCompatActivity() {
 
         })
 
-        viewModel.rhythmLinesDto.observe(this, Observer { newLines -> run{onRhythmLinesChanged(newLines)} })
-        viewModel.tempo.observe(this, Observer { newTempo: Int -> run{onTempoChanged(newTempo)} })
+        viewModel.rhythmLinesDto.observe(this) { onRhythmLinesChanged(it) }
+        viewModel.tempo.observe(this) { onTempoChanged(it)}
 
         initSeekBar()
         initMeter()

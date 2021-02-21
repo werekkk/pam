@@ -5,6 +5,7 @@ import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import jwernikowski.pam_lab.db.AppDatabase
+import jwernikowski.pam_lab.db.MIGRATION_3_4
 import jwernikowski.pam_lab.db.data.dao.PracticeEntryDao
 import jwernikowski.pam_lab.db.data.dao.SectionDao
 import jwernikowski.pam_lab.db.data.dao.SongDao
@@ -17,7 +18,9 @@ import javax.inject.Singleton
 class RoomModule(application: Application) {
 
     val database: AppDatabase =
-        Room.databaseBuilder(application, AppDatabase::class.java, "pam-db").build()
+        Room.databaseBuilder(application, AppDatabase::class.java, "pam-db")
+            .addMigrations(MIGRATION_3_4)
+            .build()
 
     @Singleton
     @Provides

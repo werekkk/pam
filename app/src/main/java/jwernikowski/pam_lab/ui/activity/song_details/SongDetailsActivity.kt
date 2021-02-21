@@ -78,6 +78,11 @@ class SongDetailsActivity : AppCompatActivity() {
         binding.newSection.setOnClickListener { displayNewSectionDialog() }
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.updateProgress()
+    }
+
     private fun loadSong() {
         viewModel.setSong(song)
         viewModel.song.observe(this, Observer { song -> supportActionBar?.title = song?.name })

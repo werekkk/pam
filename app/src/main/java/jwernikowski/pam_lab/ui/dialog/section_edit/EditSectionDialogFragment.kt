@@ -32,7 +32,7 @@ class EditSectionDialogFragment(private val section: Section) : DialogFragment()
                 .setView(binding.root)
                 .setTitle(R.string.edit_section)
                 .setNegativeButton(R.string.cancel) { _, _ -> onCancel() }
-                .setPositiveButton(R.string.save) { _, _ -> onSave() }
+                .setPositiveButton(R.string.save) { _, _ -> }
                 .create()
         } ?: throw IllegalStateException()
     }
@@ -53,8 +53,17 @@ class EditSectionDialogFragment(private val section: Section) : DialogFragment()
         return binding.root
     }
 
-    private fun onSave() {
-        viewModel.handleSave()
+    override fun onResume() {
+        super.onResume()
+        (dialog as AlertDialog).let { d ->
+            d.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener { onSave(d) }
+        }
+    }
+
+    private fun onSave(dialog: AlertDialog) {
+        if (viewModel.handleSave()) {
+            dialog.dismiss()
+        }
     }
 
     private fun onCancel() {

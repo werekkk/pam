@@ -9,7 +9,8 @@ import java.io.Serializable
 data class Rhythm(
     val name: String,
     val meter: Meter,
-    val defaultBpm: Int = 140
+    val defaultBpm: Int = 140,
+    @PrimaryKey(autoGenerate = true) var rhythmId: Long = 0
 ) : Serializable {
 
     companion object {
@@ -17,5 +18,4 @@ data class Rhythm(
             Rhythm("Default", Meter(1, 1))
     }
 
-    @PrimaryKey(autoGenerate = true) var rhythmId: Long = 0
 }
