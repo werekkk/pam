@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="jwernikowski.pam_lab.ui.dialog.section_new.NewSectionViewModel" />
+            type="jwer.pam.ui.dialog.section_new.NewSectionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:animateLayoutChanges="true"
-        tools:context="jwernikowski.pam_lab.ui.dialog.song_new.NewSongDialogFragment">
+        tools:context="jwer.pam.ui.dialog.song_new.NewSongDialogFragment">
 
         <EditText
             android:id="@+id/nameEditText"

@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <jwernikowski.pam_lab.ui.view.ColoredPercentageTextView
+    <jwer.pam.ui.view.ColoredPercentageTextView
         android:id="@+id/section_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

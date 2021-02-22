@@ -6,7 +6,7 @@
     <data>
         <variable
             name="newSongViewModel"
-            type="jwernikowski.pam_lab.ui.dialog.song_new.NewSongViewModel" />
+            type="jwer.pam.ui.dialog.song_new.NewSongViewModel" />
         <import type="android.view.View" />
     </data>
 
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:animateLayoutChanges="true"
-        tools:context="jwernikowski.pam_lab.ui.dialog.song_new.NewSongDialogFragment">
+        tools:context="jwer.pam.ui.dialog.song_new.NewSongDialogFragment">
 
         <EditText
             android:id="@+id/nameEditText"

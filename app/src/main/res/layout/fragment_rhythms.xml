@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="jwernikowski.pam_lab.ui.fragment.rhythms.RhythmsViewModel" />
+            type="jwer.pam.ui.fragment.rhythms.RhythmsViewModel" />
         <import type="android.view.View"/>
     </data>
 

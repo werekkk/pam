@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="jwernikowski.pam_lab.ui.activity.song_practice.SongPracticeViewModel" />
+            type="jwer.pam.ui.activity.song_practice.SongPracticeViewModel" />
         <import type="android.view.View"/>
     </data>
 
@@ -83,7 +83,7 @@
 
         <fragment
             android:id="@+id/metronome_practice"
-            android:name="jwernikowski.pam_lab.ui.fragment.metronome_practice.MetronomePracticeFragment"
+            android:name="jwer.pam.ui.fragment.metronome_practice.MetronomePracticeFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"

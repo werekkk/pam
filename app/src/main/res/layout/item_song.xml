@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <jwernikowski.pam_lab.ui.view.ColoredPercentageTextView
+    <jwer.pam.ui.view.ColoredPercentageTextView
         android:id="@+id/song_progress"
         android:layout_width="40dp"
         android:layout_height="wrap_content"

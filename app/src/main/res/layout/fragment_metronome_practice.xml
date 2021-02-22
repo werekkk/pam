@@ -7,8 +7,8 @@
     <data>
         <variable
             name="viewModel"
-            type="jwernikowski.pam_lab.ui.fragment.metronome_practice.MetronomePracticeViewModel" />
-        <import type="jwernikowski.pam_lab.db.data.entity.PracticeEntry"></import>
+            type="jwer.pam.ui.fragment.metronome_practice.MetronomePracticeViewModel" />
+        <import type="jwer.pam.db.data.entity.PracticeEntry"></import>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragment.metronome_practice.MetronomePracticeFragment">
 
-        <jwernikowski.pam_lab.ui.view.metronome.MetronomeView
+        <jwer.pam.ui.view.metronome.MetronomeView
             android:id="@+id/metronomeView"
             android:layout_width="0dp"
             android:layout_height="150dp"
@@ -259,7 +259,7 @@
 
         <fragment
             android:id="@+id/current_rhythm_info"
-            android:name="jwernikowski.pam_lab.ui.fragment.current_rhythm_info.CurrentRhythmInfoFragment"
+            android:name="jwer.pam.ui.fragment.current_rhythm_info.CurrentRhythmInfoFragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

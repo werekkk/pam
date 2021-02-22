@@ -7,7 +7,7 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="jwernikowski.pam_lab.ui.activity.song_details.SongDetailsViewModel" />
+            type="jwer.pam.ui.activity.song_details.SongDetailsViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -73,7 +73,7 @@
                             android:layout_weight="1"
                             android:visibility="@{viewModel.daysPracticedLoaded ? View.GONE : View.VISIBLE}" />
 
-                        <jwernikowski.pam_lab.ui.view.ColoredPercentageTextView
+                        <jwer.pam.ui.view.ColoredPercentageTextView
                             android:id="@+id/progress"
                             android:layout_width="100dp"
                             android:layout_height="50dp"

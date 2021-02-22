@@ -7,7 +7,7 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="jwernikowski.pam_lab.ui.dialog.song_edit.EditSongViewModel" />
+            type="jwer.pam.ui.dialog.song_edit.EditSongViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="jwernikowski.pam_lab.ui.dialog.rhythm_change.ChangeRhythmViewModel" />
+            type="jwer.pam.ui.dialog.rhythm_change.ChangeRhythmViewModel" />
         <import type="android.view.View"/>
     </data>
 
