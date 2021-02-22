@@ -11,7 +11,7 @@ interface SongDao {
     @Query("SELECT * FROM song WHERE songId = :songId")
     fun getById(songId: Long): LiveData<Song?>
 
-    @Query("SELECT * FROM song ORDER BY name ASC")
+    @Query("SELECT * FROM song ORDER BY name COLLATE NOCASE ASC")
     fun getAll(): LiveData<List<Song>>
 
     @Insert

@@ -1,15 +1,19 @@
 package jwernikowski.pam_lab.ui.dialog.rhythm_change
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import jwernikowski.pam_lab.R
 import jwernikowski.pam_lab.db.data.entity.Rhythm
 
-class ChangeRhythmAdapter(private val clickListener: (Rhythm) -> Unit):
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChangeRhythmAdapter(
+    private val clickListener: (Rhythm) -> Unit,
+    private val selectedRhythmId: Long
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var rhythms: ArrayList<Rhythm> = arrayListOf()
         set(value) {
@@ -50,13 +54,19 @@ class ChangeRhythmAdapter(private val clickListener: (Rhythm) -> Unit):
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder.itemViewType == ItemType.RHYTHM_ITEM.value) {
-            (holder as RhythmViewHolder).rhythm = rhythms[position - 1]
+            holder as RhythmViewHolder
+            holder.rhythm = rhythms[position - 1]
+            holder.checked = holder.rhythm.rhythmId == selectedRhythmId
+        } else {
+            holder as NoRhythmViewHolder
+            holder.checked = selectedRhythmId == 0L
         }
     }
 
     class RhythmViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val rhythmName: TextView = itemView.findViewById(R.id.rhythmName)
         private val rhythmMeter: TextView = itemView.findViewById(R.id.meter)
+        private val checkedImage: ImageView = itemView.findViewById(R.id.checked)
 
         private lateinit var _rhythm: Rhythm
 
@@ -68,9 +78,23 @@ class ChangeRhythmAdapter(private val clickListener: (Rhythm) -> Unit):
                 if (r != Rhythm.DEFAULT_RHYTHM)
                     rhythmMeter.text = r.meter.toString()
             }
+
+        var checked: Boolean = false
+            set(value) {
+                checkedImage.setColorFilter(if (value) Color.BLACK else Color.WHITE)
+                field = value
+            }
     }
 
-    class NoRhythmViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    class NoRhythmViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        private val checkedImage: ImageView = itemView.findViewById(R.id.checked)
+
+        var checked: Boolean = false
+            set(value) {
+                checkedImage.setColorFilter(if (value) Color.BLACK else Color.WHITE)
+                field = value
+            }
+    }
 
     enum class ItemType(val value: Int) {
         NO_RHYTHM_ITEM(0),
@@ -84,7 +108,7 @@ class ChangeRhythmAdapter(private val clickListener: (Rhythm) -> Unit):
         fun getLayout(): Int {
             return when(value) {
                 0 -> R.layout.item_rhythm_default
-                1 -> R.layout.item_rhythm
+                1 -> R.layout.item_change_rhythm
                 else -> 0
             }
         }

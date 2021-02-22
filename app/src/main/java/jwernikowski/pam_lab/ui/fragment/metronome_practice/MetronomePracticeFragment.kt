@@ -115,7 +115,7 @@ class MetronomePracticeFragment : Fragment() {
     }
 
     private fun onChangeRhythmClicked() {
-        ChangeRhythmDialogFragment { setRhythm(it) }
+        ChangeRhythmDialogFragment({ setRhythm(it) }, viewModel.rhythmId.value ?: 0)
             .show(parentFragmentManager, ChangeRhythmDialogFragment.TAG)
     }
 

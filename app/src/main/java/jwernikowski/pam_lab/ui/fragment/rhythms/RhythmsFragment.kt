@@ -56,6 +56,11 @@ class RhythmsFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    binding.addRhythmFab.apply { if (dy > 0) hide() else show() }
+                }
+            })
         }
 
         val divider = DividerItemDecoration(binding.rhythmsRecyclerView.context, viewManager.orientation)

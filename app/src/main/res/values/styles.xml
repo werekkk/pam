@@ -7,9 +7,16 @@
         <item name="android:textViewStyle">@style/defaultTextView</item>
     </style>
 
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/app_launch_screen</item>
+    </style>
 
     <style name="defaultTextView" parent="android:Widget.TextView">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ChangeRhythmbutton" parent="Widget.MaterialComponents.Button">
+
     </style>
 </resources>

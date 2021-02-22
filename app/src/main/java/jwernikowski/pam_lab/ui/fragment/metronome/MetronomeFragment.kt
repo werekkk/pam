@@ -32,7 +32,7 @@ class MetronomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         player = MainActivity.component.soundPlayer
 
         viewModel = ViewModelProvider(this).get(MetronomeViewModel::class.java)
@@ -94,7 +94,7 @@ class MetronomeFragment : Fragment() {
     }
 
     private fun onChangeRhythmClicked() {
-        ChangeRhythmDialogFragment { setRhythm(it) }
+        ChangeRhythmDialogFragment({ setRhythm(it) }, viewModel.rhythmId.value ?: 0)
             .show(parentFragmentManager, ChangeRhythmDialogFragment.TAG)
     }
 

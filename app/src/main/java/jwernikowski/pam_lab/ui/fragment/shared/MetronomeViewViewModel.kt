@@ -28,8 +28,11 @@ open class MetronomeViewViewModel : ViewModel() {
     val rhythmId: MutableLiveData<Long?> = MutableLiveData()
 
     val rhythm = Transformations.switchMap(rhythmId) {
-        it?.let {
-            rhythmRepository.getById(it)
+        it?.let { newId ->
+            Transformations.map(rhythmRepository.getById(newId)) {
+                if (it == null) rhythmId.postValue(null)
+                it
+            }
         } ?: MutableLiveData(Rhythm.DEFAULT_RHYTHM)
     }
 

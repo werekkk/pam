@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var songRepository: SongRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         volumeControlStream = AudioManager.STREAM_MUSIC
         setContentView(R.layout.activity_main)

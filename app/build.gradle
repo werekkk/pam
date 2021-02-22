@@ -73,6 +73,4 @@ dependencies {
     implementation 'com.google.dagger:dagger-android-support:2.30.1'
     kapt 'com.google.dagger:dagger-compiler:2.30.1'
     kapt 'com.google.dagger:dagger-android-processor:2.30.1'
-
-    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
 }

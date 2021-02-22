@@ -3,6 +3,7 @@ package jwernikowski.pam_lab.ui.dialog.rhythm_change
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,10 @@ import jwernikowski.pam_lab.ui.fragment.metronome.MetronomeFragment
 import jwernikowski.pam_lab.ui.fragment.metronome.MetronomeViewModel
 import java.lang.IllegalStateException
 
-class ChangeRhythmDialogFragment(val onRhythmSelected: (Rhythm) -> Unit) : DialogFragment() {
+class ChangeRhythmDialogFragment(
+    val onRhythmSelected: (Rhythm) -> Unit,
+    private val currentRhythmId: Long,
+) : DialogFragment() {
 
     companion object {
         val TAG = "ChangeRhythmDialogFragment"
@@ -48,7 +52,7 @@ class ChangeRhythmDialogFragment(val onRhythmSelected: (Rhythm) -> Unit) : Dialo
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewModel = ViewModelProvider(this).get(ChangeRhythmViewModel::class.java)
 
         binding.viewModel = viewModel
@@ -61,7 +65,7 @@ class ChangeRhythmDialogFragment(val onRhythmSelected: (Rhythm) -> Unit) : Dialo
 
     private fun initRecyclerView() {
         viewManager = LinearLayoutManager(context)
-        adapter = ChangeRhythmAdapter { onRhythmClicked(it) }
+        adapter = ChangeRhythmAdapter({ onRhythmClicked(it) }, currentRhythmId)
 
         binding.rhythmList.apply {
             setHasFixedSize(true)

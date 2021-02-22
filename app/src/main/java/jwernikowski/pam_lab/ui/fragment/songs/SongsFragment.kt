@@ -58,6 +58,11 @@ class SongsFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    binding.addSongFab.apply { if (dy > 0) hide() else show() }
+                }
+            })
         }
 
         val divider = DividerItemDecoration(binding.songsRecyclerView.context, viewManager.orientation)
