@@ -39,7 +39,7 @@ class RhythmDetailsViewModel : ViewModel() {
     val rhythmDto: MutableLiveData<RhythmDto> = MutableLiveData()
     val rhythmLinesDto: MutableLiveData<List<RhythmLineDto>> = MutableLiveData()
 
-    lateinit var initialRhythmLinesDto: List<RhythmLineDto>
+    var initialRhythmLinesDto: List<RhythmLineDto> = listOf()
 
     val tempo: MutableLiveData<Int> = MutableLiveData()
 
