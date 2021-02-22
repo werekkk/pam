@@ -22,6 +22,7 @@ import jwernikowski.pam_lab.db.data.entity.Song
 import jwernikowski.pam_lab.sound.Sound
 import jwernikowski.pam_lab.sound.SoundPlayer
 import jwernikowski.pam_lab.ui.dialog.rhythm_change.ChangeRhythmDialogFragment
+import jwernikowski.pam_lab.ui.fragment.current_rhythm_info.CurrentRhythmInfoFragment
 
 class MetronomePracticeFragment : Fragment() {
 
@@ -73,11 +74,16 @@ class MetronomePracticeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        val currentRhythmInfo = childFragmentManager.findFragmentById(R.id.current_rhythm_info)
+        currentRhythmInfo as CurrentRhythmInfoFragment
         viewModel.onRatedListener = { undoSnackbar(it) }
         viewModel.bpm.observe(viewLifecycleOwner) {
             binding.tempoSeekBar.progress = (100 * ((it - viewModel.minBpm.value!!).toFloat() / (viewModel.maxBpm.value!! - viewModel.minBpm.value!!))).toInt()
         }
-        viewModel.rhythm.observe(viewLifecycleOwner) { binding.metronomeView.rhythm = it ?: Rhythm.DEFAULT_RHYTHM }
+        viewModel.rhythm.observe(viewLifecycleOwner) {
+            binding.metronomeView.rhythm = it ?: Rhythm.DEFAULT_RHYTHM
+            currentRhythmInfo.onNewRhythm(it)
+        }
         viewModel.chosenRhythmLines.observe(viewLifecycleOwner) {}
     }
 

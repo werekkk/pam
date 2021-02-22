@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="jwernikowski.pam_lab.ui.fragment.current_rhythm_info.CurrentRhythmInfoViewModel" />
+        <import type="android.view.View" />
+    </data>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".ui.fragment.current_rhythm_info.CurrentRhythmInfoFragment">
+
+            <TextView
+                android:id="@+id/textView28"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_rhythm_set"
+                android:textColor="?android:attr/textColorHint"
+                android:textStyle="italic"
+                android:visibility="@{viewModel.hasRhythm ? View.GONE : View.VISIBLE}" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="@{viewModel.hasRhythm ? View.VISIBLE : View.GONE}">
+
+                <TextView
+                    android:id="@+id/textView26"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/current_rhythm"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/textView27"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{viewModel.currentRhythm.name}" />
+            </LinearLayout>
+        </LinearLayout>
+
+</layout>
+

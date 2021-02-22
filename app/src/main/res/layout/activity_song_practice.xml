@@ -76,7 +76,8 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="@{viewModel.song.hasSections ? viewModel.song.name : ``}" />
+                android:text="@{viewModel.song.hasSections ? viewModel.song.name : ``}"
+                android:visibility="@{viewModel.song.hasSections ? View.VISIBLE : View.GONE}"/>
 
         </LinearLayout>
 

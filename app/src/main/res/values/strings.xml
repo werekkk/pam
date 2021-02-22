@@ -81,6 +81,8 @@
     <string name="divide_into_sections">Divide song into sections</string>
     <string name="no_rhythm">No rhythm</string>
     <string name="no_rhythms_message">There are no rhythms yet! Tap \'+\' button to add a new rhythm.</string>
+    <string name="no_rhythm_set">No rhythm set</string>
+    <string name="current_rhythm">Current rhythm:</string>
 
     <string name="sections">Sections</string>
     <string name="enter_section_name">Section name cannot be blank</string>

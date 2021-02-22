@@ -250,13 +250,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
             android:backgroundTint="@color/secondaryColor"
             android:text="@string/set_rhythm"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout8" />
+
+        <fragment
+            android:id="@+id/current_rhythm_info"
+            android:name="jwernikowski.pam_lab.ui.fragment.current_rhythm_info.CurrentRhythmInfoFragment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/set_rhythm_btn"
+            app:layout_constraintEnd_toStartOf="@+id/set_rhythm_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/set_rhythm_btn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
